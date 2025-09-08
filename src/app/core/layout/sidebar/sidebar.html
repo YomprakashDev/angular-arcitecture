@@ -1,1 +1,46 @@
-<p>sidebar works!</p>
+<aside class="w-20 bg-white border-r border-[#EDEDED] min-h-screen flex flex-col items-center py-4">
+  <!-- Logo -->
+  <div class="mb-10">
+    <img src="assets/icons/svgs/Logo.svg" alt="Logo" class="w-10 h-10" />
+  </div>
+
+  <!-- Menu -->
+  <nav class="flex flex-col gap-6">
+   
+        <a [routerLink]="'/dashboard'"
+             routerLinkActive="bg-blue-100 text-blue-600"
+             class="w-12 h-12 flex items-center justify-center rounded-lg text-red-500 hover:bg-gray-100">
+         <img src="assets/icons/svgs/dashboard.svg" class="w-8 h-8  text-red-500"  />
+        </a>
+         <a [routerLink]="'/workflow'"
+             routerLinkActive="bg-blue-100 text-blue-600"
+             class="w-12 h-12 flex items-center justify-center rounded-lg text-red-500 hover:bg-gray-100">
+         <img src="assets/icons/svgs/workflow.svg" class="w-8 h-8  text-red-500"  />
+        </a>
+         <a [routerLink]="'/repository'"
+             routerLinkActive="bg-blue-100 text-blue-600"
+             class="w-12 h-12 flex items-center justify-center rounded-lg text-red-500 hover:bg-gray-100">
+         <img src="assets/icons/svgs/repository.svg" class="w-8 h-8  text-red-500"  />
+        </a> <a [routerLink]="'/configuration'"
+             routerLinkActive="bg-blue-100 text-blue-600"
+             class="w-12 h-12 flex items-center justify-center rounded-lg text-red-500 hover:bg-gray-100">
+         <img src="assets/icons/svgs/configuration.svg" class="w-8 h-8  text-red-500"  />
+        </a> <a [routerLink]="'/library'"
+             routerLinkActive="bg-blue-100 text-blue-600"
+             class="w-12 h-12 flex items-center justify-center rounded-lg text-red-500 hover:bg-gray-100">
+         <img src="assets/icons/svgs/library.svg" class="w-8 h-8  text-red-500"  />
+        </a>
+         <a [routerLink]="'/reports'"
+             routerLinkActive="bg-blue-100 text-blue-600"
+             class="w-12 h-12 flex items-center justify-center rounded-lg text-red-500 hover:bg-gray-100">
+         <img src="assets/icons/svgs/reports.svg" class="w-8 h-8  text-red-500"  />
+        </a>
+         <a [routerLink]="'/settings'"
+             routerLinkActive="bg-blue-100 text-blue-600"
+             class="w-12 h-12 flex items-center justify-center rounded-lg text-red-500 hover:bg-gray-100">
+         <img src="assets/icons/svgs/settings.svg" class="w-8 h-8  text-red-500"  />
+        </a>
+
+    
+  </nav>
+</aside>

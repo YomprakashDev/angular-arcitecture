@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, signal } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -8,4 +8,21 @@ import { Component } from '@angular/core';
 })
 export class Header {
 
+   showProfileMenu = signal(false);
+
+  // Toggle the profile menu on click
+  toggleProfileMenu() {
+    this.showProfileMenu.set(!this.showProfileMenu());
+  }
+
+  // HostListener to close the menu when clicking anywhere on the document
+  @HostListener('document:click', ['$event'])
+  onClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    // Check if the click is outside the profile menu and the profile button
+    if (!target.closest('.relative')) {
+      this.showProfileMenu.set(false);
+    }
+  }
+  
 }
