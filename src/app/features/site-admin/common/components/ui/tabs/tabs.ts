@@ -1,10 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { ModulePage } from "../../../../sub-features/modules/pages/module-page/module-page";
 import { SubModulePage } from "../../../../sub-features/sub-modules/pages/sub-module-page/sub-module-page";
+import { PackagesPage } from "../../../../sub-features/packages/pages/packages-page/packages-page";
+import { OrganizationPage } from "../../../../sub-features/organization/pages/organization-page/organization-page";
 
 @Component({
   selector: 'app-tabs',
-  imports: [ModulePage, SubModulePage],
+  imports: [ModulePage, SubModulePage, PackagesPage, OrganizationPage],
   templateUrl: './tabs.html',
   styleUrl: './tabs.css'
 })
