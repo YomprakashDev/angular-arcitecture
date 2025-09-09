@@ -1,5 +1,9 @@
 import { Routes } from '@angular/router';
 import { MainLayout } from './core/layout/main-layout/main-layout';
+import { LoginPage } from './features/auth/pages/login-page/login-page';
+import { SignIn } from './features/auth/pages/sign-in/sign-in';
+import { ForgotPassword } from './features/auth/pages/forgot-password/forgot-password';
+import { CheckIndbox } from './features/auth/pages/check-indbox/check-indbox';
 
 export const routes: Routes = [
   {
@@ -35,9 +39,15 @@ export const routes: Routes = [
   },
   {
     path: 'login',
-    loadComponent: () => import('./features/auth/pages/login-page/login-page').then(m => m.LoginPage)
+    component:LoginPage,
+    children: [
+      { path: '', redirectTo: 'sign-in', pathMatch: 'full' }, // 👈 default
+      { path: 'sign-in', component:SignIn,title:'Sign In' },
+      { path: 'forgot-password', component: ForgotPassword,title:'Forgot Password' },
+      {path:'reset-password',component:CheckIndbox,title:'Reset Password'}
+  ]
+  
   },
-   { path: '', redirectTo: 'login', pathMatch: 'full' }
 
 
 

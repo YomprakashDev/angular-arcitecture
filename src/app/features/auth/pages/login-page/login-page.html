@@ -3,9 +3,9 @@
     class="absolute z-2 -top-[300px] -left-[300px] h-[691px] w-[691px] bg-gradient-to-t from-[#CFEEF8] to-[#79BBD0] rounded-full"
   ></div>
 
-  <div
+  <!-- <div
     class="absolute z-2 -bottom-[300px] -right-[300px] h-[691px] w-[691px] bg-gradient-to-r from-[#CFEEF8] to-[#79BBD0] rounded-full"
-  ></div>
+  ></div> -->
   <!-- main contianer -->
   <div class="w-full z-10 h-full bg-white rounded-xl shadow-md p-4">
     <div class="w-full flex items-center h-full">
@@ -15,14 +15,8 @@
         <div>
           <app-logo [src]="'assets/icons/svgs/Big-logo.svg'" [alt]="'Logo'"></app-logo>
         </div>
-
-        <app-check-indbox></app-check-indbox>
-  <!-- <app-forgot-password></app-forgot-password> -->
-        <!-- @if(isForgotPassword()){
-        <app-forgot-password></app-forgot-password>
-        }@else {
-        <app-sign-in></app-sign-in>
-        } -->
+        <router-outlet></router-outlet>
+  
       </div>
     </div>
   </div>

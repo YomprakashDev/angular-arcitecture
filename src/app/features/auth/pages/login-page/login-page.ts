@@ -1,16 +1,15 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { Logo } from "../../components/logo/logo";
-import { ForgotPassword } from "../forgot-password/forgot-password";
-import { SignIn } from "../sign-in/sign-in";
-import { CheckIndbox } from "../check-indbox/check-indbox";
+
+import { RouterOutlet } from '@angular/router';
+
 
 @Component({
   selector: 'app-login-page',
-  imports: [Logo, ForgotPassword, SignIn, CheckIndbox],
+  imports: [Logo, RouterOutlet],
   templateUrl: './login-page.html',
   styleUrl: './login-page.css'
 })
 export class LoginPage {
 
-  isForgotPassword = signal(true);
 }
