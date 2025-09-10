@@ -20,7 +20,7 @@ initialUser = {
   isEditing = signal(false);
 
   toggleEdit() {
-    this.isEditing.set(!this.isEditing());
+    this.isEditing.update(prev => !prev);
   }
 
   saveUser() {
