@@ -34,6 +34,10 @@ export const routes: Routes = [
       {
         path: 'admin',
         loadComponent: () => import('./features/site-admin/pages/site-admin-page/site-admin-page').then(m => m.SiteAdminPage)
+      },
+      {
+        path:'view-profile',
+        loadComponent:()=>import('./shared/components/view-profile/view-profile').then(m=>m.ViewProfile)
       }
     ]
   },
@@ -41,7 +45,7 @@ export const routes: Routes = [
     path: 'login',
     component:LoginPage,
     children: [
-      { path: '', redirectTo: 'sign-in', pathMatch: 'full' }, // 👈 default
+      { path: '', redirectTo: 'sign-in', pathMatch: 'full' }, 
       { path: 'sign-in', component:SignIn,title:'Sign In' },
       { path: 'forgot-password', component: ForgotPassword,title:'Forgot Password' },
       {path:'reset-password',component:CheckIndbox,title:'Reset Password'}
