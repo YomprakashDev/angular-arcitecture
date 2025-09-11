@@ -1,1 +1,19 @@
-<p>configuration works!</p>
+<app-tabs
+  [tabs]="tabs()"
+  (tabChanged)="setActiveTab($event.id)"
+  [defaultActiveTab]="'counter-party'"
+></app-tabs>
+
+<div class="p-6">
+  @switch (currentTab()) { @case ('counter-party') {
+  <app-counter-party></app-counter-party>
+  } @case ('contract-types') {
+  <app-contract-types></app-contract-types>
+  } @case ('tags') {
+  <app-tags></app-tags>
+  } @case ('metadata') {
+  <app-metadata></app-metadata>
+  } @case ('workflow') {
+  <app-workflow></app-workflow>
+  } }
+</div>
