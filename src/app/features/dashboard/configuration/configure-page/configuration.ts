@@ -1,10 +1,10 @@
 import { Component, signal } from '@angular/core';
-import { Tabs } from "../components/tabs/tabs";
-import { CounterParty } from "./sub-pages/counter-party/counter-party";
-import { ContractTypes } from "./sub-pages/contract-types/contract-types";
-import { Tags } from "./sub-pages/tags/tags";
-import { Metadata } from "./sub-pages/metadata/metadata";
-import { Workflow } from "./sub-pages/workflow/workflow";
+import { Tabs } from "../../components/tabs/tabs";
+import { CounterParty } from "../sections/counter-party/counter-party";
+import { ContractTypes } from "../sections/contract-types/contract-types";
+import { Tags } from "../sections/tags/tags";
+import { Metadata } from "../sections/metadata/metadata";
+import { Workflow } from "../sections/workflow/workflow";
 
 @Component({
   selector: 'app-configuration',

@@ -24,12 +24,12 @@ export const routes: Routes = [
       },
        {
         path: 'configuration',
-        loadComponent: () => import('./features/dashboard/configuration/configuration').then(m => m.Configuration)
+        loadComponent: () => import('./features/dashboard/configuration/configure-page/configuration').then(m => m.Configuration)
       },
  
       {
         path: 'settings',
-        loadComponent: () => import('./features/dashboard/settings/settings').then(m => m.Settings)
+        loadComponent: () => import('./features/dashboard/settings/settings-page/settings').then(m => m.Settings)
       },
       {
         path: 'admin',
