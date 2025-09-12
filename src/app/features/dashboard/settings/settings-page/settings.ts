@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { Tabs } from "../../components/tabs/tabs";
+import { Tabs } from "../../../../shared/components/tabs/tabs";
 import { Teams } from "../sections/teams/teams";
 import { Users } from "../sections/users/users";
 import { AccessControl } from "../sections/access-control/access-control";
@@ -10,9 +10,10 @@ import { Security } from "../sections/security/security";
 
 @Component({
   selector: 'app-settings',
+  standalone: true,
   imports: [Tabs, Teams, Users, AccessControl, Firm, OrganizationProfile, Integration, Security],
   templateUrl: './settings.html',
-  styleUrl: './settings.css'
+  styleUrls: ['./settings.css']
 })
 export class Settings {
   readonly tabs = signal([

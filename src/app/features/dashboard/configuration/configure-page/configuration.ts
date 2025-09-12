@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { Tabs } from "../../components/tabs/tabs";
+import { Tabs } from "../../../../shared/components/tabs/tabs";
 import { CounterParty } from "../sections/counter-party/counter-party";
 import { ContractTypes } from "../sections/contract-types/contract-types";
 import { Tags } from "../sections/tags/tags";
@@ -8,9 +8,10 @@ import { Workflow } from "../sections/workflow/workflow";
 
 @Component({
   selector: 'app-configuration',
+  standalone: true,
   imports: [Tabs, CounterParty, ContractTypes, Tags, Metadata, Workflow],
   templateUrl: './configuration.html',
-  styleUrl: './configuration.css'
+  styleUrls: ['./configuration.css']
 })
 export class Configuration {
   readonly tabs = signal([

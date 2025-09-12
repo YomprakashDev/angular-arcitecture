@@ -22,11 +22,11 @@ export const routes: Routes = [
         path: 'library',
         loadComponent: () => import('./features/dashboard/library/library').then(m => m.Library)
       },
-       {
+      {
         path: 'configuration',
         loadComponent: () => import('./features/dashboard/configuration/configure-page/configuration').then(m => m.Configuration)
       },
- 
+
       {
         path: 'settings',
         loadComponent: () => import('./features/dashboard/settings/settings-page/settings').then(m => m.Settings)
@@ -36,21 +36,21 @@ export const routes: Routes = [
         loadComponent: () => import('./features/site-admin/pages/site-admin-page/site-admin-page').then(m => m.SiteAdminPage)
       },
       {
-        path:'view-profile',
-        loadComponent:()=>import('./shared/components/view-profile/view-profile').then(m=>m.ViewProfile)
+        path: 'view-profile',
+        loadComponent: () => import('./shared/components/view-profile/view-profile').then(m => m.ViewProfile)
       }
     ]
   },
   {
     path: 'login',
-    component:LoginPage,
+    component: LoginPage,
     children: [
-      { path: '', redirectTo: 'sign-in', pathMatch: 'full' }, 
-      { path: 'sign-in', component:SignIn,title:'Sign In' },
-      { path: 'forgot-password', component: ForgotPassword,title:'Forgot Password' },
-      {path:'reset-password',component:CheckIndbox,title:'Reset Password'}
-  ]
-  
+      { path: '', redirectTo: 'sign-in', pathMatch: 'full' },
+      { path: 'sign-in', component: SignIn, title: 'Sign In' },
+      { path: 'forgot-password', component: ForgotPassword, title: 'Forgot Password' },
+      { path: 'reset-password', component: CheckIndbox, title: 'Reset Password' }
+    ]
+
   },
 
 

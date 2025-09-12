@@ -2,9 +2,10 @@ import { Component, signal } from '@angular/core';
 
 @Component({
   selector: 'app-view-profile',
+  standalone: true,
   imports: [],
   templateUrl: './view-profile.html',
-  styleUrl: './view-profile.css'
+  styleUrls: ['./view-profile.css']
 })
 export class ViewProfile {
 initialUser = {

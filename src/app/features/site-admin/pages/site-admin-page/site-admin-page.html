@@ -1,1 +1,17 @@
-<app-tabs></app-tabs>
+<app-tabs
+  [tabs]="tabs()"
+  (tabChanged)="setActiveTab($event.id)"
+  [defaultActiveTab]="'modules'"
+></app-tabs>
+
+<div class="p-6">
+  @if(currentTab() ==='modules'){
+  <app-module-page></app-module-page>
+  } @if(currentTab() ==='sub-modules'){
+  <app-sub-module-page></app-sub-module-page>
+  } @if(currentTab() ==='packages'){
+  <app-packages-page></app-packages-page>
+  } @if(currentTab() ==='organizations'){
+  <app-organization-page></app-organization-page>
+  }
+</div>
