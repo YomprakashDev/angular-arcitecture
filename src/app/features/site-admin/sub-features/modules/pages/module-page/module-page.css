@@ -1,0 +1,102 @@
+
+/* Custom table styles */
+.module-table {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 1px solid #EAEAEA;
+}
+
+.module-table .mat-mdc-table {
+  background: transparent;
+}
+
+.module-table .mat-mdc-header-row {
+  background-color: #F1F3F6;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.module-table .mat-mdc-header-cell {
+  color: #7E7A88;
+  font-weight: 700;
+  font-size: 14px;
+  border-bottom: none;
+  padding: 16px 12px;
+}
+
+.module-table .mat-mdc-row {
+  border-bottom: 1px solid #f1f3f4;
+  transition: background-color 0.2s ease;
+}
+
+.module-table .mat-mdc-row:hover {
+  background-color: #F7F8FA;
+}
+
+.module-table .mat-mdc-cell {
+  padding: 16px 12px;
+  border-bottom: none;
+  font-size: 14px;
+}
+
+.actions-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.drag-handle {
+  color: #787A7F;
+  cursor: move;
+}
+
+.edit-icon {
+  color: #6c757d;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.icon{
+color: #a22a2a;
+}
+
+.edit-icon:hover {
+  color: #495057;
+}
+
+.module-icon {
+  color: #1972c0;
+  font-size: 20px;
+}
+
+.module-name {
+  font-weight: 500;
+  color: #212529;
+}
+
+.module-description {
+  color: #6c757d;
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+/* Toggle switch customization */
+.status-toggle {
+  /* Ensure the class is applied to the element that directly wraps the switch */
+}
+
+/* Target the .mdc-switch directly within the .status-toggle context */
+.status-toggle .mat-mdc-slide-toggle .mdc-switch {
+  /* Set your desired colors */
+  --mdc-switch-selected-track-color: #376d44; /* Green for active */
+  --mdc-switch-unselected-track-color: #dc3545; /* Red for inactive */
+  --mdc-switch-selected-handle-color: #ffffff; /* White handle */
+  --mdc-switch-unselected-handle-color: #ffffff; /* White handle */
+
+  /* Adjust size by targeting the track and handle */
+  --mdc-switch-track-width: 36px;
+  --mdc-switch-track-height: 20px;
+  --mdc-switch-handle-width: 16px;
+  --mdc-switch-handle-height: 16px;
+}
