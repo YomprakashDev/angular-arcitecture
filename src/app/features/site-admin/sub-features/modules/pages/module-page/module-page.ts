@@ -1,14 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, effect, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, effect, inject, signal, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { CdkDropList, CdkDrag } from '@angular/cdk/drag-drop';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import * as XLSX from 'xlsx';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
 
 // Define the module interface
 export interface ModuleItem {
@@ -29,9 +32,11 @@ export interface ModuleItem {
     MatIconModule,
     MatButtonModule,
     MatCardModule,
-    CdkDropList, CdkDrag,
+    MatInputModule,
+    MatFormFieldModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    FormsModule
   ],
   templateUrl: './module-page.html',
   styleUrls: ['./module-page.css']
@@ -42,7 +47,7 @@ export class ModulePage implements AfterViewInit {
 
   private _liveAnnouncer = inject(LiveAnnouncer);
 
-
+  isEditing = signal(false);
 
   modules = signal<ModuleItem[]>([
     {
@@ -126,6 +131,7 @@ export class ModulePage implements AfterViewInit {
       order: 10
     }
   ]);
+
   dataSource = new MatTableDataSource(this.modules());
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -135,7 +141,6 @@ export class ModulePage implements AfterViewInit {
     this.dataSource.data = this.modules();
   });
 
-
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -143,18 +148,8 @@ export class ModulePage implements AfterViewInit {
 
 
 
-  toggleModuleStatus(moduleId: number) {
-    this.modules.update(currentModules =>
-      currentModules.map(module =>
-        module.id === moduleId
-          ? { ...module, status: !module.status }
-          : module
-      )
-    );
-  }
-
   announceSortChange(sortState: Sort) {
-    
+
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
@@ -166,5 +161,63 @@ export class ModulePage implements AfterViewInit {
     return Math.ceil(this.dataSource.data.length / this.paginator.pageSize);
   }
 
+  exportToExcel() {
+    // Get the current filtered and sorted data
+    const dataToExport = this.dataSource.data.map(module => ({
+      'Module Name': module.moduleName,
+      'Description': module.description,
+      'Status': module.status ? 'Active' : 'Inactive',
+      'Icon': module.icon,
+      'Order': module.order
+    }));
 
+    // Create workbook and worksheet
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+
+    // Add the worksheet to workbook
+    XLSX.utils.book_append_sheet(wb, ws, 'Modules');
+
+    // Set column widths for better formatting
+    const colWidths = [
+      { wch: 20 }, // Module Name
+      { wch: 40 }, // Description
+      { wch: 10 }, // Status
+      { wch: 15 }, // Icon
+      { wch: 8 }   // Order
+    ];
+    ws['!cols'] = colWidths;
+
+    // Generate filename with current date
+    const date = new Date();
+    const dateStr = date.toISOString().split('T')[0]; // YYYY-MM-DD format
+    const filename = `module-configuration-${dateStr}.xlsx`;
+
+    // Save the file
+    XLSX.writeFile(wb, filename);
+  }
+
+
+  editModule(moduleId: number) {
+    const module = this.modules().find(m => m.id === moduleId);
+
+    console.log("Editing module with ID:", moduleId);
+    console.log(module);
+
+    if (!module) return;
+    // Set editing state
+    this.modules.update(currentModules =>
+      currentModules.map(m =>
+        m.id === moduleId ? { ...m, isEditing: true } : m
+      )
+    );
+  }
+
+  saveModule(moduleId: number) {
+    console.log("Saving module with ID:", moduleId);
+  }
+
+  cancelModule() {
+    this.isEditing.set(false);
+  }
 }
