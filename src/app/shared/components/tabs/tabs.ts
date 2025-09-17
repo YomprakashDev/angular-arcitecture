@@ -3,8 +3,9 @@ import { Component, input, OnInit, output, signal } from '@angular/core';
 export interface Tab {
   id: string;
   label: string;
-  data?: any;   
+  data?: any;
 }
+
 @Component({
   selector: 'app-tabs',
   imports: [],

@@ -27,8 +27,13 @@
   transition: background-color 0.2s ease;
 }
 
+/* Zebra striping for even rows */
+.module-table .mat-mdc-row:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
 .module-table .mat-mdc-row:hover {
-  background-color: #f7f8fa;
+  background-color: #e9ecef; /* Adjusted for better visibility on all rows */
 }
 
 .module-table .mat-mdc-cell {
@@ -82,4 +87,18 @@
 }
 
 
+/* OFF state track color */
+::ng-deep .mdc-switch__track {
+  background: #bababa !important;
+}
 
+/* ON state track color */
+::ng-deep .mdc-switch.mdc-switch--selected .mdc-switch__track {
+  background: #0c6 !important; /* Green color */
+}
+
+/* ON state handle color */
+::ng-deep .mdc-switch.mdc-switch--selected .mdc-switch__handle {
+  background-color: white !important;
+  border-color: #0c6 !important;
+}
