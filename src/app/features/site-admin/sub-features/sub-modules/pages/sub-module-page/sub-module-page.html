@@ -1,5 +1,3 @@
-
-
 <div class="flex bg-transparent gap-4 w-full h-full">
 
 
@@ -7,15 +5,11 @@
 <h1 class="text-2xl font-bold text-[#1D1D21]"> Module Page</h1>
   <div>
           @for (item of menuItems(); track item.name) {
-            <div
-              (click)="selectItem(item.name)"
-              [class]="'flex justify-between items-center cursor-pointer p-4 my-2 rounded-xl transition-colors duration-200 ' + (selectedItem() === item.name ? 'bg-indigo-50 text-indigo-700' : 'hover:bg-gray-50 text-gray-800')"
-            >
-              <span class="text-lg font-medium">{{ item.name }}</span>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-current" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
+            <app-menu-item 
+              [item]="item" 
+              [isSelected]="selectedItem() === item.name" 
+              (itemSelected)="selectItem($event)">
+            </app-menu-item>
           }
         </div>
  </div>
@@ -24,22 +18,22 @@
 
    @switch (selectedItem()) {
         @case('Contracts') {
-        <p class="text-gray-600">This is the overview section of the sub-module.</p>
+          <app-contracts-page></app-contracts-page>
         }
         @case('Repository') {
-        <p class="text-gray-600">Here are the detailed information about the sub-module.</p>
+          <app-repository-page></app-repository-page>
         }
         @case('Configuration') {
-        <p class="text-gray-600">Adjust your sub-module settings here.</p>
+          <app-configuration-page></app-configuration-page>
         }
         @case('Library') {
-        <p class="text-gray-600">This is the library section of the sub-module.</p>
+          <app-library-page></app-library-page>
         }
         @case('Reports') {
-        <p class="text-gray-600">This is the reports section of the sub-module.</p>
+          <app-reports-page></app-reports-page>
         }
         @case('Settings') {
-        <p class="text-gray-600">This is the settings section of the sub-module.</p>
+          <app-settings-page></app-settings-page>
         }
         @default {
         <p class="text-gray-600">Please select an option from the menu.</p>
