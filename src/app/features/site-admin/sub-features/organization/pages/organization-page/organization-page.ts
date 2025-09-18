@@ -3,14 +3,19 @@ import { Button } from '../../../../../../shared/components/ui/button/button';
 import { Tabs, Tab } from '../../../../../../shared/components/tabs/tabs';
 import { MenuItemComponent } from "../../../../../../shared/components/ui/menu-item/menu-item";
 
-/**
- * Represents an organization in the list.
- */
-interface Organization {
+import { CommonModule } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { Modal } from "../../../../../../shared/components/ui/modal/modal";
+
+export interface OrganizationItem {
   id: number;
-  name: string;
+  organization: string;
+  contactPerson: string;
   email: string;
-  active: boolean;
+  phone: string;
 }
 
 /**
@@ -21,7 +26,11 @@ interface Organization {
 @Component({
   selector: 'app-organization-page',
   standalone: true,
-  imports: [Button, Tabs, MenuItemComponent],
+  imports: [Button, Tabs, CommonModule,
+    MatTableModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTooltipModule, Modal],
   templateUrl: './organization-page.html',
   styleUrls: ['./organization-page.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -41,30 +50,23 @@ export class OrganizationPage {
   activeTab = signal('active');
   // The current search term.
   searchTerm = signal('');
+  displayedColumns: string[] = [
+    'actions',
+    'organization',
+    'contactPerson',
+    'email',
+    'phone'
+  ];
 
-  /**
-   * The source of truth for the list of organizations.
-   */
-  organizations = signal<Organization[]>([
-    { id: 1, name: 'Google', email: 'contact@google.com', active: true },
-    { id: 2, name: 'Microsoft', email: 'contact@microsoft.com', active: true },
-    { id: 3, name: 'Apple', email: 'contact@apple.com', active: true },
-    { id: 4, name: 'Netflix', email: 'contact@netflix.com', active: false },
-    { id: 5, name: 'Meta', email: 'contact@meta.com', active: true },
-    { id: 6, name: 'Amazon', email: 'contact@amazon.com', active: false },
+  // Seed data to match screenshot
+  organizations = signal<OrganizationItem[]>([
+    { id: 1, organization: 'Beta Ltd', contactPerson: 'John Doe', email: 'john@acme.com', phone: '9876543210' },
+    { id: 2, organization: 'ZenoTech', contactPerson: 'Priya Sharma', email: 'priya@beta.com', phone: '9123456789' },
+    { id: 3, organization: 'Acme Corp', contactPerson: 'Anil Kapoor', email: 'anil@zeno.com', phone: '7890123456' },
+    { id: 4, organization: 'ZenoTech', contactPerson: 'Priya Sharma', email: 'priya@beta.com', phone: '9123456789' },
+    { id: 5, organization: 'Beta Ltd', contactPerson: 'John Doe', email: 'john@acme.com', phone: '9876543210' },
+    { id: 6, organization: 'Acme Corp', contactPerson: 'Anil Kapoor', email: 'anil@zeno.com', phone: '7890123456' },
   ]);
-
-  /**
-   * A computed signal that filters organizations based on the active tab and search term.
-   */
-  filteredOrganizations = computed(() => {
-    const searchTerm = this.searchTerm().toLowerCase();
-    return this.organizations().filter((org) => {
-      const isActive = this.activeTab() === 'active';
-      const matchesSearch = org.name.toLowerCase().includes(searchTerm) || org.email.toLowerCase().includes(searchTerm);
-      return org.active === isActive && matchesSearch;
-    });
-  });
 
   /**
    * Sets the active tab.
@@ -73,21 +75,11 @@ export class OrganizationPage {
     this.activeTab.set(tabId);
   }
 
-  /**
-   * Updates the search term signal when the user types in the search input.
-   */
-  onSearch(event: Event) {
-    const target = event.target as HTMLInputElement;
-    this.searchTerm.set(target.value);
+
+  addOrganization(){
+    this.isAddOrganizationModalOpen.set(true);
   }
 
 
 
-  /**
-   * Placeholder for the export functionality.
-   */
-  exportOrganizations() {
-    // TODO: Implement export organizations logic
-    console.log('Export organizations');
-  }
 }
