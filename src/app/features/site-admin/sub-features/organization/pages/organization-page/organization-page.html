@@ -116,6 +116,6 @@
 
 @if(isAddOrganizationModalOpen()){
 <app-modal [isOpen]="isAddOrganizationModalOpen()" title="Add Company Details" (closed)="isAddOrganizationModalOpen.set(false)">
-  <div>this is model</div>
+ <app-add-organization-form></app-add-organization-form>
   </app-modal>
 }

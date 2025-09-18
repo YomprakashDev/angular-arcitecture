@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Modal } from "../../../../../../shared/components/ui/modal/modal";
+import { AddOrganizationForm } from "../../components/add-organization-form/add-organization-form";
 
 export interface OrganizationItem {
   id: number;
@@ -30,7 +31,7 @@ export interface OrganizationItem {
     MatTableModule,
     MatIconModule,
     MatButtonModule,
-    MatTooltipModule, Modal],
+    MatTooltipModule, Modal, AddOrganizationForm],
   templateUrl: './organization-page.html',
   styleUrls: ['./organization-page.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,

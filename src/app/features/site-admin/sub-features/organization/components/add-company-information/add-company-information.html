@@ -1,0 +1,166 @@
+<!-- Outer card -->
+<div class="rounded-xl border border-gray-200 bg-[#F0F2F5] p-4 md:p-6">
+  <form class="grid grid-cols-1 gap-4 md:gap-5 lg:grid-cols-12">
+
+    <!-- Upload tile -->
+    <div class="lg:col-span-3">
+      <label class="block text-sm font-semibold text-gray-700 mb-2"> </label>
+      <div
+        class="flex items-center justify-center rounded-xl border-2 border-dashed border-[#BFBFBF] bg-[#ECF4FF] p-4 w-fit h-[140px] md:h-[160px]"
+      >
+        <label for="logo" class="flex cursor-pointer flex-col items-center gap-2 text-center">
+          <div class="rounded-full bg-indigo-50 p-3">
+            <!-- heroicon: photo -->
+            <img src="assets/images/common/uploadimg-placeholder.png" class="h-9 w-9 " alt="Upload Logo" />
+          </div>
+          <div class="text-sm font-semibold text-indigo-600">Upload Your Logo</div>
+          <p class="text-xs text-gray-500">Supported JPG, JPEG, PNG</p>
+          <input id="logo" type="file" accept="image/*" class="sr-only" (change)="onLogoChange($event)" />
+        </label>
+      </div>
+    </div>
+
+    <!-- Right side fields -->
+    <div class="lg:col-span-9 grid grid-cols-1 gap-4 md:gap-5 md:grid-cols-12">
+
+      <!-- Organization Name -->
+      <div class="md:col-span-8">
+        <label class="form-label">Organization Name <span class="req">*</span></label>
+        <input type="text" placeholder="Enter Organization Name" class="form-input">
+      </div>
+
+      <!-- Industry -->
+      <div class="md:col-span-4">
+        <label class="form-label">Industry / Sector <span class="req">*</span></label>
+        <div class="relative">
+          <select class="form-select">
+            <option value="" selected>Select</option>
+            <option *ngFor="let ind of industries" [value]="ind">{{ ind }}</option>
+          </select>
+          <svg class="chev" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Organization URL -->
+      <div class="md:col-span-8">
+        <label class="form-label">Organization URL</label>
+        <div class="flex ">
+          <div class="flex items-center rounded-lg   text-gray-400 text-sm">
+            https://contracts.yourdomain.com/
+          </div>
+          <input type="text" placeholder="Organization name" class="form-input border-none w-fit">
+        </div>
+      </div>
+
+      <!-- GST Number -->
+      <div class="md:col-span-4">
+        <label class="form-label">GST Number</label>
+        <input type="text" placeholder="Enter GST Number" class="form-input">
+      </div>
+
+      <!-- Street Address -->
+      <div class="md:col-span-6">
+        <label class="form-label">Street Address <span class="req">*</span></label>
+        <textarea rows="4" placeholder="Enter Street Address" class="form-textarea"></textarea>
+      </div>
+
+      <!-- Zip -->
+      <div class="md:col-span-3">
+        <label class="form-label">Zip Code / Postal Code <span class="req">*</span></label>
+        <input type="text" placeholder="123456" class="form-input">
+      </div>
+
+      <!-- State -->
+      <div class="md:col-span-3">
+        <label class="form-label">State <span class="req">*</span></label>
+        <div class="relative">
+          <select class="form-select">
+            <option value="" selected>Select</option>
+            <option *ngFor="let s of states" [value]="s">{{ s }}</option>
+          </select>
+          <svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/></svg>
+        </div>
+      </div>
+
+      <!-- Country -->
+      <div class="md:col-span-3">
+        <label class="form-label">Country <span class="req">*</span></label>
+        <div class="relative">
+          <select class="form-select">
+            <option value="" selected>Select</option>
+            <option *ngFor="let c of countries" [value]="c">{{ c }}</option>
+          </select>
+          <svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/></svg>
+        </div>
+      </div>
+
+      <!-- Currency -->
+      <div class="md:col-span-3">
+        <label class="form-label">Currency <span class="req">*</span></label>
+        <div class="relative">
+          <select class="form-select">
+            <option value="" selected>Select</option>
+            <option *ngFor="let cur of currencies" [value]="cur">{{ cur }}</option>
+          </select>
+          <svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/></svg>
+        </div>
+      </div>
+
+      <!-- Time Zone -->
+      <div class="md:col-span-6">
+        <label class="form-label">Time Zone <span class="req">*</span></label>
+        <div class="relative">
+          <select class="form-select">
+            <option value="" selected>Select</option>
+            <option *ngFor="let tz of timezones" [value]="tz">{{ tz }}</option>
+          </select>
+          <svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/></svg>
+        </div>
+      </div>
+
+      <!-- Contact Details header -->
+      <div class="md:col-span-12 pt-1">
+        <h3 class="text-sm font-semibold text-gray-700">Contact Details</h3>
+      </div>
+
+      <!-- Contact Person -->
+      <div class="md:col-span-4">
+        <label class="form-label">Contact Person Name <span class="req">*</span></label>
+        <input type="text" placeholder="Enter Contact Person Name" class="form-input">
+      </div>
+
+      <!-- Email -->
+      <div class="md:col-span-4">
+        <label class="form-label">Email <span class="req">*</span></label>
+        <input type="email" placeholder="Enter Email" class="form-input">
+      </div>
+
+      <!-- Contact Number -->
+      <div class="md:col-span-4">
+        <label class="form-label">Contact Number <span class="req">*</span></label>
+        <input type="tel" placeholder="Enter Contact Number" class="form-input">
+      </div>
+
+      <!-- Team Size -->
+      <div class="md:col-span-4">
+        <label class="form-label">Team Size</label>
+        <div class="relative">
+          <select class="form-select">
+            <option value="" selected>Select</option>
+            <option *ngFor="let ts of teamSizes" [value]="ts">{{ ts }}</option>
+          </select>
+          <svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/></svg>
+        </div>
+      </div>
+
+      <!-- Website URL -->
+      <div class="md:col-span-8">
+        <label class="form-label">Website URL</label>
+        <input type="url" placeholder="Enter URL" class="form-input">
+      </div>
+
+    </div>
+  </form>
+</div>
