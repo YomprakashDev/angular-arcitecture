@@ -135,3 +135,26 @@
 .switch input:checked + .slider::before {
   transform: translateX(18px);
 }
+.module-table {
+  position: relative;
+}
+
+.loading-overlay {
+  position: absolute;
+  inset: 0; /* top/right/bottom/left 0 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.6);
+  z-index: 20;
+}
+
+.drag-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-field {
+  width: 100%;
+}
