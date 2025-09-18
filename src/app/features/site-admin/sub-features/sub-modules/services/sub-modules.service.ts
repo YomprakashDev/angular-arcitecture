@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 
 /**
  * A service for managing sub-module-related data and operations.
@@ -9,4 +10,5 @@ import { Injectable } from '@angular/core';
 })
 export class SubModulesService {
   
+  privatehttp = inject(HttpClient);
 }
