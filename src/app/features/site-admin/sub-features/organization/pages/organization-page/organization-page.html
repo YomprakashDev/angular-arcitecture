@@ -51,15 +51,7 @@
     </div>
     <div>
       @for (org of filteredOrganizations(); track org.id) {
-        <div class="flex items-center justify-between p-4 border-b">
-          <div>
-            <div class="font-bold">{{ org.name }}</div>
-            <div class="text-sm text-gray-500">{{ org.email }}</div>
-          </div>
-          <div class="text-sm" [class]="org.active ? 'text-green-500' : 'text-red-500'">
-            {{ org.active ? 'Active' : 'Inactive' }}
-          </div>
-        </div>
+        <app-menu-item [item]="org"></app-menu-item>
       }
     </div>
   </div>

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import { Button } from '../../../../../../shared/components/ui/button/button';
 import { Tabs, Tab } from '../../../../../../shared/components/tabs/tabs';
+import { MenuItemComponent } from "../../../../../../shared/components/ui/menu-item/menu-item";
 
 /**
  * Represents an organization in the list.
@@ -20,7 +21,7 @@ interface Organization {
 @Component({
   selector: 'app-organization-page',
   standalone: true,
-  imports: [Button, Tabs],
+  imports: [Button, Tabs, MenuItemComponent],
   templateUrl: './organization-page.html',
   styleUrls: ['./organization-page.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,

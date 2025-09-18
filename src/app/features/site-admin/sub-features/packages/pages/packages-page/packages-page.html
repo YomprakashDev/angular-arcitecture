@@ -1,8 +1,52 @@
-<div class="flex bg-white w-full h-full">
-  <div class="flex-1 p-6">
-    <div class="flex justify-between items-center">
-      <h1 class="text-2xl font-bold text-[#1D1D21]">Packages Page</h1>
-      <button class="mt-4 px-4 py-2 bg-[#5363F9] text-white rounded">Create New Package</button>
-    </div>
+<div class="page">
+  <div class="page-header">
+    <h1>Packages Page</h1>
+    <button class="primary-btn">Create New Package</button>
+  </div>
+
+  <div class="table-wrap">
+    <table matSort mat-table [dataSource]="modules()" class="mat-elev-0 packages-table">
+
+      <!-- Actions -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let module">
+          <button mat-icon-button class="action-btn" aria-label="Edit module">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- Status -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let module">
+          <mat-slide-toggle
+            class="toggle"
+            [checked]="module.status"
+            color="accent">
+          </mat-slide-toggle>
+        </td>
+      </ng-container>
+
+      <!-- Package Name -->
+      <ng-container matColumnDef="packageName">
+        <th mat-header-cell *matHeaderCellDef>Package Name</th>
+        <td mat-cell *matCellDef="let module" class="muted-strong">
+          {{ module.packageName }}
+        </td>
+      </ng-container>
+
+      <!-- Modules (as pills) -->
+      <ng-container matColumnDef="modules">
+        <th mat-header-cell *matHeaderCellDef>Modules</th>
+        <td mat-cell *matCellDef="let module">
+          <span class="pill" *ngFor="let m of module.modules">{{ m }}</span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
   </div>
 </div>
