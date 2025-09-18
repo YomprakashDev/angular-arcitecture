@@ -1,0 +1,39 @@
+
+
+<div class="w-full mx-auto mt-8 bg-white">
+  <ng-container *ngFor="let item of items">
+    <div class="border-b last:border-b-0">
+      <div class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50">
+        <div class="flex items-center space-x-2">
+          <button>
+            <lucide-angular [img]="dragIcon"></lucide-angular>
+          </button>
+          <span class="font-medium">{{ item.name }}</span>
+
+          <button *ngIf="item.children" (click)="toggleExpanded(item)" class="text-gray-400 hover:text-gray-600">
+            <mat-icon>{{ item.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+          </button>
+        </div>
+
+        <div class="flex items-center space-x-3">
+          <button *ngIf="item.editable" (click)="onEdit(item)" class="text-gray-400 hover:text-gray-600">
+            <lucide-angular [img]="editIcon"></lucide-angular>
+          </button>
+          <label class="switch">
+            <input type="checkbox" [checked]="item.enabled" (change)="onToggleEnabled(item)" />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Children -->
+       <!-- <div *ngIf="item.children && item.expanded" class="pl-8 bg-gray-50">
+        <app-contracts-list
+          [items]="item.children"
+          (edit)="edit.emit($event)"
+          (toggleEnabled)="toggleEnabled.emit($event)">
+        </app-contracts-list>
+      </div> -->
+    </div>
+  </ng-container>
+</div>

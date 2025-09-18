@@ -18,7 +18,7 @@ import {MatSliderModule} from '@angular/material/slider';
 import {FormsModule} from '@angular/forms';
 import {MatRadioModule} from '@angular/material/radio';
 
-import { ModuleService } from '../../services/module-service';
+import { ModuleService } from '../../services/module.service';
 import { ModuleResponse, Module } from '../../model/module.model';
 import { combineLatest } from 'rxjs';
 import { tap, switchMap, finalize } from 'rxjs/operators';
