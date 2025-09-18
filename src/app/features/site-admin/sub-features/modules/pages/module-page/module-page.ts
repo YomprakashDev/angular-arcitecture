@@ -28,6 +28,8 @@ import { toSignal, toObservable } from '@angular/core/rxjs-interop';
  * Represents a single configurable module within the application.
  */
 
+
+
 @Component({
   selector: 'app-module-page',
   standalone: true,
