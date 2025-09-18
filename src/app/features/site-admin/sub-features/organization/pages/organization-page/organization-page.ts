@@ -77,7 +77,7 @@ export class OrganizationPage {
   }
 
 
-  addOrganization(){
+  addOrganization() {
     this.isAddOrganizationModalOpen.set(true);
   }
 

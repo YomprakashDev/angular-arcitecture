@@ -11,19 +11,24 @@
 }
 
 .module-table .mat-mdc-header-row {
-  background-color: #f1f3f6;
+  background-color: #F1F3F6;
   border-bottom: 1px solid #e9ecef;
 }
 
 .module-table .mat-mdc-header-cell {
-  color: #7e7a88;
+  color: #7E7A88;
   font-weight: 700;
   font-size: 14px;
+
+  font-family: 'Mulish', sans-serif;
   border-bottom: none;
 }
 
 .module-table .mat-mdc-row {
-  border-bottom: 1px solid #f1f3f4;
+  color: #182330;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
   transition: background-color 0.2s ease;
 }
 
@@ -53,13 +58,13 @@
 }
 
 .edit-icon {
-  color: #6c757d;
+  color: #787A7F;
   cursor: pointer;
   transition: color 0.2s ease;
 }
 
 .icon {
-  color: #a22a2a;
+  color: #220303;
 }
 
 .edit-icon:hover {
@@ -67,14 +72,10 @@
 }
 
 .module-icon {
-  color: #1972c0;
+  color: #606060;
   font-size: 20px;
 }
-.toggle{
-  color: #1972c0;
-  width: 10px;
-  height: 10px;
-}
+
 .module-name {
   font-weight: 500;
   color: #212529;
@@ -87,18 +88,50 @@
 }
 
 
-/* OFF state track color */
-::ng-deep .mdc-switch__track {
-  background: #bababa !important;
+
+
+/* Base container */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 22px;
 }
 
-/* ON state track color */
-::ng-deep .mdc-switch.mdc-switch--selected .mdc-switch__track {
-  background: #0c6 !important; /* Green color */
+/* Hide default checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
-/* ON state handle color */
-::ng-deep .mdc-switch.mdc-switch--selected .mdc-switch__handle {
-  background-color: white !important;
-  border-color: #0c6 !important;
+/* Track */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #ccc;
+  border-radius: 34px;
+  transition: .3s;
+}
+
+/* Knob */
+.slider::before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: .3s;
+}
+
+/* Checked state */
+.switch input:checked + .slider {
+  background-color: #6D79FA; /* Indigo-500, matches your screenshot */
+}
+.switch input:checked + .slider::before {
+  transform: translateX(18px);
 }
