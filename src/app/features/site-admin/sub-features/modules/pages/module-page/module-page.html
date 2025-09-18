@@ -1,13 +1,20 @@
-<div class="flex bg-white w-full h-full">
+<div class="flex bg-white w-full ">
   <div class="flex-1 p-6">
     <div class="flex justify-between w-full">
       <h1 class="text-2xl mb-4 font-bold text-[#1D1D21]">Modules</h1>
-      <app-button text="Export to Excel" variant="primary" ></app-button>
+      <!-- <app-button text="Export to Excel" variant="primary" ></app-button> -->
     </div>
-    <div class="module-table shadow-lg rounded-lg overflow-hidden">
+     <div class="module-table shadow-lg rounded-lg overflow-hidden relative">
+     
+<!-- overlay spinner while loading -->
+      <div class="loading-overlay" *ngIf="isLoading()">
+        <mat-progress-spinner mode="indeterminate" diameter="48" aria-label="Loading"></mat-progress-spinner>
+      </div>
+      
+  
       <table
         matSort
-  
+
         mat-table
         [dataSource]="dataSource"
         cdkDropList
@@ -44,7 +51,7 @@
             >
               <mat-icon>save</mat-icon>
             </button>
-            <button (click)="cancelEdit()" mat-icon-button color="warn" aria-label="Cancel edit">
+            <button  mat-icon-button color="warn" aria-label="Cancel edit">
               <mat-icon>cancel</mat-icon>
             </button>
             }
@@ -147,47 +154,48 @@
           class="border-b border-gray-200 hover:bg-gray-100"
         ></tr>
       </table>
-      <div class="flex items-center justify-between mt-4 px-3">
+    
+      <!-- <div class="flex items-center justify-between mt-4 px-3">
         <p class="text-sm text-[#182330] font-semibold">
-          Showing 1 to 5 entries of {{ dataSource.data.length }} entries
-        </p>
-        <div>
+          Showing 1 to 5 entries of {{ module()?.currentPage }} entries
+        </p> -->
+        <!-- <div>
           <mat-paginator
             [length]="dataSource.data.length"
-            [pageSize]="5"
-            [pageSizeOptions]="[5]"
+            [pageSize]="6"
+            [pageSizeOptions]="[6]"
             #paginator
             style="display: none"
           ></mat-paginator>
 
           <div class="flex justify-end items-center mt-4 space-x-4">
             <!-- Previous -->
-            <button
+            <!-- <button
               class="border border-[#CAC6D3] rounded"
               mat-icon-button
               (click)="paginator.previousPage()"
               [disabled]="paginator.hasPreviousPage() === false"
             >
               <mat-icon>chevron_left</mat-icon>
-            </button>
+            </button> -->
 
             <!-- Current Page -->
-            <span class="bg-[#6D7BFA] text-white px-3 py-1 rounded">{{
+            <!-- <span class="bg-[#6D7BFA] text-white px-3 py-1 rounded">{{
               paginator.pageIndex + 1
-            }}</span>
+            }}</span> -->
 
             <!-- Next -->
-            <button
+            <!-- <button
               class="border border-[#CAC6D3] rounded"
               mat-icon-button
               (click)="paginator.nextPage()"
               [disabled]="paginator.hasNextPage() === false"
             >
               <mat-icon>chevron_right</mat-icon>
-            </button>
-          </div>
-        </div>
-      </div>
+            </button> -->
+          <!-- </div> -->
+        <!-- </div> --> 
+      <!-- </div> -->
     </div>
   </div>
 

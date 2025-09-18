@@ -1,7 +1,7 @@
 import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,22 +13,21 @@ import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import * as XLSX from 'xlsx';
 import { LucideAngularModule, SquarePen, GripVertical } from 'lucide-angular';
+import {ProgressSpinnerMode, MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSliderModule} from '@angular/material/slider';
+import {FormsModule} from '@angular/forms';
+import {MatRadioModule} from '@angular/material/radio';
 
-import { Button } from '../../../../../../shared/components/ui/button/button';
 import { ModuleService } from '../../services/module-service';
-import { ModuleResponse,Module } from '../../model/module.model';
+import { ModuleResponse, Module } from '../../model/module.model';
+import { combineLatest } from 'rxjs';
+import { tap, switchMap, finalize } from 'rxjs/operators';
+import { toSignal, toObservable } from '@angular/core/rxjs-interop';
 
 /**
  * Represents a single configurable module within the application.
  */
-export interface ModuleItem {
-  id: number;
-  moduleName: string;
-  description: string;
-  status: boolean;
-  icon: string;
-  order: number;
-}
+
 
 
 @Component({
@@ -45,55 +44,79 @@ export interface ModuleItem {
     MatFormFieldModule,
     MatSortModule,
     MatPaginatorModule,
-    Button,
     CdkDropList,
     CdkDrag,
     CdkDragHandle,
-    LucideAngularModule
+    LucideAngularModule,
+    MatProgressSpinnerModule,
+    MatSliderModule,
+    FormsModule,
+    MatRadioModule,
+
   ],
   templateUrl: './module-page.html',
   styleUrls: ['./module-page.css'],
 })
 export class ModulePage {
-  // table plumbing
-displayedColumns = ['actions','status','moduleName','description','icon'];
+// columns
+  displayedColumns = ['actions', 'status', 'moduleName', 'description', 'icon'];
 
   readonly editIcon = SquarePen;
   readonly dragIcon = GripVertical;
-  private _liveAnnouncer = inject(LiveAnnouncer);
 
+  private moduleService = inject(ModuleService);
 
-   module = signal<ModuleResponse | null>(null)
+  // paging signals
+  page = signal<number>(1);
+  pageSize = signal<number>(10);
 
-  // State for inline editing.
+  // loading signal
+  isLoading = signal<boolean>(true);
+
+  // Convert signals to observables and build pipeline:
+  // whenever page or pageSize changes -> fetch modules, manage loading
+  private page$ = toObservable(this.page);
+  private pageSize$ = toObservable(this.pageSize);
+
+  private modules$ = combineLatest([this.page$, this.pageSize$]).pipe(
+    tap(() => this.isLoading.set(true)),
+    switchMap(([p, ps]) =>
+      this.moduleService.getModules(p, ps).pipe(
+        finalize(() => this.isLoading.set(false))
+      )
+    )
+  );
+
+  // expose data as a signal for template usage
+  module = toSignal<ModuleResponse | null>(this.modules$, { initialValue: null });
+
+  // material data source
+  dataSource = new MatTableDataSource<Module>([]);
+
+  // inline edit signals
   editingModuleId = signal<number | null>(null);
   editedModuleName = signal('');
   editedModuleDescription = signal('');
 
-  moduleService = inject(ModuleService);
-
-  constructor() {
-     this.loadPage(1, 10); // initial load
-    // keep table in sync with signal
+constructor() {
+    // keep table data in sync with module signal
     effect(() => {
-      const data = this.module()?.data ?? [];
-      this.dataSource.data = data;
+      const resp = this.module();
+      this.dataSource.data = resp?.data ?? [];
     });
 
+    // trigger initial load (page/pageSize have initial values)
+    // by resetting same values we ensure toObservable emits to start pipeline
+    this.page.set(this.page());
+    this.pageSize.set(this.pageSize());
   }
 
-   loadPage(page: number, pageSize: number) {
-    this.moduleService.getModules(page, pageSize).subscribe({
-      next: (resp) => this.module.set(resp),
-      error: console.error,
-    });
+  // called by paginator (or anywhere) to change page
+  loadPage(page: number, pageSize: number) {
+    this.page.set(page);
+    this.pageSize.set(pageSize);
   }
 
-
-  /**
-   * The data source for the Material table, which handles sorting and pagination.
-   */
- dataSource = new MatTableDataSource<Module>([]);
   // Connects the MatSort directive to the table's data source.
   @ViewChild(MatSort)
   set sort(sort: MatSort) {
@@ -105,6 +128,7 @@ displayedColumns = ['actions','status','moduleName','description','icon'];
   set paginator(paginator: MatPaginator) {
     this.dataSource.paginator = paginator;
   }
+
 
 
 
@@ -177,9 +201,9 @@ displayedColumns = ['actions','status','moduleName','description','icon'];
   /**
    * Cancels the current edit operation and discards changes.
    */
-  cancelEdit() {
-    this.editingModuleId.set(null);
-  }
+  // cancelEdit() {
+  //   this.editingModuleId.set(null);
+  // }
 
   /**
    * Toggles the `status` of a given module.
@@ -191,3 +215,7 @@ displayedColumns = ['actions','status','moduleName','description','icon'];
   //   );
   // }
 }
+
+
+
+
