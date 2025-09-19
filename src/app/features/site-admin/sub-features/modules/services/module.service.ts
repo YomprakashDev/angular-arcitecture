@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Module, ModuleResponse } from '../model/module.model';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ModuleService {
   private http = inject(HttpClient)
-  private apiUrl = 'http://erp.iguru.guru/CLM/api/Modules';
+  private apiUrl = environment.apiUrl
 
 
   getModules(page: number, pageSize: number): Observable<ModuleResponse> {

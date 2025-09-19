@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { OrganizationData } from '../models/organization.model';
+import { environment } from '../../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { OrganizationData } from '../models/organization.model';
 export class OrganizationService {
   http = inject(HttpClient)
 
-  apiUrl = 'http://erp.iguru.guru/CLM/api/Organizations'
+  apiUrl = environment.apiUrl
 
   getOrganizations(): Observable<OrganizationData[]> {
     return this.http.get<OrganizationData[]>(this.apiUrl)
