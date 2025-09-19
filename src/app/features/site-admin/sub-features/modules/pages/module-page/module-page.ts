@@ -13,10 +13,10 @@ import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import * as XLSX from 'xlsx';
 import { LucideAngularModule, SquarePen, GripVertical } from 'lucide-angular';
-import {ProgressSpinnerMode, MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSliderModule} from '@angular/material/slider';
-import {FormsModule} from '@angular/forms';
-import {MatRadioModule} from '@angular/material/radio';
+import { ProgressSpinnerMode, MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSliderModule } from '@angular/material/slider';
+import { FormsModule } from '@angular/forms';
+import { MatRadioModule } from '@angular/material/radio';
 
 import { ModuleService } from '../../services/module.service';
 import { ModuleResponse, Module } from '../../model/module.model';
@@ -52,14 +52,14 @@ import { toSignal, toObservable } from '@angular/core/rxjs-interop';
     MatSliderModule,
     FormsModule,
     MatRadioModule,
-
+    FormsModule
   ],
   templateUrl: './module-page.html',
   styleUrls: ['./module-page.css'],
 })
 export class ModulePage {
-// columns
-  displayedColumns = ['actions', 'status', 'moduleName', 'description', 'icon'];
+  // columns
+  displayedColumns = ['actions', 'moduleName', 'description', 'icon'];
 
   readonly editIcon = SquarePen;
   readonly dragIcon = GripVertical;
@@ -73,12 +73,15 @@ export class ModulePage {
   // loading signal
   isLoading = signal<boolean>(true);
 
+  refresh = signal(0);
+
+  private refresh$ = toObservable(this.refresh);
   // Convert signals to observables and build pipeline:
   // whenever page or pageSize changes -> fetch modules, manage loading
   private page$ = toObservable(this.page);
   private pageSize$ = toObservable(this.pageSize);
 
-  private modules$ = combineLatest([this.page$, this.pageSize$]).pipe(
+  private modules$ = combineLatest([this.page$, this.pageSize$, this.refresh$]).pipe(
     tap(() => this.isLoading.set(true)),
     switchMap(([p, ps]) =>
       this.moduleService.getModules(p, ps).pipe(
@@ -97,8 +100,9 @@ export class ModulePage {
   editingModuleId = signal<number | null>(null);
   editedModuleName = signal('');
   editedModuleDescription = signal('');
+  editedModuleIcon = signal('');
 
-constructor() {
+  constructor() {
     // keep table data in sync with module signal
     effect(() => {
       const resp = this.module();
@@ -109,6 +113,63 @@ constructor() {
     // by resetting same values we ensure toObservable emits to start pipeline
     this.page.set(this.page());
     this.pageSize.set(this.pageSize());
+
+  }
+
+
+  /**
+ * Enables edit mode for a specific module.
+ * @param module The module to be edited.
+ */
+  editModule(module: Module) {
+    console.log('Editing module:', module);
+    this.editingModuleId.set(module.id);
+    this.editedModuleName.set(module.moduleName);
+    this.editedModuleDescription.set(module.description);
+    this.editedModuleIcon.set(module.icon);
+  }
+
+  /**
+   * Saves the changes for the currently edited module.
+   * @param moduleId The ID of the module to save.
+   */
+  saveModule(module: Module) {
+    const payLoad: Module = {
+      ...module,
+      id: module.id,
+      moduleName: this.editedModuleName(),
+      description: this.editedModuleDescription(),
+      icon: this.editedModuleIcon()
+    }
+    this.moduleService.saveModule(payLoad).subscribe({
+      next: () => {
+        this.refresh.update(v => v + 1); // refetch list
+        this.editingModuleId.set(null);
+      },
+      error: (err) => {
+        console.error('Error saving module:', err);
+      }
+    });
+
+
+  }
+
+  toggleModuleStatus(module: Module, next: boolean) {
+
+    const prev = module.status;
+    module.status = next
+    this.moduleService.updatedStatus(module.id, next).subscribe({
+      next: (res) => {
+        console.log(res);
+
+        console.log('Refreshing list...');
+      },
+      error: (err) => {
+        console.error('Error updating module status:', err,
+          module.status = prev
+        );
+      }
+    })
   }
 
   // called by paginator (or anywhere) to change page
@@ -173,30 +234,6 @@ constructor() {
   //   XLSX.writeFile(wb, `module-configuration-${dateStr}.xlsx`);
   // }
 
-  /**
-   * Enables edit mode for a specific module.
-   * @param module The module to be edited.
-   */
-  // editModule(module: ModuleItem) {
-  //   this.editingModuleId.set(module.id);
-  //   this.editedModuleName.set(module.moduleName);
-  //   this.editedModuleDescription.set(module.description);
-  // }
-
-  /**
-   * Saves the changes for the currently edited module.
-   * @param moduleId The ID of the module to save.
-   */
-  // saveModule(moduleId: number) {
-  //   this.modules.update(currentModules =>
-  //     currentModules.map(m =>
-  //       m.id === moduleId
-  //         ? { ...m, moduleName: this.editedModuleName(), description: this.editedModuleDescription() }
-  //         : m
-  //     )
-  //   );
-  //   this.editingModuleId.set(null); // Exit edit mode
-  // }
 
   /**
    * Cancels the current edit operation and discards changes.

@@ -15,3 +15,14 @@ export interface ModuleResponse {
     totalRecords: number;
     data: Module[];
 }
+
+
+
+
+export interface ModulePayload {
+
+    id: number,
+    moduleName: string,
+    description: string,
+    icon: string,
+}

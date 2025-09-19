@@ -1,26 +1,20 @@
-<div class="flex bg-white w-full ">
+<div class="flex bg-white w-full">
   <div class="flex-1 p-6">
     <div class="flex justify-between w-full">
       <h1 class="text-2xl mb-4 font-bold text-[#1D1D21]">Modules</h1>
       <!-- <app-button text="Export to Excel" variant="primary" ></app-button> -->
     </div>
-     <div class="module-table shadow-lg rounded-lg overflow-hidden relative">
-     
-<!-- overlay spinner while loading -->
+    <div class="module-table shadow-lg rounded-lg overflow-hidden relative">
+      <!-- overlay spinner while loading -->
       <div class="loading-overlay" *ngIf="isLoading()">
-        <mat-progress-spinner mode="indeterminate" diameter="48" aria-label="Loading"></mat-progress-spinner>
+        <mat-progress-spinner
+          mode="indeterminate"
+          diameter="48"
+          aria-label="Loading"
+        ></mat-progress-spinner>
       </div>
-      
-  
-      <table
-        matSort
 
-        mat-table
-        [dataSource]="dataSource"
-        cdkDropList
- 
-        class="w-full bg-white"
-      >
+      <table matSort mat-table [dataSource]="dataSource" cdkDropList class="w-full bg-white">
         <ng-container matColumnDef="actions">
           <th
             mat-header-cell
@@ -35,23 +29,23 @@
             </span>
             @if (editingModuleId() !== module.id) {
             <button
-       
+              (click)="editModule(module)"
               mat-icon-button
               class="edit-icon"
               aria-label="Edit module"
             >
-           <lucide-angular [img]="editIcon" class="edit-icon"></lucide-angular>
+              <lucide-angular [img]="editIcon" class="edit-icon"></lucide-angular>
             </button>
             } @else {
             <button
-        
+              (click)="saveModule(module)"
               mat-icon-button
               color="primary"
-              aria-label="Savemodule"      
+              aria-label="Savemodule"
             >
               <mat-icon>save</mat-icon>
             </button>
-            <button  mat-icon-button color="warn" aria-label="Cancel edit">
+            <button mat-icon-button color="warn" aria-label="Cancel edit">
               <mat-icon>cancel</mat-icon>
             </button>
             }
@@ -70,11 +64,10 @@
             <label class="switch">
               <input
                 type="checkbox"
-               
                 [checked]="module.status"
-        
+                (change)="toggleModuleStatus(module,$event.target.checked)"
               />
-              />
+            
               <span class="slider"></span>
             </label>
           </td>
@@ -97,8 +90,8 @@
             <mat-form-field appearance="outline" class="edit-field w-full">
               <input
                 matInput
-                [value]="editedModuleName()"
-                (input)="editedModuleName.set($event.target.value)"
+                [ngModel]="editedModuleName()"
+                (ngModelChange)="editedModuleName.set($event)"
                 placeholder="Module name"
               />
             </mat-form-field>
@@ -123,8 +116,8 @@
             <mat-form-field appearance="outline" class="edit-field w-full">
               <input
                 matInput
-                [value]="editedModuleDescription()"
-                (input)="editedModuleDescription.set($event.target.value)"
+                [ngModel]="editedModuleDescription()"
+                (ngModelChange)="editedModuleDescription.set($event)"
                 placeholder="Description"
               />
             </mat-form-field>
@@ -141,7 +134,18 @@
             Icon
           </th>
           <td mat-cell *matCellDef="let module" class="p-4 whitespace-nowrap">
+            @if (editingModuleId() !== module.id) {
             <mat-icon class="module-icon">{{ module.icon }}</mat-icon>
+            } @else {
+            <mat-form-field appearance="outline" class="edit-field w-full">
+              <input
+                matInput
+                [ngModel]="editedModuleIcon()"
+                (ngModelChange)="editedModuleIcon.set($event)"
+                placeholder="Icon"
+              />
+            </mat-form-field>
+            }
           </td>
         </ng-container>
 
@@ -154,12 +158,12 @@
           class="border-b border-gray-200 hover:bg-gray-100"
         ></tr>
       </table>
-    
+
       <!-- <div class="flex items-center justify-between mt-4 px-3">
         <p class="text-sm text-[#182330] font-semibold">
           Showing 1 to 5 entries of {{ module()?.currentPage }} entries
         </p> -->
-        <!-- <div>
+      <!-- <div>
           <mat-paginator
             [length]="dataSource.data.length"
             [pageSize]="6"
@@ -170,7 +174,7 @@
 
           <div class="flex justify-end items-center mt-4 space-x-4">
             <!-- Previous -->
-            <!-- <button
+      <!-- <button
               class="border border-[#CAC6D3] rounded"
               mat-icon-button
               (click)="paginator.previousPage()"
@@ -179,13 +183,13 @@
               <mat-icon>chevron_left</mat-icon>
             </button> -->
 
-            <!-- Current Page -->
-            <!-- <span class="bg-[#6D7BFA] text-white px-3 py-1 rounded">{{
+      <!-- Current Page -->
+      <!-- <span class="bg-[#6D7BFA] text-white px-3 py-1 rounded">{{
               paginator.pageIndex + 1
             }}</span> -->
 
-            <!-- Next -->
-            <!-- <button
+      <!-- Next -->
+      <!-- <button
               class="border border-[#CAC6D3] rounded"
               mat-icon-button
               (click)="paginator.nextPage()"
@@ -193,13 +197,9 @@
             >
               <mat-icon>chevron_right</mat-icon>
             </button> -->
-          <!-- </div> -->
-        <!-- </div> --> 
+      <!-- </div> -->
+      <!-- </div> -->
       <!-- </div> -->
     </div>
   </div>
-
 </div>
-
-
-
