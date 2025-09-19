@@ -15,17 +15,30 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import * as XLSX from 'xlsx';
 
 import { Button } from '../../../../../../shared/components/ui/button/button';
+import { PackageService } from '../../services/package.service';
+import { catchError, combineLatest, finalize, of, switchMap, tap } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ModuleItem, PackageItem,PackagesResponse } from '../../models/package.model';
+import { LucideAngularModule, SquarePen, GripVertical } from 'lucide-angular';
+// Row model for the table (what you actually render)
+export interface ModuleRow {
+  id: number;                // packageID
+  packageName: string;       // packageName
+  modules: string[];         // list of module names
+  status: boolean;           // derived: any module enabled?
+  order: number;             // derive (e.g., index)
+}
 
-export interface ModuleItem {
-  id: number;
+export interface PackageRow {
+  packageID: number;
   packageName: string;
   modules: string[];
-  status: boolean;
-  order: number;
 }
+
 
 @Component({
   selector: 'app-packages-page',
+  standalone: true,
   imports: [CommonModule,
     MatTableModule,
     MatSlideToggleModule,
@@ -36,10 +49,11 @@ export interface ModuleItem {
     MatFormFieldModule,
     MatSortModule,
     MatPaginatorModule,
+    LucideAngularModule
 
   ],
   templateUrl: './packages-page.html',
-  styleUrl: './packages-page.css'
+  styleUrls: ['./packages-page.css']
 })
 export class PackagesPage {
   // Configuration for the table columns.
@@ -53,11 +67,49 @@ export class PackagesPage {
   /**
    * The source of truth for the list of modules.
    */
-  modules = signal<ModuleItem[]>([
-    { id: 1, packageName: 'Silver', modules: ['Contracts', 'Repository', 'Library', 'Reports'], status: true, order: 1 },
-    { id: 2, packageName: 'Gold', modules: ['Contracts', 'Repository', 'Library', 'Reports'], status: true, order: 2 },
-    { id: 3, packageName: 'Platinum', modules: ['Contracts', 'Repository', 'Library', 'Reports'], status: true, order: 3 },
-  ]);
+ readonly editIcon = SquarePen;
+  readonly dragIcon = GripVertical;
+
+  private packageService = inject(PackageService);
+
+  // loading signal
+  isLoading = signal<boolean>(true);
+  error = signal<string | null>(null);
+
+  private packages$ = this.packageService.getPackages().pipe(
+    tap(() => {
+      this.isLoading.set(true);
+      this.error.set(null);
+      console.log('[PackagesPage] calling API…');
+    }),
+    finalize(() => {
+      this.isLoading.set(false);
+      console.log('[PackagesPage] request finalized');
+    }),
+    catchError(err => {
+      console.error('[PackagesPage] API error:', err);
+      this.error.set('Failed to load packages');
+      return of<PackagesResponse>([]);
+    })
+  );
+
+  // material data source
+  dataSource = new MatTableDataSource<PackageRow>([]);
+
+  // Keep packages in a signal
+  packages = toSignal(this.packages$, { initialValue: [] as PackagesResponse });
+  constructor() {
+    // When packages change, map to rows and feed the table
+    effect(() => {
+      const resp = this.packages(); // PackagesResponse ([])
+      console.log(resp);
+      this.dataSource.data = resp.map(pkg => ({
+        packageName: pkg.packageName,
+        packageID: pkg.packageID,
+        modules: pkg.modules.map(m => m.moduleName),
+      }));
+    });
+  }
 
 
 
