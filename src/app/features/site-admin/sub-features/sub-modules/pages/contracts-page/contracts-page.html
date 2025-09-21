@@ -7,8 +7,8 @@
 
 
 
-                <button> <lucide-angular  [img]="dragIcon"></lucide-angular></button>
-                <span class="font-medium">{{ item.subModuleName }}</span>
+                <button> <lucide-angular  [img]="dragIcon" class="text-[#787A7F]"></lucide-angular></button>
+                <span class="text-lg font-semibold text-black">{{ item.subModuleName }}</span>
                 @if(item.children.length > 0) {
 
                     <button (click)="toggleChildren(item)" class="text-gray-400 hover:text-gray-600">
