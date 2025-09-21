@@ -5,7 +5,7 @@
   background: white;
   border-radius: 8px;
   overflow: hidden;
-  border: 1px solid #eaeaea;
+ 
 }
 
 .module-table .mat-mdc-table {
@@ -14,16 +14,16 @@
 
 .module-table .mat-mdc-header-row {
   background-color: #F1F3F6;
-  border-bottom: 1px solid #e9ecef;
+
 }
 
 .module-table .mat-mdc-header-cell {
   color: #7E7A88;
   font-weight: 700;
   font-size: 14px;
-
   font-family: 'Mulish', sans-serif;
-  border-bottom: none;
+ 
+
 }
 
 .module-table .mat-mdc-row {
@@ -37,6 +37,7 @@
 /* Zebra striping for even rows */
 .module-table .mat-mdc-row:nth-child(even) {
   background-color: #f8f9fa;
+  border: none;
 }
 
 .module-table .mat-mdc-row:hover {
@@ -98,6 +99,7 @@
   display: inline-block;
   width: 40px;
   height: 22px;
+   -webkit-tap-highlight-color: transparent;
 }
 
 /* Hide default checkbox */

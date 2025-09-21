@@ -1,12 +1,18 @@
 import { Component, HostListener, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { LucideAngularModule, Search,BellDot  } from 'lucide-angular';
+
 @Component({
   selector: 'app-header',
-  imports: [RouterLink],
+  imports: [RouterLink, LucideAngularModule],
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
 export class Header {
+
+  readonly searchIcon = Search;
+  readonly bellIcon = BellDot;
+  
 
    showProfileMenu = signal(false);
 

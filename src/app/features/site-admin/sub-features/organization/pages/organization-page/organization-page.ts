@@ -11,6 +11,7 @@ import { AddOrganizationForm } from '../../components/add-organization-form/add-
 import { OrganizationService } from '../../services/organization.service';
 
 import { OrganizationData } from '../../models/organization.model';
+import { OrganizationDetails } from "../../components/organization-details/organization-details";
 
 @Component({
   selector: 'app-organization-page',
@@ -18,8 +19,9 @@ import { OrganizationData } from '../../models/organization.model';
   imports: [
     Button, Tabs, CommonModule,
     MatTableModule, MatIconModule, MatButtonModule, MatTooltipModule,
-    Modal, AddOrganizationForm
-  ],
+    Modal, AddOrganizationForm,
+    OrganizationDetails
+],
   templateUrl: './organization-page.html',
   styleUrls: ['./organization-page.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,

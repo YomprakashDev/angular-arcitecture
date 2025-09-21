@@ -1,10 +1,10 @@
-<div class="flex w-full bg-white">
+<div class="flex w-full h-full bg-white">
   <div class="flex-1 p-6">
     <div class="flex justify-between w-full">
       <h1 class="text-2xl mb-4 font-bold text-[#1D1D21]">Modules</h1>
       <!-- <app-button text="Export to Excel" variant="primary" ></app-button> -->
     </div>
-    <div class="relative overflow-hidden rounded-lg shadow-lg module-table">
+    <div class="relative overflow-hidden rounded-lg module-table border border-[#eaeaea]">
       <!-- overlay spinner while loading -->
       <div class="loading-overlay" *ngIf="isLoading()">
         <mat-progress-spinner
@@ -14,18 +14,18 @@
         ></mat-progress-spinner>
       </div>
 
-      <table matSort mat-table [dataSource]="dataSource"  class="w-full bg-white">
+      <table matSort mat-table [dataSource]="dataSource"  class="w-full bg-white ">
         <ng-container matColumnDef="actions">
           <th
             mat-header-cell
             *matHeaderCellDef
-            class="p-4 text-sm font-bold tracking-wider text-left text-gray-700"
+            class="tracking-wider "
           >
             Actions
           </th>
           <td mat-cell *matCellDef="let module" class="flex items-center p-4 whitespace-nowrap">
             <span  class="mr-2 cursor-move drag-handle" aria-label="Drag handle">
-              <lucide-angular [img]="dragIcon"></lucide-angular>
+              <lucide-angular [img]="dragIcon" class="text-[#787A7F]"></lucide-angular>
             </span>
             @if (editingModuleId() !== module.id) {
             <button
@@ -34,7 +34,7 @@
               class="edit-icon"
               aria-label="Edit module"
             >
-              <lucide-angular [img]="editIcon" class="edit-icon"></lucide-angular>
+              <lucide-angular [img]="editIcon" class="edit-icon text-[#787A7F]"></lucide-angular>
             </button>
             } @else {
             <button
@@ -84,7 +84,7 @@
           >
             Module Name
           </th>
-          <td mat-cell *matCellDef="let module" class="p-4 whitespace-nowrap">
+          <td mat-cell *matCellDef="let module"  class="p-4 whitespace-nowrap font-[Mulish] font-normal text-[14px] leading-[100%] tracking-[0%]">
             @if (editingModuleId() !== module.id) {
             {{ module.moduleName }}
             } @else {
