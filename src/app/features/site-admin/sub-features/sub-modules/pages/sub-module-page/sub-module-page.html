@@ -1,44 +1,41 @@
-<div class="flex bg-transparent gap-4 w-full h-full">
+<div class="flex w-full h-full gap-4 bg-transparent">
 
 
-<div class="w-[238px] bg-white p-4 min-h-full shadow-box">
-<h1 class="text-2xl font-bold text-[#1D1D21]"> Module Page</h1>
-  <div>
-          @for (item of menuItems(); track item.name) {
-            <app-menu-item 
-              [item]="item" 
-              [isSelected]="selectedItem() === item.name" 
-              (itemSelected)="selectItem($event)">
-            </app-menu-item>
-          }
-        </div>
- </div>
- <div class="flex-1 bg-white p-6">
-   <h1 class="text-2xl font-bold text-[#1D1D21]">{{selectedItem()}} Page</h1>
+  <div class="w-[238px] bg-white p-4 min-h-full shadow-box">
+    <h1 class="text-2xl font-bold text-[#1D1D21]"> Module Page</h1>
+    <div>
+      @for (item of menuItems(); track item.name) {
+      <app-menu-item [item]="item" [isSelected]="selectedItem() === item.name" (itemSelected)="selectItem($event)">
+      </app-menu-item>
+      }
+    </div>
+  </div>
+  <div class="flex-1 p-6 bg-white">
+    <h1 class="text-2xl font-bold text-[#1D1D21]">{{selectedItem()}} Page</h1>
 
-   @switch (selectedItem()) {
-        @case('Contracts') {
-          <app-contracts-page></app-contracts-page>
-        }
-        @case('Repository') {
-          <app-repository-page></app-repository-page>
-        }
-        @case('Configuration') {
-          <app-configuration-page></app-configuration-page>
-        }
-        @case('Library') {
-          <app-library-page></app-library-page>
-        }
-        @case('Reports') {
-          <app-reports-page></app-reports-page>
-        }
-        @case('Settings') {
-          <app-settings-page></app-settings-page>
-        }
-        @default {
-        <p class="text-gray-600">Please select an option from the menu.</p>
-        }
-   }
- </div>
+    @switch (selectedItem()) {
+    @case('Contracts') {
+    <app-contracts-page></app-contracts-page>
+    }
+    @case('Repository') {
+    <app-repositary-page></app-repositary-page>
+    }
+    @case('Configuration') {
+    <app-configuration-page></app-configuration-page>
+    }
+    @case('Library') {
+    <app-library-page></app-library-page>
+    }
+    @case('Reports') {
+    <app-reports-page></app-reports-page>
+    }
+    @case('Settings') {
+    <app-settings-page></app-settings-page>
+    }
+    @default {
+    <p class="text-gray-600">Please select an option from the menu.</p>
+    }
+    }
+  </div>
 
 </div>

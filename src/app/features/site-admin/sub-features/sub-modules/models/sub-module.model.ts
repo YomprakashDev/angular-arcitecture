@@ -1,10 +1,25 @@
-/**
- * @deprecated This is a placeholder interface for initial development and testing.
- * It will be replaced with a more specific model for sub-modules.
- */
-export interface TestModel {
-  id: string;
-  title: string;
-  createdAt: Date;
-  updatedAt?: Date;
+export interface SubModuleResponse {
+  currentPage: number;
+  pageSize: number;
+  totalPages: number;
+  totalRecords: number;
+  data: SubModule[];
+}
+
+export interface SubModule {
+  id: number;
+  subModuleName: string;
+  status: boolean;
+  displayOrder: number;
+  children: ChildModule[];
+  expanded?: boolean; // <-- frontend-only property
+  editable?: boolean; // <-- frontend-only property
+
+}
+
+export interface ChildModule {
+  childId: number;
+  childName: string;
+  childCode: string;
+  status: boolean;
 }

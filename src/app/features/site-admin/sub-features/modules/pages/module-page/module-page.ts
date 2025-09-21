@@ -1,7 +1,5 @@
-import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, inject, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
+import { Component, effect, inject, signal, ViewChild, } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,7 +11,7 @@ import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import * as XLSX from 'xlsx';
 import { LucideAngularModule, SquarePen, GripVertical } from 'lucide-angular';
-import { ProgressSpinnerMode, MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSliderModule } from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
@@ -40,13 +38,12 @@ import { toSignal, toObservable } from '@angular/core/rxjs-interop';
     MatIconModule,
     MatButtonModule,
     MatCardModule,
-    MatInputModule,
+
     MatFormFieldModule,
+    MatInputModule,
     MatSortModule,
     MatPaginatorModule,
-    CdkDropList,
-    CdkDrag,
-    CdkDragHandle,
+
     LucideAngularModule,
     MatProgressSpinnerModule,
     MatSliderModule,
@@ -59,7 +56,7 @@ import { toSignal, toObservable } from '@angular/core/rxjs-interop';
 })
 export class ModulePage {
   // columns
-  displayedColumns = ['actions', 'moduleName', 'description', 'icon'];
+  displayedColumns = ['actions', 'status', 'moduleName', 'description', 'icon'];
 
   readonly editIcon = SquarePen;
   readonly dragIcon = GripVertical;
@@ -101,6 +98,7 @@ export class ModulePage {
   editedModuleName = signal('');
   editedModuleDescription = signal('');
   editedModuleIcon = signal('');
+  isDirty = signal(false); // track if user made changes
 
   constructor() {
     // keep table data in sync with module signal
@@ -122,11 +120,22 @@ export class ModulePage {
  * @param module The module to be edited.
  */
   editModule(module: Module) {
-    console.log('Editing module:', module);
+
     this.editingModuleId.set(module.id);
     this.editedModuleName.set(module.moduleName);
     this.editedModuleDescription.set(module.description);
     this.editedModuleIcon.set(module.icon);
+    this.isDirty.set(false); // reset when starting edit
+  }
+
+  onFieldChange() {
+    this.isDirty.set(true);
+  }
+
+
+  cancelEditModule(module?: Module) {
+    this.editingModuleId.set(null);
+
   }
 
   /**
@@ -143,7 +152,7 @@ export class ModulePage {
     }
     this.moduleService.saveModule(payLoad).subscribe({
       next: () => {
-        this.refresh.update(v => v + 1); // refetch list
+        this.refresh.update(v => v + 1);
         this.editingModuleId.set(null);
       },
       error: (err) => {
@@ -153,6 +162,8 @@ export class ModulePage {
 
 
   }
+
+
 
   toggleModuleStatus(module: Module, next: boolean) {
 
@@ -193,26 +204,7 @@ export class ModulePage {
 
 
 
-  /**
-   * Handles the drop event from the CDK drag-and-drop list.
-   * Reorders the modules both in the UI and updates their `order` property.
-   */
-  // drop(event: CdkDragDrop<ModuleItem[]>) {
-  //   const updatedModules = [...this.modules()];
-  //   moveItemInArray(updatedModules, event.previousIndex, event.currentIndex);
-  //   this.modules.set(updatedModules.map((module, index) => ({ ...module, order: index + 1 })));
-  // }
 
-  /**
-   * Announces sort changes for screen readers.
-   */
-  // announceSortChange(sortState: Sort) {
-  //   if (sortState.direction) {
-  //     this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
-  //   } else {
-  //     this._liveAnnouncer.announce('Sorting cleared');
-  //   }
-  // }
 
   /**
    * Exports the current module configuration to an Excel file.
@@ -235,22 +227,8 @@ export class ModulePage {
   // }
 
 
-  /**
-   * Cancels the current edit operation and discards changes.
-   */
-  // cancelEdit() {
-  //   this.editingModuleId.set(null);
-  // }
 
-  /**
-   * Toggles the `status` of a given module.
-   * @param module The module whose status will be toggled.
-   */
-  // toggleStatus(module: ModuleItem) {
-  //   this.modules.update(currentModules =>
-  //     currentModules.map(m => (m.id === module.id ? { ...m, status: !m.status } : m))
-  //   );
-  // }
+
 }
 
 

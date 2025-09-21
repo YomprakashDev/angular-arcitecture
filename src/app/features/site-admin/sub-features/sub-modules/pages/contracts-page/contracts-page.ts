@@ -1,14 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { LucideAngularModule, SquarePen, GripVertical } from 'lucide-angular';
 import { MatIconModule } from '@angular/material/icon';
-interface ContractItem {
-  name: string;
-  editable: boolean;
-  enabled: boolean;
-  children?: ContractItem[];
-  expanded?: boolean;
-}
+import { SubModule, SubModuleResponse } from '../../models/sub-module.model';
+import { SubModulesService } from '../../services/sub-modules.service';
+
 @Component({
   selector: 'app-contracts-page',
   imports: [CommonModule, LucideAngularModule, MatIconModule],
@@ -18,20 +14,22 @@ interface ContractItem {
 export class ContractsPage {
   editIcon = SquarePen;
   dragIcon = GripVertical;
- items: ContractItem[] = [
-    { name: 'New Contract', editable: true, enabled: true },
-    { name: 'Template Library', editable: true, enabled: true },
-    {
-      name: 'Import Contract',
-      editable: true,
-      enabled: false,
-      expanded: true,
-      children: [
-        { name: 'Single', editable: true, enabled: true },
-        { name: 'Bulk Contract', editable: true, enabled: false },
-      ],
-    },
-  ];
 
-  
+  subModuleService = inject(SubModulesService);
+
+  items = signal<SubModule[] | null>(null);
+
+  constructor() {
+    this.subModuleService.getSubModules(1, 1, 10).subscribe(
+      (res: SubModuleResponse) => {
+        this.items.set(res.data);
+      }
+    )
+  }
+
+ toggleChildren(item: SubModule) {
+  item.expanded = !item.expanded;
+}
+
+
 }
