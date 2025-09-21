@@ -14,7 +14,7 @@ export class OrganizationService {
   apiUrl = environment.apiUrl
 
   getOrganizations(): Observable<OrganizationData[]> {
-    return this.http.get<OrganizationData[]>(this.apiUrl)
+    return this.http.get<OrganizationData[]>(`${this.apiUrl}/Organizations`,)
   }
 
 

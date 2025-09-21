@@ -1,5 +1,5 @@
-<div class="w-full  mx-auto mt-8 bg-white ">
-    @for ( item of items; track $index) {
+<div class="w-full mx-auto mt-8 bg-white ">
+    @for ( item of items(); track $index) {
     <div class="border-b last:border-b-0">
         <div class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50">
             <div class="flex items-center space-x-2">
@@ -7,11 +7,11 @@
 
 
 
-                <button> <lucide-angular [img]="dragIcon"></lucide-angular></button>
-                <span class="font-medium">{{ item.name }}</span>
-                @if(item.children) {
+                <button> <lucide-angular  [img]="dragIcon"></lucide-angular></button>
+                <span class="font-medium">{{ item.subModuleName }}</span>
+                @if(item.children.length > 0) {
 
-                    <button (click)="item.expanded = !item.expanded" class="text-gray-400 hover:text-gray-600">
+                    <button (click)="toggleChildren(item)" class="text-gray-400 hover:text-gray-600">
                        <mat-icon>{{item.expanded ? 'expand_less' : 'expand_more'}}</mat-icon>
                     </button>
                 
@@ -21,11 +21,11 @@
             </div>
 
             <div class="flex items-center space-x-3">
-                <button *ngIf="item.editable" class="text-gray-400 hover:text-gray-600">
+                <button  class="text-gray-400 hover:text-gray-600">
                     <lucide-angular [img]="editIcon"></lucide-angular>
                 </button>
                 <label class="switch">
-                    <input type="checkbox" [checked]="item.enabled" />
+                    <input type="checkbox" [checked]="item.status" />
                     />
                     <span class="slider"></span>
                 </label>
@@ -35,15 +35,15 @@
         <!-- Children -->
         <div *ngIf="item.children && item.expanded">
             @for ( child of item.children; track $index) {
-            <div class="pl-8 bg-gray-50 border-b last:border-b-0">
+            <div class="pl-8 border-b bg-gray-50 last:border-b-0">
                 <div class="flex items-center justify-between p-3 hover:bg-gray-100">
-                    <span>{{ child.name }}</span>
+                    <span>{{ child.childName }}</span>
                     <div class="flex items-center space-x-3">
-                        <button *ngIf="child.editable" class="text-gray-400 hover:text-gray-600">
+                        <button  class="text-gray-400 hover:text-gray-600">
                             <lucide-angular [img]="editIcon"></lucide-angular>
                         </button>
                         <label class="switch">
-                            <input type="checkbox" [checked]="child.enabled" />
+                            <input type="checkbox" [checked]="child.status" />
                             <span class="slider"></span>
                         </label>
                     </div>
@@ -53,4 +53,10 @@
         </div>
     </div>
     }
+    <div class="flex justify-center space-x-4 bg-gray-50">
+                <button class="px-4 py-2 mt-4 font-medium text-white bg-gray-600 rounded hover:bg-gray-700">Cancel</button>
+        <button class="px-4 py-2 mt-4 font-medium text-white bg-blue-600 rounded hover:bg-blue-700">Save</button>
+
+        
+    </div>
 </div>

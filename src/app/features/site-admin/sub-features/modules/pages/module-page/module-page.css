@@ -1,4 +1,6 @@
 /* Custom table styles */
+
+
 .module-table {
   background: white;
   border-radius: 8px;
@@ -155,6 +157,79 @@
   justify-content: center;
 }
 
-.edit-field {
+/* ---------------------------
+   Inline edit field styling
+   (only applies to mat-form-field.edit-field inside .module-table)
+   --------------------------- */
+
+.module-table mat-form-field.edit-field {
+  --input-bg: transparent;         /* change if you want white background */
+  --input-border: #E9ECEF;
+  --input-border-focus: #6D79FA;   /* indigo accent from your theme */
+  --input-color: #1D1D21;          /* module title color */
+  font-family: 'Mulish', sans-serif;
+  font-size: 14px;
+  margin: 0;                       /* avoid any extra outside space */
+  padding: 0;
+  box-sizing: border-box;
   width: 100%;
+}
+
+/* Ensure the material-internal wrapper behaves like a compact input box */
+.module-table mat-form-field.edit-field .mat-mdc-form-field-flex,
+.module-table mat-form-field.edit-field .mat-form-field-infix {
+  display: flex;
+  align-items: center;            /* vertically center input inside the row */
+  height: 16px;                   /* fixed compact height to avoid jumps */
+  padding: 0 10px;                /* horizontal breathing room */
+  border-radius: 6px;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  transition: border-color .15s ease, box-shadow .15s ease;
+  box-sizing: border-box;
+}
+
+/* Input itself: full height, no inner padding that increases row height */
+.module-table mat-form-field.edit-field input[matInput],
+.module-table mat-form-field.edit-field textarea[matInput] {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--input-color);
+  font-size: 14px;
+  line-height: 20px;
+  box-sizing: border-box;
+}
+
+/* Focus / active state: colored border + subtle shadow */
+.module-table mat-form-field.edit-field:focus-within .mat-mdc-form-field-flex,
+.module-table mat-form-field.edit-field:focus-within .mat-form-field-infix {
+  border-color: var(--input-border-focus);
+  box-shadow: 0 0 0 4px rgba(109,121,250,0.10);  /* subtle focus ring */
+}
+
+/* Hide subscript/hint height when not used (prevents extra reserved space) */
+.module-table mat-form-field.edit-field .mat-mdc-form-field-subscript-wrapper,
+.module-table mat-form-field.edit-field .mat-form-field-subscript-wrapper {
+  display: none;
+}
+
+/* Keep table cells vertically centered (prevents jumps when switching to edit) */
+.module-table td,
+.module-table th,
+.module-table .mat-mdc-cell {
+  vertical-align: middle;
+}
+
+/* Small screens: slightly smaller padding so compactness remains */
+@media (max-width: 768px) {
+  .module-table mat-form-field.edit-field .mat-mdc-form-field-flex,
+  .module-table mat-form-field.edit-field .mat-form-field-infix {
+    height: 34px;
+    padding: 0 0px;
+  }
 }

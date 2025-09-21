@@ -1,22 +1,23 @@
 import { Component, signal } from '@angular/core';
 import { MenuItemComponent } from '../../../../../../shared/components/ui/menu-item/menu-item';
-import { RepositoryPageComponent } from '../repository-page/repository-page';
-import { ConfigurationPageComponent } from '../configuration-page/configuration-page';
-import { LibraryPageComponent } from '../library-page/library-page';
-import { ReportsPageComponent } from '../reports-page/reports-page';
-import { SettingsPageComponent } from '../settings-page/settings-page';
+import { RepositaryPage } from '../repositary-page/repositary-page';
+import { ConfigurationPage } from '../configuration-page/configuration-page';
+
+import { ReportsPage } from '../reports-page/reports-page'
+import { SettingsPage } from '../settings-page/settings-page';
 import { ContractsPage } from "../contracts-page/contracts-page";
+import { LibraryPage } from "../library-page/library-page";
 
 @Component({
   selector: 'app-sub-module-page',
   imports: [
     MenuItemComponent,
-    RepositoryPageComponent,
-    ConfigurationPageComponent,
-    LibraryPageComponent,
-    ReportsPageComponent,
-    SettingsPageComponent,
-    ContractsPage
+    RepositaryPage,
+    ConfigurationPage,
+    ReportsPage,
+    SettingsPage,
+    ContractsPage,
+    LibraryPage
 ],
   templateUrl: './sub-module-page.html',
   styleUrl: './sub-module-page.css'
