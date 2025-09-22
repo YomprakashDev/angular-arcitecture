@@ -7,11 +7,11 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenuItemComponent {
-  item = input.required<{ name: string }>();
+  item = input.required<{ name: string ,id:number}>();
   isSelected = input(false);
-  itemSelected = output<string>();
+  itemSelected = output<number>();
 
   onSelect() {
-    this.itemSelected.emit(this.item().name);
+    this.itemSelected.emit(this.item().id);
   }
 }

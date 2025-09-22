@@ -49,7 +49,6 @@ import { toSignal, toObservable } from '@angular/core/rxjs-interop';
     MatSliderModule,
     FormsModule,
     MatRadioModule,
-    FormsModule
   ],
   templateUrl: './module-page.html',
   styleUrls: ['./module-page.css'],
@@ -97,7 +96,7 @@ export class ModulePage {
   editingModuleId = signal<number | null>(null);
   editedModuleName = signal('');
   editedModuleDescription = signal('');
-  editedModuleIcon = signal('');
+
   isDirty = signal(false); // track if user made changes
 
   constructor() {
@@ -124,7 +123,7 @@ export class ModulePage {
     this.editingModuleId.set(module.id);
     this.editedModuleName.set(module.moduleName);
     this.editedModuleDescription.set(module.description);
-    this.editedModuleIcon.set(module.icon);
+    
     this.isDirty.set(false); // reset when starting edit
   }
 
@@ -148,7 +147,6 @@ export class ModulePage {
       id: module.id,
       moduleName: this.editedModuleName(),
       description: this.editedModuleDescription(),
-      icon: this.editedModuleIcon()
     }
     this.moduleService.saveModule(payLoad).subscribe({
       next: () => {

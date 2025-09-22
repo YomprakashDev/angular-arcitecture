@@ -1,4 +1,4 @@
-<div class="flex w-full h-full bg-white rounded-lg ">
+<div class="flex w-full h-full bg-white rounded-lg">
   <div class="flex-1 p-6">
     <div class="flex justify-between w-full">
       <h1 class="text-2xl mb-4 font-bold text-[#1D1D21]">Modules</h1>
@@ -14,17 +14,11 @@
         ></mat-progress-spinner>
       </div>
 
-      <table matSort mat-table [dataSource]="dataSource"  class="w-full bg-white ">
+      <table matSort mat-table [dataSource]="dataSource" class="w-full bg-white">
         <ng-container matColumnDef="actions">
-          <th
-            mat-header-cell
-            *matHeaderCellDef
-            class="tracking-wider "
-          >
-            Actions
-          </th>
-          <td mat-cell *matCellDef="let module" class="flex items-center p-4 whitespace-nowrap">
-            <span  class="mr-2 cursor-move drag-handle" aria-label="Drag handle">
+          <th mat-header-cell *matHeaderCellDef class="tracking-wider">Actions</th>
+          <td mat-cell *matCellDef="let module" class="flex items-center  whitespace-nowrap">
+            <span class="mr-2 cursor-move drag-handle" aria-label="Drag handle">
               <lucide-angular [img]="dragIcon" class="text-[#787A7F]"></lucide-angular>
             </span>
             @if (editingModuleId() !== module.id) {
@@ -41,13 +35,19 @@
               (click)="saveModule(module)"
               mat-icon-button
               color="primary"
-               [disabled]="!isDirty()"
+              [disabled]="!isDirty()"
               aria-label="Savemodule"
             >
               <mat-icon>save</mat-icon>
             </button>
-            <button (click)="cancelEditModule(module)" type="button" mat-icon-button color="warn" aria-label="Cancel edit">
-              <mat-icon >cancel</mat-icon>
+            <button
+              (click)="cancelEditModule(module)"
+              type="button"
+              mat-icon-button
+              color="warn"
+              aria-label="Cancel edit"
+            >
+              <mat-icon>cancel</mat-icon>
             </button>
             }
           </td>
@@ -57,7 +57,7 @@
           <th
             mat-header-cell
             *matHeaderCellDef
-            class="p-4 text-sm font-bold tracking-wider text-left text-gray-700"
+            class=" text-sm font-bold tracking-wider text-left text-gray-700"
           >
             Status
           </th>
@@ -66,9 +66,9 @@
               <input
                 type="checkbox"
                 [checked]="module.status"
-                (change)="toggleModuleStatus(module,$event.target.checked)"
+                (change)="toggleModuleStatus(module, $event.target.checked)"
               />
-            
+
               <span class="slider"></span>
             </label>
           </td>
@@ -84,18 +84,23 @@
           >
             Module Name
           </th>
-          <td mat-cell *matCellDef="let module"  class="p-4 whitespace-nowrap font-[Mulish] font-normal text-[14px] leading-[100%] tracking-[0%]">
+          <td
+            mat-cell
+            *matCellDef="let module"
+            class="p-4 whitespace-nowrap font-[Mulish] font-normal text-[14px] leading-[100%] tracking-[0%]"
+          >
             @if (editingModuleId() !== module.id) {
             {{ module.moduleName }}
             } @else {
-            <mat-form-field appearance="outline"  class="w-full edit-field">
-              <input
-                matInput
-                [ngModel]="editedModuleName()"
-                  (ngModelChange)="editedModuleDescription.set($event); onFieldChange()"
-                placeholder="Module name"
-              />
-            </mat-form-field>
+
+            <input
+              class="edit-input"
+              matInput
+              [ngModel]="editedModuleName()"
+              (ngModelChange)="editedModuleName.set($event); onFieldChange()"
+              placeholder="Module name"
+            />
+
             }
           </td>
         </ng-container>
@@ -106,7 +111,7 @@
             *matHeaderCellDef
             mat-sort-header
             sortActionDescription="Sort by description"
-            class="p-4 text-sm font-bold tracking-wider text-left text-gray-700"
+            class=" text-sm font-bold tracking-wider text-left text-gray-700"
           >
             Description
           </th>
@@ -114,14 +119,15 @@
             @if (editingModuleId() !== module.id) {
             {{ module.description }}
             } @else {
-            <mat-form-field appearance="outline" class="w-full edit-field">
-              <input
-                matInput
-                [ngModel]="editedModuleDescription()"
-                (ngModelChange)="editedModuleDescription.set($event) ; onFieldChange()"
-                placeholder="Description"
-              />
-            </mat-form-field>
+
+            <input
+              class="edit-input"
+              matInput
+              [ngModel]="editedModuleDescription()"
+              (ngModelChange)="editedModuleDescription.set($event); onFieldChange()"
+              placeholder="Description"
+            />
+
             }
           </td>
         </ng-container>
@@ -135,18 +141,7 @@
             Icon
           </th>
           <td mat-cell *matCellDef="let module" class="p-4 whitespace-nowrap">
-            @if (editingModuleId() !== module.id) {
             <mat-icon class="module-icon">{{ module.icon }}</mat-icon>
-            } @else {
-            <mat-form-field appearance="outline" class="w-full edit-field">
-              <input
-                matInput
-                [ngModel]="editedModuleIcon()"
-                (ngModelChange)="editedModuleIcon.set($event) ; onFieldChange()"
-                placeholder="Icon"
-              />
-            </mat-form-field>
-            }
           </td>
         </ng-container>
 
@@ -155,7 +150,6 @@
           mat-row
           *matRowDef="let row; columns: displayedColumns"
         
-          class="border-b border-gray-200 hover:bg-gray-100"
         ></tr>
       </table>
 

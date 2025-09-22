@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, input } from '@angular/core';
 import { LucideAngularModule, SquarePen, GripVertical } from 'lucide-angular';
 import { MatIconModule } from '@angular/material/icon';
-import { SubModule, SubModuleResponse } from '../../models/sub-module.model';
-import { SubModulesService } from '../../services/sub-modules.service';
+import { SubModule } from '../../models/sub-module.model';
 
 @Component({
   selector: 'app-contracts-page',
@@ -15,21 +14,18 @@ export class ContractsPage {
   editIcon = SquarePen;
   dragIcon = GripVertical;
 
-  subModuleService = inject(SubModulesService);
-
-  items = signal<SubModule[] | null>(null);
+  subModules = input.required<SubModule[]>()
 
   constructor() {
-    this.subModuleService.getSubModules(1, 1, 10).subscribe(
-      (res: SubModuleResponse) => {
-        this.items.set(res.data);
-      }
-    )
+  
+    effect(() => {
+      console.log('SubModules input:', this.subModules());
+    });
   }
 
- toggleChildren(item: SubModule) {
-  item.expanded = !item.expanded;
-}
+  toggleChildren(item: any) {
+    item.expanded = !item.expanded;
+  }
 
 
 }

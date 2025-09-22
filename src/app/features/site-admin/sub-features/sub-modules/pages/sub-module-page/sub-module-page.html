@@ -1,41 +1,20 @@
 <div class="flex w-full h-full gap-4 bg-transparent">
-
-
-  <div class="w-[238px] bg-white rounded-lg  p-4 min-h-full ">
-    <h1 class="text-2xl font-bold text-[#1D1D21]"> Modules</h1>
+  <div class="w-[238px] bg-white rounded-lg p-4 min-h-full">
+    <h1 class="text-2xl font-bold text-[#1D1D21]">Modules</h1>
     <div>
-      @for (item of menuItems(); track item.name) {
-      <app-menu-item [item]="item" [isSelected]="selectedItem() === item.name" (itemSelected)="selectItem($event)">
+      @for (item of moduleNameList(); track item.id) {
+      <app-menu-item
+        [item]="item"
+        [isSelected]="selectedItem() === item.id"
+        (itemSelected)="selectItem($event)"
+      >
       </app-menu-item>
       }
     </div>
   </div>
-  <div class="flex-1 p-6 bg-white rounded-lg ">
-    <h1 class="text-xl font-bold text-[#5363F9]">{{selectedItem()}} Sub Module</h1>
 
-    @switch (selectedItem()) {
-    @case('Contracts') {
-    <app-contracts-page></app-contracts-page>
-    }
-    @case('Repository') {
-    <app-repositary-page></app-repositary-page>
-    }
-    @case('Configuration') {
-    <app-configuration-page></app-configuration-page>
-    }
-    @case('Library') {
-    <app-library-page></app-library-page>
-    }
-    @case('Reports') {
-    <app-reports-page></app-reports-page>
-    }
-    @case('Settings') {
-    <app-settings-page></app-settings-page>
-    }
-    @default {
-    <p class="text-gray-600">Please select an option from the menu.</p>
-    }
-    }
+  <div class="flex-1 p-6 bg-white rounded-lg">
+    <h1 class="text-xl font-bold text-[#5363F9]">{{ selectedItem() }} Sub Module</h1>
+    <app-contracts-page [subModules]="selectedSubModules"></app-contracts-page>
   </div>
-
 </div>

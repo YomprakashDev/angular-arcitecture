@@ -21,7 +21,7 @@ import { OrganizationDetails } from "../../components/organization-details/organ
     MatTableModule, MatIconModule, MatButtonModule, MatTooltipModule,
     Modal, AddOrganizationForm,
     OrganizationDetails
-],
+  ],
   templateUrl: './organization-page.html',
   styleUrls: ['./organization-page.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -43,6 +43,14 @@ export class OrganizationPage {
     'email',
     'phone',
   ];
+
+  // --- Stepper state (add inside OrganizationPage class) ---
+  stepLabels = ['Company Information', 'Package Information', 'Support Credentials'] as const;
+  currentStep = signal(0);
+
+  goToStep(i: number) { this.currentStep.set(i); }
+  nextStep() { if (this.currentStep() < this.stepLabels.length - 1) this.currentStep.update(i => i + 1); }
+  prevStep() { if (this.currentStep() > 0) this.currentStep.update(i => i - 1); }
 
   private organizationService = inject(OrganizationService);
 

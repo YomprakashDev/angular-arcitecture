@@ -1,25 +1,30 @@
-export interface SubModuleResponse {
-  currentPage: number;
-  pageSize: number;
-  totalPages: number;
-  totalRecords: number;
-  data: SubModule[];
+
+
+
+
+
+// sub-module.model.ts
+
+export interface Child {
+  childID: number;
+  childName: string;
+  subChildStatus: boolean;
 }
 
 export interface SubModule {
-  id: number;
+  subModuleId: number;
   subModuleName: string;
-  status: boolean;
-  displayOrder: number;
-  children: ChildModule[];
+  subModuleStatus: boolean;
   expanded?: boolean; // <-- frontend-only property
   editable?: boolean; // <-- frontend-only property
-
+  children: Child[];
 }
 
-export interface ChildModule {
-  childId: number;
-  childName: string;
-  childCode: string;
-  status: boolean;
+export interface Module {
+  moduleID: number;
+  moduleName: string;
+  moduleStatus: boolean;
+  subModules: SubModule[];
 }
+
+export type Modules = Module[];

@@ -36,7 +36,7 @@
 
 /* Zebra striping for even rows */
 .module-table .mat-mdc-row:nth-child(even) {
-  background-color: #f8f9fa;
+  background-color: #F7F8FA;
   border: none;
 }
 
@@ -234,4 +234,56 @@
     height: 34px;
     padding: 0 0px;
   }
+}
+
+
+/* Inline edit input: compact, subtle, brand-aligned */
+.edit-input {
+  width: 100%;
+  height: 36px;                  /* compact row height */
+  padding: 0 10px;
+  border: 1px solid #eaeaea;     /* matches table border */
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1D1D21;                /* headline color */
+  font-family: Mulish, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1;
+  outline: none;
+  transition: border-color 120ms ease, box-shadow 120ms ease, background 120ms ease;
+}
+
+/* Placeholder subtlety */
+.edit-input::placeholder {
+  color: #9ca3af; /* neutral-400 */
+  opacity: 1;
+}
+
+/* Hover: soft lift */
+.edit-input:hover {
+  border-color: #cac6d3;         /* your neutral used in comments */
+}
+
+/* Focus: brand accent with subtle ring */
+.edit-input:focus {
+  border-color: #6D7BFA;
+  box-shadow: 0 0 0 3px rgba(109, 123, 250, 0.15);
+}
+
+.module-table .mdc-data-table__cell,
+.module-table .mdc-data-table__header-cell {
+  border-bottom: 0 !important;
+}
+/* Apply only inside this table */
+.module-table .mdc-data-table__header-cell {
+  padding: 0 12px !important;                 /* kill MDC padding */
+}
+
+.module-table .mat-mdc-header-cell .mat-sort-header-container {
+  padding: 0 !important;                 /* kill container padding */
+  margin: 0;                             /* avoid extra space */
+}
+
+.module-table .mat-mdc-header-cell .mat-sort-header-arrow {
+  margin-left: 4px;                      /* tiny gap for arrow */
 }

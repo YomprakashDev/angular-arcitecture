@@ -65,16 +65,9 @@
   font-size: 18px;
   color: #787A7F;
 }
-:host ::ng-deep .actions .mat-mdc-icon-button:hover mat-icon {
-  color: #374151;
-}
 
 /* Text tones */
 .muted-strong { color: #374151; font-weight: 600; }
 .link { color: #374151; text-decoration: none; }
-.link:hover { text-decoration: underline; }
 
-/* Optional row hover */
-:host ::ng-deep .orgs-table .mat-mdc-row:hover {
-  background: #F2F4FF;
-}
+
