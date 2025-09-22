@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, input } from '@angular/core';
+import { Component, effect, input, signal } from '@angular/core';
 import { LucideAngularModule, SquarePen, GripVertical } from 'lucide-angular';
 import { MatIconModule } from '@angular/material/icon';
 import { SubModule } from '../../models/sub-module.model';
@@ -14,18 +14,16 @@ export class ContractsPage {
   editIcon = SquarePen;
   dragIcon = GripVertical;
 
-  subModules = input.required<SubModule[]>()
+  editId = signal<number | null>(null)
 
-  constructor() {
-  
-    effect(() => {
-      console.log('SubModules input:', this.subModules());
-    });
-  }
+  subModules = input.required<SubModule[]>()
 
   toggleChildren(item: any) {
     item.expanded = !item.expanded;
   }
 
+  startEdit(item: SubModule) {
+    this.editId.set(item.subModuleId);
+  }
 
 }
