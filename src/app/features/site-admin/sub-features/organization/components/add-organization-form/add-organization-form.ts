@@ -17,6 +17,6 @@ export type AddOrganizationFormType = [
 
 export class AddOrganizationForm {
 
-  currentForm = signal('Support Credentials' );
+  currentForm = signal('Company Information' );
 
 }

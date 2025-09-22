@@ -1,53 +1,30 @@
 <header
   class="h-16 flex items-center justify-between bg-white border-b border-[#EDEDED] px-8 top-0 z-50"
 >
-  <!-- Logo/Brand -->
-  <div class="text-[20px] font-bold text-[#1D1D21]">AAAMT Vertical Solutions</div>
+<!-- Logo/Brand -->
+<div class="font-['Mulish'] text-[20px] font-bold leading-[150%] tracking-[0px] align-middle text-[#1D1D21]">
+  AAAMT Vertical Solutions
+</div>
 
   <!-- Right Section -->
   <div class="flex items-center gap-14">
     <div class="w-[475px] relative">
-      <svg
-        class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <circle cx="11" cy="11" r="8"></circle>
-        <path d="m21 21-4.35-4.35"></path>
-      </svg>
+     <lucide-angular [img]="searchIcon" class="absolute -translate-y-1/2 text-[#787A7F] edit-icon left-1 top-1/2"></lucide-angular>
       <input
         type="text"
         placeholder="Search here"
-        class="w-full pl-10 pr-4 py-2 rounded-lg placeholder:text-[#787A7F] font-normal border border-[#d9d9d9] focus:outline-none text-sm"
+        class="w-full pl-10 pr-4 font-normal py-2 rounded-lg placeholder:text-[#787A7F] border border-[#d9d9d9] focus:outline-none text-sm"
       />
     </div>
-    <div class="flex items-center gap-6">
+    <div class="flex items-center gap-2">
       <!-- Notification -->
       <button
-        class="relative text-gray-600 hover:text-blue-600 rounded-full p-2 hover:bg-gray-100 transition-colors"
+        class="relative p-2 text-gray-600 transition-colors rounded-full "
       >
-        <svg
-          class="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-          ></path>
-        </svg>
+        
+        <lucide-angular [img]="bellIcon" class="w-6 h-6 text-[#606060]"></lucide-angular>
         <span
-          class="absolute top-3 right-3 bg-[#FF3333] text-white text-xs rounded-full w-[6px] h-[6px] flex items-center justify-center"
+          class="absolute top-[12px] right-[10px] bg-[#FF3333] text-white text-xs rounded-full w-[8px] h-[8px] flex items-center justify-center"
         >
         </span>
       </button>
@@ -55,22 +32,22 @@
       <div class="relative">
         <button (click)="toggleProfileMenu()" class="flex items-center gap-2">
           <img
-            src="/assets/images/common/profile-avatar.png"
+            src="/assets/images/common/header-profile.png"
             alt="Profile"
-            class="w-9 h-9 rounded-full border border-gray-300"
+            class="border border-gray-300 rounded-full w-9 h-9"
           />
         </button>
 
         @if (showProfileMenu()) {
         <div
-          class="absolute right-0 mt-4 w-62 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 transform origin-top-right transition-transform scale-100"
+          class="absolute right-0 z-50 py-2 mt-4 transition-transform origin-top-right transform scale-100 bg-white border border-gray-200 rounded-lg shadow-lg w-62"
         >
           <!-- User Info Section -->
           <div class="flex items-center p-4">
             <img
               src="/assets/images/common/profile-avatar.png"
               alt="User Profile"
-              class="w-12 h-12 rounded-full mr-3"
+              class="w-12 h-12 mr-3 rounded-full"
             />
             <div>
               <div class="text-sm font-semibold">User Name</div>
@@ -81,7 +58,7 @@
           <!-- Menu Items -->
           <div class="py-1">
             <a routerLink="/view-profile"
-              class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+              class="flex items-center px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
             >
               <svg
                 class="w-5 h-5 mr-3 text-gray-500"
@@ -100,7 +77,7 @@
               <span>View Profile</span>
             </a>
             <a
-              class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+              class="flex items-center px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
             >
               <svg
                 class="w-5 h-5 mr-3 text-gray-500"
@@ -119,7 +96,7 @@
               <span>Change Password</span>
             </a>
             <a
-              class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+              class="flex items-center px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
             >
               <svg
                 class="w-5 h-5 mr-3 text-gray-500"

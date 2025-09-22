@@ -1,0 +1,186 @@
+<div class="p-6 space-y-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+            <button class="flex items-center gap-2 "
+               >
+                ←
+            </button>
+            <h2 class="text-xl font-semibold">Organization Details</h2>
+        </div>
+
+        <button class="flex items-center gap-2 px-4 py-2 text-white bg-purple-600 rounded">
+            ✎ Edit
+        </button>
+    </div>
+
+    <!-- Organization Info (fixed: GST at end, URL gets more space) -->
+    <div class="flex items-center gap-6 p-6 bg-white rounded-lg shadow-sm">
+        <img src="assets/images/common/org-logo.png" alt="Logo"
+            class="flex-shrink-0 object-cover rounded-full h-36 w-36" />
+
+        <div class="flex-1 min-w-0 text-sm">
+            <!-- top row: 5 columns (URL gets 2 cols, GST stays at the end) -->
+            <div class="grid grid-cols-1 sm:grid-cols-5 gap-x-8 gap-y-3">
+                <div class="min-w-0 sm:col-span-1">
+                    <div class="text-xs text-gray-400">Organization Name</div>
+                    <div class="text-sm font-semibold text-gray-800 truncate">{{ organization.name }}</div>
+                </div>
+
+                <div class="min-w-0 sm:col-span-1">
+                    <div class="text-xs text-gray-400">Industry / Sector</div>
+                    <div class="text-sm font-semibold text-gray-800">{{ organization.industry }}</div>
+                </div>
+
+                <!-- URL gets 2 columns to give it breathing room -->
+                <div class="min-w-0 sm:col-span-2">
+                    <div class="text-xs text-gray-400">Organizational URL</div>
+                    <div class="text-sm font-semibold text-gray-800">
+                        <a href="{{ organization.url }}"
+                            class="inline-block min-w-0 text-blue-600 break-words truncate hover:underline"
+                            target="_blank" rel="noopener">{{ organization.url }}</a>
+                    </div>
+                </div>
+
+                <!-- GST pinned to the far right -->
+                <div class="min-w-0 text-sm text-right sm:col-span-1 sm:text-right">
+                    <div class="text-xs text-gray-400">GST Number</div>
+                    <div class="text-sm font-semibold text-gray-800">{{ organization.gstNumber }}</div>
+                </div>
+            </div>
+
+            <!-- Street address and bottom row unchanged -->
+            <div class="mt-4">
+                <div class="text-xs text-gray-400">Street Address</div>
+                <div class="text-sm text-gray-800 break-words">{{ organization.address }}</div>
+            </div>
+
+            <div class="grid grid-cols-2 mt-4 sm:grid-cols-3 md:grid-cols-5 gap-x-8 gap-y-3">
+                <div>
+                    <div class="text-xs text-gray-400">Postal Code</div>
+                    <div class="text-sm font-semibold text-gray-800">{{ organization.postalCode }}</div>
+                </div>
+
+                <div>
+                    <div class="text-xs text-gray-400">State</div>
+                    <div class="text-sm font-semibold text-gray-800">{{ organization.state }}</div>
+                </div>
+
+                <div>
+                    <div class="text-xs text-gray-400">Country</div>
+                    <div class="text-sm font-semibold text-gray-800">{{ organization.country }}</div>
+                </div>
+
+                <div>
+                    <div class="text-xs text-gray-400">Currency</div>
+                    <div class="text-sm font-semibold text-gray-800">{{ organization.currency }}</div>
+                </div>
+
+                <div>
+                    <div class="text-xs text-gray-400">Time Zone</div>
+                    <div class="text-sm font-semibold text-gray-800">{{ organization.timezone }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact + Package Info (Tailwind - aligned like your screenshot) -->
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <!-- Contact -->
+        <div class="p-6 text-sm bg-white border border-gray-100 rounded-lg shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-semibold">Contact Details</h3>
+            </div>
+
+            <!-- top row: 3 columns (person, email, phone) -->
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                <div class="min-w-0">
+                    <div class="text-xs text-gray-400">Contact Person</div>
+                    <div class="text-sm font-semibold text-gray-800 truncate">{{ contact.person }}</div>
+                </div>
+
+                <div class="min-w-0">
+                    <div class="text-xs text-gray-400">Email</div>
+                    <div class="text-sm font-semibold text-gray-800 truncate">{{ contact.email }}</div>
+                </div>
+
+                <div class="min-w-0">
+                    <div class="text-xs text-gray-400">Contact Number</div>
+                    <div class="text-sm font-semibold text-gray-800">{{ contact.phone }}</div>
+                </div>
+            </div>
+
+            <!-- bottom row: 2 columns (team size, website) -->
+            <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+                <div>
+                    <div class="text-xs text-gray-400">Team Size</div>
+                    <div class="text-sm font-semibold text-gray-800">{{ contact.teamSize }}</div>
+                </div>
+
+                <div class="min-w-0">
+                    <div class="text-xs text-gray-400">Website URL</div>
+                    <div class="text-sm text-gray-800">
+                        <a href="{{ contact.website }}"
+                            class="inline-block min-w-0 text-blue-600 break-words truncate hover:underline"
+                            target="_blank" rel="noopener">{{ contact.website }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Package -->
+        <div class="p-6 text-sm bg-white border border-gray-100 rounded-lg shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="flex items-center gap-2 font-semibold">
+                    Package Information
+                    <!-- small info circle -->
+                    <span
+                        class="inline-flex items-center justify-center w-5 h-5 text-xs text-gray-500 bg-gray-100 rounded-full">i</span>
+                </h3>
+            </div>
+
+            <!-- top row: 4 columns (package, users, deal amount, GST-right) -->
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-4">
+                <div class="min-w-0">
+                    <div class="text-xs text-gray-400">Package</div>
+                    <div class="text-sm font-semibold text-gray-800">{{ package.type }}</div>
+                </div>
+
+                <div class="min-w-0">
+                    <div class="text-xs text-gray-400">Users Count</div>
+                    <div class="text-sm font-semibold text-gray-800">{{ package.users }}</div>
+                </div>
+
+                <div class="min-w-0">
+                    <div class="text-xs text-gray-400">Deal Amount</div>
+                    <div class="text-sm font-semibold text-gray-800">{{ package.dealAmount }}</div>
+                </div>
+
+                <!-- GST pinned to right -->
+                <div class="min-w-0 text-right sm:text-right">
+                    <div class="text-xs text-gray-400">GST</div>
+                    <div class="text-sm font-semibold text-gray-800">{{ package.gst }}</div>
+                </div>
+            </div>
+
+            <!-- bottom row: 3 columns (total value, start date, valid upto) -->
+            <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-3">
+                <div class="min-w-0">
+                    <div class="text-xs text-gray-400">Total Deal Value</div>
+                    <div class="text-sm font-semibold text-gray-800">{{ package.totalValue }}</div>
+                </div>
+
+                <div>
+                    <div class="text-xs text-gray-400">Start Date</div>
+                    <div class="text-sm font-semibold text-gray-800">{{ package.startDate }}</div>
+                </div>
+
+                <div>
+                    <div class="text-xs text-gray-400">Valid Upto</div>
+                    <div class="text-sm font-semibold text-gray-800">{{ package.validUpto }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

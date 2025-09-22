@@ -1,22 +1,20 @@
-<app-tabs
-  [tabs]="tabs()"
-  (tabChanged)="setActiveTab($event.id)"
-  [defaultActiveTab]="'modules'"
-></app-tabs>
+<div class="flex flex-col ">
+  <app-tabs [tabs]="tabs()" (tabChanged)="setActiveTab($event.id)" [defaultActiveTab]="'modules'"></app-tabs>
 
-<div class="p-6 ">
-  @switch (currentTab()) {
+  <div class="flex-1 p-6 overflow-auto">
+    @switch (currentTab()) {
     @case ('modules') {
-      <app-module-page></app-module-page>
+    <app-module-page></app-module-page>
     }
     @case ('sub-modules') {
-      <app-sub-module-page></app-sub-module-page>
+    <app-sub-module-page></app-sub-module-page>
     }
     @case ('packages') {
-      <app-packages-page></app-packages-page>
+    <app-packages-page></app-packages-page>
     }
     @case ('organizations') {
-      <app-organization-page></app-organization-page>
+    <app-organization-page></app-organization-page>
     }
-  }
+    }
+  </div>
 </div>
