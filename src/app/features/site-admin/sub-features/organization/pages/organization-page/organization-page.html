@@ -128,12 +128,55 @@
     </div>
   </div>
 </div>
-} @if (isAddOrganizationModalOpen()) {
-<app-modal
-  [isOpen]="isAddOrganizationModalOpen()"
-  title="Add Company Details"
-  (closed)="isAddOrganizationModalOpen.set(false)"
->
-  <app-add-organization-form></app-add-organization-form>
-</app-modal>
+} @if (isAddOrganizationModalOpen()){
+
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+  <div class="bg-white rounded-lg shadow-lg w-full max-w-[80%]">
+    <!-- header -->
+    <div class="flex items-center justify-between p-4">
+      <h2 class="text-xl font-bold">{{ title() }}</h2>
+      <div><app-stepper [currentStep]="currentStep()"></app-stepper></div>
+      <button (click)="closeModal()" class="text-gray-500 hover:text-gray-700">
+        <lucide-angular [img]="closeIcon" class="w-6 h-6"></lucide-angular>
+      </button>
+    </div>
+
+    <!-- body slot -->
+    <div class="p-4">
+      <app-add-organization-form [currentFormIndex]="currentStep()"></app-add-organization-form>
+    </div>
+
+<div class="flex items-center justify-center space-x-4 p-4">
+  @if (!isFirstStep()) {
+    <button
+      type="button"
+      (click)="prevStep()"
+      class="flex items-center gap-2 px-4 py-2 border border-[#7E7A88] font-bold text-[#7E7A88] bg-transparent rounded">
+      Previous
+    </button>
+  }@else{
+  <button
+    type="button"
+    (click)="closeModal()"
+    class="flex items-center gap-2 px-4 py-2 border border-[#7E7A88] font-bold text-[#7E7A88] bg-transparent rounded">
+    Cancel
+  </button>}
+
+  @if (!isLastStep()) {
+    <button
+      type="button"
+      (click)="updateCurrentStep()"
+      class="flex items-center gap-2 px-4 py-2 text-white bg-[#6D7BFA] rounded">
+      Next
+    </button>
+  } @else {
+    <button
+      type="button"
+      class="flex items-center gap-2 px-4 py-2 text-white bg-[#6D7BFA] rounded">
+      Save
+    </button>
+  }
+</div>
+  </div>
+</div>
 }

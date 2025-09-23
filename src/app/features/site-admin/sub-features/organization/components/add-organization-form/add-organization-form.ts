@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 import { AddCompanyInformation } from "../add-company-information/add-company-information";
 import { AddPackageInformation } from "../add-package-information/add-package-information";
 import { SupportCredentials } from "../support-credentials/support-credentials";
@@ -16,7 +16,7 @@ export type AddOrganizationFormType = [
 
 
 export class AddOrganizationForm {
-
-  currentForm = signal('Company Information' );
+  
+currentFormIndex = input.required<number>()
 
 }

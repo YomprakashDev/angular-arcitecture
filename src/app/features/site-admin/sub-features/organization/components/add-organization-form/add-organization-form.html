@@ -1,14 +1,7 @@
-
-
-
-@if (currentForm() === 'Company Information') {
-    <app-add-company-information></app-add-company-information>
-}
-
-@if (currentForm() === 'Package Information') {
-    <app-add-package-information></app-add-package-information>
-}
-
-@if (currentForm() === 'Support Credentials') {
-    <app-support-credentials></app-support-credentials>
+@if (currentFormIndex() === 0) {
+<app-add-company-information></app-add-company-information>
+} @if (currentFormIndex() === 1) {
+<app-add-package-information></app-add-package-information>
+} @if (currentFormIndex() === 2) {
+<app-support-credentials></app-support-credentials>
 }

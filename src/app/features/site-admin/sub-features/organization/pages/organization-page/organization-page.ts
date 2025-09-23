@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Button } from '../../../../../../shared/components/ui/button/button';
 import { Tabs, Tab } from '../../../../../../shared/components/tabs/tabs';
 import { CommonModule } from '@angular/common';
@@ -9,11 +9,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Modal } from '../../../../../../shared/components/ui/modal/modal';
 import { AddOrganizationForm } from '../../components/add-organization-form/add-organization-form';
 import { OrganizationService } from '../../services/organization.service';
+import { LucideAngularModule, X } from 'lucide-angular';
 
 import { OrganizationData } from '../../models/organization.model';
 import { OrganizationDetails } from "../../components/organization-details/organization-details";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { finalize } from 'rxjs';
+import { Stepper } from "../../components/stepper/stepper";
 
 @Component({
   selector: 'app-organization-page',
@@ -21,8 +23,10 @@ import { finalize } from 'rxjs';
   imports: [
     Button, Tabs, CommonModule,
     MatTableModule, MatIconModule, MatButtonModule, MatTooltipModule,
-    Modal, AddOrganizationForm,
-    MatProgressSpinnerModule
+    AddOrganizationForm,
+    MatProgressSpinnerModule,
+    LucideAngularModule,
+    Stepper
   ],
   templateUrl: './organization-page.html',
   styleUrls: ['./organization-page.css'],
@@ -46,20 +50,38 @@ export class OrganizationPage {
     'phone',
   ];
 
-  isLoading = signal(true);
-  // --- Stepper state (add inside OrganizationPage class) ---
-  stepLabels = ['Company Information', 'Package Information', 'Support Credentials'] as const;
-  currentStep = signal(0);
 
-  goToStep(i: number) { this.currentStep.set(i); }
-  nextStep() { if (this.currentStep() < this.stepLabels.length - 1) this.currentStep.update(i => i + 1); }
-  prevStep() { if (this.currentStep() > 0) this.currentStep.update(i => i - 1); }
+  currentStep = signal<number>(0);
+
+  updateCurrentStep() {
+    this.currentStep.update(i => i + 1);
+  }
+
+  readonly closeIcon = X;
+
+  closeModal() {
+    this.isAddOrganizationModalOpen.set(false);
+  }
+
+  isLoading = signal(true);
+
+  stepLabels = ['Company Information', 'Package Information', 'Support Credentials']
+
+  isLastStep = computed(() => this.currentStep() === this.stepLabels.length - 1)
+  isFirstStep = computed(() => this.currentStep() === 0)
+
+
+  prevStep() {
+    if (this.currentStep() > 0)
+      this.currentStep.update(i => i - 1);
+  }
 
   private organizationService = inject(OrganizationService);
 
   // IMPORTANT: datasource typed to nested API model
   dataSource = new MatTableDataSource<OrganizationData>([]);
 
+  title = signal('Organizations');
   constructor() {
 
     // Load data

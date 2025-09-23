@@ -1,0 +1,45 @@
+<nav aria-label="Progress" class="w-full">
+  <ol class="flex items-center text-sm">
+    <li *ngFor="let step of steps; let i = index" class="flex items-center">
+      <div class="flex items-center">
+        <span
+          class="flex h-8 w-8 items-center justify-center rounded-full border text-sm font-semibold"
+          [ngClass]="
+            i === currentStep()
+              ? 'border-indigo-500 text-indigo-600'
+              : 'border-gray-300 text-gray-500'
+          "
+          [attr.aria-current]="i === currentStep() ? 'step' : null"
+        >
+          {{ step.number }}
+        </span>
+
+        <span
+          class="ml-2"
+          [ngClass]="
+            i === currentStep()
+              ? 'text-indigo-600 font-medium'
+              : 'text-gray-600'
+          "
+        >
+          {{ step.label }}
+        </span>
+      </div>
+
+      <!-- chevron between items -->
+      <svg
+        *ngIf="i < steps.length - 1"
+        class="mx-3 h-4 w-4 text-gray-400"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707A1 1 0 118.707 5.293l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+          clip-rule="evenodd"
+        />
+      </svg>
+    </li>
+  </ol>
+</nav>
