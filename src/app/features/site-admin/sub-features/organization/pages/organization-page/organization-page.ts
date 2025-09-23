@@ -12,6 +12,8 @@ import { OrganizationService } from '../../services/organization.service';
 
 import { OrganizationData } from '../../models/organization.model';
 import { OrganizationDetails } from "../../components/organization-details/organization-details";
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-organization-page',
@@ -20,7 +22,7 @@ import { OrganizationDetails } from "../../components/organization-details/organ
     Button, Tabs, CommonModule,
     MatTableModule, MatIconModule, MatButtonModule, MatTooltipModule,
     Modal, AddOrganizationForm,
-
+    MatProgressSpinnerModule
   ],
   templateUrl: './organization-page.html',
   styleUrls: ['./organization-page.css'],
@@ -44,6 +46,7 @@ export class OrganizationPage {
     'phone',
   ];
 
+  isLoading = signal(true);
   // --- Stepper state (add inside OrganizationPage class) ---
   stepLabels = ['Company Information', 'Package Information', 'Support Credentials'] as const;
   currentStep = signal(0);
@@ -60,9 +63,15 @@ export class OrganizationPage {
   constructor() {
 
     // Load data
-    this.organizationService.getOrganizations().subscribe((res: OrganizationData[]) => {
-      this.dataSource.data = res ?? [];
-    });
+    this.organizationService.getOrganizations().pipe(finalize(() => {
+      this.isLoading.set(false);
+    }))
+      .subscribe({
+        next: (res: OrganizationData[]) => {
+          this.dataSource.data = res
+        },
+        error: err => console.error(err)
+      });
   }
 
   setActiveTab(tabId: string) {
