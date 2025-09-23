@@ -20,7 +20,7 @@ import { OrganizationDetails } from "../../components/organization-details/organ
     Button, Tabs, CommonModule,
     MatTableModule, MatIconModule, MatButtonModule, MatTooltipModule,
     Modal, AddOrganizationForm,
-    OrganizationDetails
+
   ],
   templateUrl: './organization-page.html',
   styleUrls: ['./organization-page.css'],

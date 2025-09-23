@@ -2,13 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, effect, inject, input, signal } from '@angular/core';
 import { LucideAngularModule, SquarePen, GripVertical } from 'lucide-angular';
 import { MatIconModule } from '@angular/material/icon';
-import { SubModule } from '../../models/sub-module.model';
+import { Child, Module, SubModule } from '../../models/sub-module.model';
 import { SubModulesService } from '../../services/sub-modules.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-contracts-page',
-  imports: [CommonModule, LucideAngularModule, MatIconModule,FormsModule],
+  imports: [CommonModule, LucideAngularModule, MatIconModule, FormsModule],
   templateUrl: './contracts-page.html',
   styleUrl: './contracts-page.css'
 })
@@ -28,20 +28,37 @@ export class ContractsPage {
 
   startEdit(item: SubModule) {
     this.editId.set(item.subModuleId);
+    this.editedSubModule.set(item.subModuleName)
   }
 
-  cancleEdit(){
+  cancleEdit() {
     this.editId.set(null);
   }
 
-  saveEdit(item:SubModule){
-    this.subModuleService.saveSubModule(this.editedSubModule(),item.subModuleId).subscribe({
-      next:(res)=>{
+  saveModule(item: SubModule) {
+
+    this.subModuleService.saveSubModule(this.editedSubModule(), item.subModuleId).subscribe({
+      next: (res) => {
         console.log('Saved successfully', res);
+
         this.editId.set(null);
       }
     })
-   
+
+  }
+
+  updateStatusSubModule(item: SubModule) {
+    this.subModuleService.updateSubModuleStatus(item
+      .subModuleId, !item.subModuleStatus
+    ).subscribe({
+      next: (res) => {
+        console.log(res);
+      }
+    })
+  }
+
+  saveChildSubModuleName(child: Child) {
+    // console.log(child);
   }
 
 }

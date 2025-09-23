@@ -1,17 +1,23 @@
 <div class="w-full mx-auto mt-8 bg-white">
   @for ( item of subModules(); track $index) {
-  <div class="border-b last:border-b-0">
-    <div (click)="toggleChildren(item)" class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50">
+  <div class="border-b-4 border-[#F3F5F8]">
+    <div
+      (click)="toggleChildren(item)"
+      class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50"
+    >
       <div class="flex items-center space-x-2">
         <!-- Expand/Collapse icon for parent items with children -->
 
         <button><lucide-angular [img]="dragIcon" class="text-[#787A7F]"></lucide-angular></button>
         @if (editId() !== item.subModuleId){
         <span class="text-lg font-semibold text-black">{{ item.subModuleName }}</span>
-        }
-
-        @if(editId() === item.subModuleId){
-        <input type="text" [value]="editedSubModule()" [(ngModel)]="editedSubModule" class="text-lg border border-[#EDEDED] font-semibold text-black" />
+        } @if(editId() === item.subModuleId){
+        <input
+          type="text"
+          (ngModelChange)="editedSubModule.set($event)"
+          [ngModel]="editedSubModule()"
+          class="px-3 text-lg font-semibold text-gray-800 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+        />
         } @if(item.children.length > 0) {
 
         <button class="text-gray-400 hover:text-gray-600">
@@ -23,33 +29,49 @@
 
       <div class="flex items-center space-x-3">
         @if(editId() !== item.subModuleId){
-        <button (click)="startEdit(item)" class="text-gray-400 hover:cursor-pointer hover:text-gray-600">
+        <button
+          (click)="startEdit(item)"
+          class="text-gray-400 hover:cursor-pointer hover:text-gray-600"
+        >
           <lucide-angular [img]="editIcon"></lucide-angular>
         </button>
         } @if(editId() === item.subModuleId){
-        <button (click)="saveEdit(item)" class="text-gray-600 hover:text-gray-800">Save</button>
-        <button (click)="cancleEdit()" class="text-gray-400 hover:text-gray-600">Cancel</button>
-        }
+        <button
+          (click)="saveModule(item)"
+          class="px-4 py-1 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 cursor-pointer focus:ring-indigo-500"
+        >
+          Save
+        </button>
+        <button
+          (click)="cancleEdit()"
+          class="px-4 py-1 text-sm font-medium text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 cursor-pointer focus:ring-gray-300"
+        >
+          Cancel
+        </button>
+        } @if(editId() !== item.subModuleId){
+        <button (click)="updateStatusSubModule(item)">
+          <label class="switch">
+            <input type="checkbox" [checked]="item.subModuleStatus" />
+            />
+            <span class="slider"></span>
+          </label>
+        </button>
 
-        @if(editId() !== item.subModuleId){
-        <label class="switch">
-          <input type="checkbox"  [checked]="item.subModuleStatus" />
-          />
-          <span class="slider"></span>
-        </label>
         }
-
       </div>
     </div>
 
     <!-- Children -->
     <div *ngIf="item.children && item.expanded">
       @for ( child of item.children; track $index) {
-      <div class="pl-8 border-b bg-gray-50 last:border-b-0">
+      <div class="border-b-4 border-[#F3F5F8] last:border-b-0">
         <div class="flex items-center justify-between p-3 hover:bg-gray-100">
-          <span>{{ child.childName }}</span>
+          <span class="text-[#787A7F] font-semibold text-[16px]">{{ child.childName }}</span>
           <div class="flex items-center space-x-3">
-            <button class="text-gray-400 hover:text-gray-600">
+            <button
+              (click)="saveChildSubModuleName(child)"
+              class="text-gray-400 hover:text-gray-600"
+            >
               <lucide-angular [img]="editIcon"></lucide-angular>
             </button>
             <label class="switch">
