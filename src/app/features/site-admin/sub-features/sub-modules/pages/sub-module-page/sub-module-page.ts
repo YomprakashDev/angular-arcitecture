@@ -3,6 +3,7 @@ import { MenuItemComponent } from '../../../../../../shared/components/ui/menu-i
 import { ContractsPage } from '../contracts-page/contracts-page';
 import { SubModulesService } from '../../services/sub-modules.service';
 import { Module, Modules, SubModule } from '../../models/sub-module.model';
+import { finalize } from 'rxjs';
 
 type ModuleMin = { id: number; name: string };
 
@@ -19,8 +20,10 @@ export class SubModulePage {
   // All modules from API
   items = signal<Modules | null>(null);
 
+  isLoading = signal<boolean>(true);
+
   // Selected module id
-  selectedItem = signal<number>(1);
+  selectedItem = signal<number>(0);
 
   // Submodules of the selected module (kept as a plain array to match your current template binding)
   selectedSubModules: SubModule[] = [];
@@ -38,14 +41,23 @@ export class SubModulePage {
   });
 
   constructor() {
-    this.subModuleService.getSubModules().subscribe({
-      next: (res: Modules) => {
-        this.items.set(res);
-        // Keep your original default selection behavior
-        this.selectItem(1);
-      },
-      error: (err) => console.error(err)
-    });
+    this.CallingAPI();
+
+  }
+
+  private CallingAPI(): void {
+    this.isLoading.set(true);
+    this.subModuleService.getSubModules().pipe(finalize(() => this.isLoading.set(false)))
+      .subscribe({
+        next: (res: Modules) => {
+          this.items.set(res);
+
+          this.selectItem(res[0].moduleID);
+        },
+        error: (err) => {
+          console.error(err)
+        }
+      });
   }
 
   /** Updates selected id and caches its submodules */
