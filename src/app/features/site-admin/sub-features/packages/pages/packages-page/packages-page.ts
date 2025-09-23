@@ -13,7 +13,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import * as XLSX from 'xlsx';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Button } from '../../../../../../shared/components/ui/button/button';
 import { PackageService } from '../../services/package.service';
 import { catchError, combineLatest, finalize, of, switchMap, tap } from 'rxjs';
@@ -49,7 +49,8 @@ export interface PackageRow {
     MatFormFieldModule,
     MatSortModule,
     MatPaginatorModule,
-    LucideAngularModule
+    LucideAngularModule,
+    MatProgressSpinnerModule
 
   ],
   templateUrl: './packages-page.html',

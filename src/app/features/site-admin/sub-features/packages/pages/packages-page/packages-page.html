@@ -1,3 +1,14 @@
+
+
+@if(isLoading()){
+<div class="loading-overlay" aria-live="polite">
+  <mat-progress-spinner mode="indeterminate" diameter="48" aria-label="Loading"></mat-progress-spinner>
+</div>
+}
+
+
+
+@if(!isLoading()){
 <div class="page">
   <div class="page-header">
     <h1>Packages</h1>
@@ -56,3 +67,5 @@
     </table>
   </div>
 </div>
+}
+

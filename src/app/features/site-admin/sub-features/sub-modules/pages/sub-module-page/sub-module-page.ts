@@ -4,13 +4,13 @@ import { ContractsPage } from '../contracts-page/contracts-page';
 import { SubModulesService } from '../../services/sub-modules.service';
 import { Module, Modules, SubModule } from '../../models/sub-module.model';
 import { finalize } from 'rxjs';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 type ModuleMin = { id: number; name: string };
 
 @Component({
   selector: 'app-sub-module-page',
   standalone: true,
-  imports: [MenuItemComponent, ContractsPage],
+  imports: [MenuItemComponent, ContractsPage,MatProgressSpinnerModule],
   templateUrl: './sub-module-page.html',
   styleUrls: ['./sub-module-page.css']
 })
