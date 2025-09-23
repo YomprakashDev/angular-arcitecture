@@ -16,7 +16,6 @@ export interface SubModule {
   subModuleName: string;
   subModuleStatus: boolean;
   expanded?: boolean; // <-- frontend-only property
-  editable?: boolean; // <-- frontend-only property
   children: Child[];
 }
 
