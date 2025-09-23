@@ -20,4 +20,10 @@ export class SubModulesService {
     return this.http.get<Modules>(`${this.apiUrl}/SubModules`);
   }
 
+  saveSubModule(title:string,id:number): Observable<Module> {
+    return this.http.patch<Module>(
+    `${this.apiUrl}/SubModules/${id}/title?subModuleName=${title}`,
+    {}, // body is not needed because API takes subModuleName from query param
+  );
+  }
 }
