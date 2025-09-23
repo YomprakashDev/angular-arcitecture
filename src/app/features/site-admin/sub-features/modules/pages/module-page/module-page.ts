@@ -108,8 +108,8 @@ export class ModulePage {
 
     // trigger initial load (page/pageSize have initial values)
     // by resetting same values we ensure toObservable emits to start pipeline
-    this.page.set(this.page());
-    this.pageSize.set(this.pageSize());
+    // this.page.set(this.page());
+    // this.pageSize.set(this.pageSize());
 
   }
 

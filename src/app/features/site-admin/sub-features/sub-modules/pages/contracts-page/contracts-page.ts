@@ -47,12 +47,32 @@ export class ContractsPage {
 
   }
 
-  updateStatusSubModule(item: SubModule) {
+  updateStatusSubModule(item: SubModule,next:boolean) {
+    const prev = item.subModuleStatus;
+    item.subModuleStatus = next
     this.subModuleService.updateSubModuleStatus(item
       .subModuleId, !item.subModuleStatus
     ).subscribe({
       next: (res) => {
         console.log(res);
+      },
+      error:(err) => {
+        console.error('Error updating module status:', err)
+          item.subModuleStatus = prev
+      }
+    })
+  }
+
+  updateStatusChild(child:Child, next: boolean) {
+    const prev = child.subChildStatus;
+    child.subChildStatus = next
+    this.subModuleService.updateChildModuleStatus(child.childID,next).subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+      error:(err) => {
+        console.error('Error updating module status:', err)
+          child.subChildStatus = prev
       }
     })
   }

@@ -1,4 +1,4 @@
-<div class="w-full mx-auto mt-8 bg-white">
+<div class="w-full mx-auto  bg-white">
   @for ( item of subModules(); track $index) {
   <div class="border-b-4 border-[#F3F5F8]">
     <div
@@ -49,9 +49,10 @@
           Cancel
         </button>
         } @if(editId() !== item.subModuleId){
-        <button (click)="updateStatusSubModule(item)">
+        <button>
           <label class="switch">
-            <input type="checkbox" [checked]="item.subModuleStatus" />
+            <input (change)="updateStatusSubModule(item, $event.target.checked)"
+             type="checkbox" [checked]="item.subModuleStatus" />
             />
             <span class="slider"></span>
           </label>
@@ -75,7 +76,7 @@
               <lucide-angular [img]="editIcon"></lucide-angular>
             </button>
             <label class="switch">
-              <input type="checkbox" [checked]="child.subChildStatus" />
+              <input (change)="updateStatusChild(child, $event.target.checked)" type="checkbox" [checked]="child.subChildStatus" />
               <span class="slider"></span>
             </label>
           </div>
