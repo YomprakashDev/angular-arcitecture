@@ -29,11 +29,39 @@ export const routes: Routes = [
 
       {
         path: 'settings',
-        loadComponent: () => import('./features/dashboard/settings/settings-page/settings').then(m => m.Settings)
+        loadComponent: () => import('./features/dashboard/settings/settings-page/settings').then(m => m.Settings),
+
       },
       {
         path: 'admin',
-        loadComponent: () => import('./features/site-admin/pages/site-admin-page/site-admin-page').then(m => m.SiteAdminPage)
+        loadComponent: () => import('./features/site-admin/pages/site-admin-page/site-admin-page').then(m => m.SiteAdminPage),
+        children: [
+          { path: '', pathMatch: 'full', redirectTo: 'modules' }, // CHANGED: default tab
+          {
+            path: 'modules',
+            loadComponent: () =>
+              import('./features/site-admin/sub-features/modules/pages/module-page/module-page')
+                .then(m => m.ModulePage),
+          },
+          {
+            path: 'sub-modules',
+            loadComponent: () =>
+              import('./features/site-admin/sub-features/sub-modules/pages/sub-module-page/sub-module-page')
+                .then(m => m.SubModulePage),
+          },
+          {
+            path: 'packages',
+            loadComponent: () =>
+              import('./features/site-admin/sub-features/packages/pages/packages-page/packages-page')
+                .then(m => m.PackagesPage),
+          },
+          {
+            path: 'organizations',
+            loadComponent: () =>
+              import('./features/site-admin/sub-features/organization/pages/organization-page/organization-page')
+                .then(m => m.OrganizationPage),
+          },
+        ]
       },
       {
         path: 'view-profile',
