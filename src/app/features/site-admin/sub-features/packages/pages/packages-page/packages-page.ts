@@ -1,38 +1,38 @@
 import { Component } from '@angular/core';
-import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
-import { effect, inject, signal, ViewChild } from '@angular/core';
+import { effect, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
+import { MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import * as XLSX from 'xlsx';
+//import * as XLSX from 'xlsx';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Button } from '../../../../../../shared/components/ui/button/button';
+//import { Button } from '../../../../../../shared/components/ui/button/button';
 import { PackageService } from '../../services/package.service';
-import { catchError, combineLatest, finalize, of, switchMap, tap } from 'rxjs';
+import { catchError, finalize, of, tap } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ModuleItem, PackageItem,PackagesResponse } from '../../models/package.model';
+import { PackagesResponse } from '../../models/package.model';
 import { LucideAngularModule, SquarePen, GripVertical } from 'lucide-angular';
+
 // Row model for the table (what you actually render)
 export interface ModuleRow {
-  id: number;                // packageID
-  packageName: string;       // packageName
-  modules: string[];         // list of module names
-  status: boolean;           // derived: any module enabled?
-  order: number;             // derive (e.g., index)
+  id: number;
+  packageName: string;
+  modules: string[];
+  status: boolean;
+  order: number;
 }
 
 export interface PackageRow {
   packageID: number;
   packageName: string;
   modules: string[];
+  status: boolean;
 }
 
 
@@ -68,7 +68,7 @@ export class PackagesPage {
   /**
    * The source of truth for the list of modules.
    */
- readonly editIcon = SquarePen;
+  readonly editIcon = SquarePen;
   readonly dragIcon = GripVertical;
 
   private packageService = inject(PackageService);
@@ -108,6 +108,7 @@ export class PackagesPage {
         packageName: pkg.packageName,
         packageID: pkg.packageID,
         modules: pkg.modules.map(m => m.moduleName),
+        status: pkg.modules.some(m => m.moduleStatus),
       }));
     });
   }

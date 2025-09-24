@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import {  Component, input, output } from '@angular/core';
 
 @Component({
+  standalone: true,
   selector: 'app-menu-item',
   templateUrl: './menu-item.html',
   styleUrls: ['./menu-item.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenuItemComponent {
   item = input.required<{ name: string ,id:number}>();

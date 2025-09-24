@@ -22,6 +22,6 @@ export class ModuleService {
   }
 
   updateStatus(id: number, status: boolean): Observable<Module> {
-    return this.http.patch<Module>(`${this.apiUrl}/Modules/${id}/status`, status); )
+    return this.http.patch<Module>(`${this.apiUrl}/Modules/${id}/status`, status);
   }
 }

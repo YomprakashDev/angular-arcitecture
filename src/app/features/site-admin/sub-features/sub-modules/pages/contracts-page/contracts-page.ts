@@ -1,16 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, input, signal } from '@angular/core';
+import { Component,inject, input, signal } from '@angular/core';
 import { LucideAngularModule, SquarePen, GripVertical } from 'lucide-angular';
 import { MatIconModule } from '@angular/material/icon';
-import { Child, Module, SubModule } from '../../models/sub-module.model';
+import { Child,  SubModule } from '../../models/sub-module.model';
 import { SubModulesService } from '../../services/sub-modules.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
+  standalone: true,
   selector: 'app-contracts-page',
   imports: [CommonModule, LucideAngularModule, MatIconModule, FormsModule],
   templateUrl: './contracts-page.html',
-  styleUrl: './contracts-page.css'
+  styleUrls: ['./contracts-page.css'],
 })
 export class ContractsPage {
   editIcon = SquarePen;
@@ -22,8 +23,18 @@ export class ContractsPage {
 
   editedSubModule = signal<string>('');
 
-  toggleChildren(item: any) {
-    item.expanded = !item.expanded;
+  // NEW: keep expansion locally (don’t mutate input objects)
+  private expandedIds = signal<Set<number>>(new Set());       
+
+  // NEW: derive expansion state for an id
+  isExpanded(id: number): boolean {                            
+    return this.expandedIds().has(id);
+  }
+
+  toggleChildren(id : number) {
+    const next = new Set(this.expandedIds());
+    next.has(id) ? next.delete(id) : next.add(id);
+    this.expandedIds.set(next);
   }
 
   startEdit(item: SubModule) {
@@ -31,48 +42,45 @@ export class ContractsPage {
     this.editedSubModule.set(item.subModuleName)
   }
 
-  cancleEdit() {
+  cancelEdit() {
     this.editId.set(null);
   }
 
   saveModule(item: SubModule) {
 
     this.subModuleService.saveSubModule(this.editedSubModule(), item.subModuleId).subscribe({
-      next: (res) => {
-        console.log('Saved successfully', res);
-
+      next: () => {
+        item.subModuleName = this.editedSubModule();
         this.editId.set(null);
       }
     })
 
   }
 
-  updateStatusSubModule(item: SubModule,next:boolean) {
+  updateStatusSubModule(item: SubModule, next: boolean) {
     const prev = item.subModuleStatus;
     item.subModuleStatus = next
     this.subModuleService.updateSubModuleStatus(item
-      .subModuleId, !item.subModuleStatus
+      .subModuleId, next
     ).subscribe({
-      next: (res) => {
-        console.log(res);
+      next: () => {
       },
-      error:(err) => {
+      error: (err) => {
         console.error('Error updating module status:', err)
-          item.subModuleStatus = prev
+        item.subModuleStatus = prev
       }
     })
   }
 
-  updateStatusChild(child:Child, next: boolean) {
+  updateStatusChild(child: Child, next: boolean) {
     const prev = child.subChildStatus;
     child.subChildStatus = next
-    this.subModuleService.updateChildModuleStatus(child.childID,next).subscribe({
-      next: (res) => {
-        console.log(res);
+    this.subModuleService.updateChildModuleStatus(child.childID, next).subscribe({
+      next: () => {
       },
-      error:(err) => {
+      error: (err) => {
         console.error('Error updating module status:', err)
-          child.subChildStatus = prev
+        child.subChildStatus = prev
       }
     })
   }

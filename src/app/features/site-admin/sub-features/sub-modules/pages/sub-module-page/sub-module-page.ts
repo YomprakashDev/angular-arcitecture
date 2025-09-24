@@ -2,7 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { MenuItemComponent } from '../../../../../../shared/components/ui/menu-item/menu-item';
 import { ContractsPage } from '../contracts-page/contracts-page';
 import { SubModulesService } from '../../services/sub-modules.service';
-import { Module, Modules, SubModule } from '../../models/sub-module.model';
+import { Module as ModuleNode, Modules, SubModule } from '../../models/sub-module.model';
 import { finalize } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 type ModuleMin = { id: number; name: string };
@@ -10,7 +10,7 @@ type ModuleMin = { id: number; name: string };
 @Component({
   selector: 'app-sub-module-page',
   standalone: true,
-  imports: [MenuItemComponent, ContractsPage,MatProgressSpinnerModule],
+  imports: [MenuItemComponent, ContractsPage, MatProgressSpinnerModule],
   templateUrl: './sub-module-page.html',
   styleUrls: ['./sub-module-page.css']
 })
@@ -21,9 +21,11 @@ export class SubModulePage {
   items = signal<Modules | null>(null);
 
   isLoading = signal<boolean>(true);
+  error = signal<string | null>(null);
+
 
   // Selected module id
-  selectedItem = signal<number>(0);
+  selectedItem = signal<number | null>(null);
 
   // Submodules of the selected module (kept as a plain array to match your current template binding)
   selectedSubModules: SubModule[] = [];
@@ -34,27 +36,37 @@ export class SubModulePage {
   );
 
   // The currently selected full Module object
-  selectedModule = computed<Module | null>(() => {
+  selectedModule = computed<ModuleNode | null>(() => {
     const mods = this.items();
     const id = this.selectedItem();
-    return mods?.find(m => m.moduleID === id) ?? null;
+    return (id && mods) ? (mods.find(m => m.moduleID === id) ?? null) : null;
   });
 
   constructor() {
-    this.CallingAPI();
+    this.loadSubModules();
 
   }
 
-  private CallingAPI(): void {
+  private loadSubModules(): void {
     this.isLoading.set(true);
+    this.error.set(null);
     this.subModuleService.getSubModules().pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
         next: (res: Modules) => {
           this.items.set(res);
+          if (res.length > 0) {
+            const firstId = res[0].moduleID;
+            this.selectItem(firstId);
+          } else {
+            this.selectedItem.set(null);
+            this.selectedSubModules = [];
+          }
 
-          this.selectItem(res[0].moduleID);
+
+
         },
         error: (err) => {
+            this.error.set('Failed to load modules. Please try again.');
           console.error(err)
         }
       });

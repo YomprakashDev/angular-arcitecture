@@ -21,8 +21,9 @@ export class SubModulesService {
   }
 
   saveSubModule(title: string, id: number): Observable<Module> {
+      const safe = encodeURIComponent(title.trim());     
     return this.http.patch<Module>(
-      `${this.apiUrl}/SubModules/${id}/title?subModuleName=${title}`,
+      `${this.apiUrl}/SubModules/${id}/title?subModuleName=${safe}`,
       {},
     );
   }

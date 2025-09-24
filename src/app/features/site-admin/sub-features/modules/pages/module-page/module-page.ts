@@ -61,7 +61,7 @@ export class ModulePage {
 
   // loading signal
   isLoading = signal<boolean>(true);
-
+  error = signal<string | null>(null);
   refresh = signal(0);
 
   private refresh$ = toObservable(this.refresh);
