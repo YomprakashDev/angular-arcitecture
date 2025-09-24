@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Module, ModuleResponse } from '../model/module.model';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../../environments/environment';
@@ -13,7 +13,7 @@ export class ModuleService {
 
 
   getModules(page: number, pageSize: number): Observable<ModuleResponse> {
-     return this.http.get<ModuleResponse>(`${this.apiUrl}/Modules?page=${page}&pageSize=${pageSize}`);
+    return this.http.get<ModuleResponse>(`${this.apiUrl}/Modules?page=${page}&pageSize=${pageSize}`);
 
   }
 
@@ -21,7 +21,7 @@ export class ModuleService {
     return this.http.put<Module>(`${this.apiUrl}/Modules/${module.id}`, module);
   }
 
-  updatedStatus(id: number, status: boolean): Observable<Module> {
-    return this.http.patch<Module>(`${this.apiUrl}/Modules/${id}/status`,  status )
+  updateStatus(id: number, status: boolean): Observable<Module> {
+    return this.http.patch<Module>(`${this.apiUrl}/Modules/${id}/status`, status); )
   }
 }

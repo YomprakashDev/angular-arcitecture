@@ -16,9 +16,6 @@ export interface ModuleResponse {
     data: Module[];
 }
 
-
-
-
 export interface ModulePayload {
 
     id: number,

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { Button } from '../../../../../../shared/components/ui/button/button';
 import { Tabs, Tab } from '../../../../../../shared/components/tabs/tabs';
 import { CommonModule } from '@angular/common';
@@ -6,16 +6,14 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Modal } from '../../../../../../shared/components/ui/modal/modal';
-import { AddOrganizationForm } from '../../components/add-organization-form/add-organization-form';
 import { OrganizationService } from '../../services/organization.service';
 import { LucideAngularModule, X } from 'lucide-angular';
-
 import { OrganizationData } from '../../models/organization.model';
 import { OrganizationDetails } from "../../components/organization-details/organization-details";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { finalize } from 'rxjs';
-import { Stepper } from "../../components/stepper/stepper";
+import { catchError, EMPTY, finalize } from 'rxjs';
+import { AddOraganizationModel } from '../../components/add-oraganization-model/add-oraganization-model';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-organization-page',
@@ -23,86 +21,62 @@ import { Stepper } from "../../components/stepper/stepper";
   imports: [
     Button, Tabs, CommonModule,
     MatTableModule, MatIconModule, MatButtonModule, MatTooltipModule,
-    AddOrganizationForm,
     MatProgressSpinnerModule,
     LucideAngularModule,
-    Stepper
+    AddOraganizationModel,
   ],
   templateUrl: './organization-page.html',
   styleUrls: ['./organization-page.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrganizationPage {
-  // UI state
-  tabs = signal<Tab[]>([
-    { id: 'active', label: 'Active (12)' },
-    { id: 'inactive', label: 'In-Active (8)' },
+  // tabs + UI flags
+  readonly tabs = signal<Tab[]>([
+    { id: 'active', label: 'Active' },
+    { id: 'inactive', label: 'Inactive' },
   ]);
-  isAddOrganizationModalOpen = signal(false);
-  activeTab = signal('active');
-  searchTerm = signal('');
+  readonly isAddOrganizationModalOpen = signal(false);
+  readonly activeTab = signal<'active' | 'inactive'>('active');
+  readonly searchTerm = signal('');
+  readonly isLoading = signal(true);
+  readonly error = signal<string | null>(null);
 
-  displayedColumns: string[] = [
-    'actions',
-    'organization',
-    'contactPerson',
-    'email',
-    'phone',
-  ];
-
-
-  currentStep = signal<number>(0);
-
-  updateCurrentStep() {
-    this.currentStep.update(i => i + 1);
-  }
-
-  readonly closeIcon = X;
-
-  closeModal() {
-    this.isAddOrganizationModalOpen.set(false);
-  }
-
-  isLoading = signal(true);
-
-  stepLabels = ['Company Information', 'Package Information', 'Support Credentials']
-
-  isLastStep = computed(() => this.currentStep() === this.stepLabels.length - 1)
-  isFirstStep = computed(() => this.currentStep() === 0)
-
-
-  prevStep() {
-    if (this.currentStep() > 0)
-      this.currentStep.update(i => i - 1);
-  }
-
-  private organizationService = inject(OrganizationService);
-
+   // Raw data source (used directly by the table)
+   readonly organizations = signal<OrganizationData[]>([]);
   // IMPORTANT: datasource typed to nested API model
   dataSource = new MatTableDataSource<OrganizationData>([]);
 
-  title = signal('Organizations');
-  constructor() {
+  // table columns
+  readonly displayedColumns = ['actions', 'organization', 'contactPerson', 'email', 'phone'] as const;
 
-    // Load data
-    this.organizationService.getOrganizations().pipe(finalize(() => {
-      this.isLoading.set(false);
-    }))
-      .subscribe({
-        next: (res: OrganizationData[]) => {
-          this.dataSource.data = res
-        },
-        error: err => console.error(err)
-      });
+  // services
+  private readonly organizationService = inject(OrganizationService);
+
+ constructor() {
+    // Load data into organizations() and stop spinner; show a simple error on failure
+    this.organizationService
+      .getOrganizations()
+      .pipe(
+        takeUntilDestroyed(),
+        finalize(() => this.isLoading.set(false)),
+        catchError((err) => {
+          console.error(err);
+          this.error.set('Failed to load organizations.');
+          return EMPTY;
+        })
+      )
+      .subscribe((res) => this.organizations.set(res));
   }
 
+  // events
   setActiveTab(tabId: string) {
-    this.activeTab.set(tabId);
-    // If tab switches should filter, add logic here
+    this.activeTab.set(tabId === 'inactive' ? 'inactive' : 'active');
   }
-
   addOrganization() {
     this.isAddOrganizationModalOpen.set(true);
+  }
+  closeModal() {
+    this.isAddOrganizationModalOpen.set(false);
   }
 
 

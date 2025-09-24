@@ -1,20 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, inject, signal, ViewChild, } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
+//import { MatCardModule } from '@angular/material/card';
+//import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
+//import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import * as XLSX from 'xlsx';
+//import * as XLSX from 'xlsx';
 import { LucideAngularModule, SquarePen, GripVertical } from 'lucide-angular';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSliderModule } from '@angular/material/slider';
+//import { MatSliderModule } from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
-import { MatRadioModule } from '@angular/material/radio';
+//import { MatRadioModule } from '@angular/material/radio';
 
 import { ModuleService } from '../../services/module.service';
 import { ModuleResponse, Module } from '../../model/module.model';
@@ -34,21 +34,14 @@ import { toSignal, toObservable } from '@angular/core/rxjs-interop';
   imports: [
     CommonModule,
     MatTableModule,
-    MatSlideToggleModule,
     MatIconModule,
     MatButtonModule,
-    MatCardModule,
-
-    MatFormFieldModule,
     MatInputModule,
     MatSortModule,
     MatPaginatorModule,
-
     LucideAngularModule,
     MatProgressSpinnerModule,
-    MatSliderModule,
     FormsModule,
-    MatRadioModule,
   ],
   templateUrl: './module-page.html',
   styleUrls: ['./module-page.css'],
@@ -123,7 +116,7 @@ export class ModulePage {
     this.editingModuleId.set(module.id);
     this.editedModuleName.set(module.moduleName);
     this.editedModuleDescription.set(module.description);
-    
+
     this.isDirty.set(false); // reset when starting edit
   }
 
@@ -167,11 +160,9 @@ export class ModulePage {
 
     const prev = module.status;
     module.status = next
-    this.moduleService.updatedStatus(module.id, next).subscribe({
+    this.moduleService.updateStatus(module.id, next).subscribe({
       next: (res) => {
-        console.log(res);
-
-        console.log('Refreshing list...');
+        this.refresh.update(v => v + 1);
       },
       error: (err) => {
         console.error('Error updating module status:', err,
