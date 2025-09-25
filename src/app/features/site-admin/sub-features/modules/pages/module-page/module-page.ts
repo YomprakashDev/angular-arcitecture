@@ -1,225 +1,142 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, signal, ViewChild, } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-//import { MatCardModule } from '@angular/material/card';
-//import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-//import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-//import * as XLSX from 'xlsx';
-import { LucideAngularModule, SquarePen, GripVertical } from 'lucide-angular';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-//import { MatSliderModule } from '@angular/material/slider';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-//import { MatRadioModule } from '@angular/material/radio';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { LucideAngularModule, SquarePen, GripVertical } from 'lucide-angular';
 
 import { ModuleService } from '../../services/module.service';
-import { ModuleResponse, Module } from '../../model/module.model';
-import { combineLatest } from 'rxjs';
-import { tap, switchMap, finalize } from 'rxjs/operators';
-import { toSignal, toObservable } from '@angular/core/rxjs-interop';
+import { Module } from '../../model/module.model';
 
-/**
- * Represents a single configurable module within the application.
- */
+import { EMPTY } from 'rxjs';
+import { catchError, finalize } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-
-
+/** Minimal, Tailwind-first Modules page (material table + inline edit). */
 @Component({
   selector: 'app-module-page',
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
+    // Angular Material (only what’s really used)
     MatTableModule,
     MatIconModule,
     MatButtonModule,
     MatInputModule,
-    MatSortModule,
-    MatPaginatorModule,
-    LucideAngularModule,
     MatProgressSpinnerModule,
-    FormsModule,
+    // lucide icons
+    LucideAngularModule,
   ],
   templateUrl: './module-page.html',
-  styleUrls: ['./module-page.css'],
+  styleUrls: ['./module-page.css'], // can be empty now (kept for future styles if needed)
 })
 export class ModulePage {
-  // columns
+  /** Table columns */
   displayedColumns = ['actions', 'status', 'moduleName', 'description', 'icon'];
 
+  /** Icons */
   readonly editIcon = SquarePen;
   readonly dragIcon = GripVertical;
 
-  private moduleService = inject(ModuleService);
-
-  // paging signals
-  page = signal<number>(1);
-  pageSize = signal<number>(10);
-
-  // loading signal
+  /** UI state */
   isLoading = signal<boolean>(true);
   error = signal<string | null>(null);
-  refresh = signal(0);
 
-  private refresh$ = toObservable(this.refresh);
-  // Convert signals to observables and build pipeline:
-  // whenever page or pageSize changes -> fetch modules, manage loading
-  private page$ = toObservable(this.page);
-  private pageSize$ = toObservable(this.pageSize);
-
-  private modules$ = combineLatest([this.page$, this.pageSize$, this.refresh$]).pipe(
-    tap(() => this.isLoading.set(true)),
-    switchMap(([p, ps]) =>
-      this.moduleService.getModules(p, ps).pipe(
-        finalize(() => this.isLoading.set(false))
-      )
-    )
-  );
-
-  // expose data as a signal for template usage
-  module = toSignal<ModuleResponse | null>(this.modules$, { initialValue: null });
-
-  // material data source
-  dataSource = new MatTableDataSource<Module>([]);
-
-  // inline edit signals
+  /** Inline edit state */
   editingModuleId = signal<number | null>(null);
   editedModuleName = signal('');
   editedModuleDescription = signal('');
+  isDirty = signal(false);
 
-  isDirty = signal(false); // track if user made changes
+  /** Table DS */
+  dataSource = new MatTableDataSource<Module>([]);
+
+  private moduleService = inject(ModuleService);
 
   constructor() {
-    // keep table data in sync with module signal
-    effect(() => {
-      const resp = this.module();
-      this.dataSource.data = resp?.data ?? [];
-    });
-
-    // trigger initial load (page/pageSize have initial values)
-    // by resetting same values we ensure toObservable emits to start pipeline
-    // this.page.set(this.page());
-    // this.pageSize.set(this.pageSize());
-
+    this.loadModules();
   }
 
+  /** Load data with friendly error handling. */
+  loadModules(): void {
+    this.isLoading.set(true);
+    this.error.set(null);
 
-  /**
- * Enables edit mode for a specific module.
- * @param module The module to be edited.
- */
+    this.moduleService
+      .getModules(1, 10)
+      .pipe(
+        takeUntilDestroyed(),
+        finalize(() => this.isLoading.set(false)),
+        catchError((err) => {
+          console.error('[ModulePage] load error:', err);
+          this.error.set('Failed to load modules. Please try again.');
+          this.dataSource.data = [];
+          return EMPTY;
+        })
+      )
+      .subscribe((res) => (this.dataSource.data = res.data ?? []));
+  }
+
+  /** Track rows by stable id (perf). */
+  trackById = (_: number, row: Module) => row.id;
+
+  /** Enter edit mode for a row. */
   editModule(module: Module) {
-
     this.editingModuleId.set(module.id);
     this.editedModuleName.set(module.moduleName);
     this.editedModuleDescription.set(module.description);
-
-    this.isDirty.set(false); // reset when starting edit
+    this.isDirty.set(false);
   }
 
+  /** Mark inline fields dirty. */
   onFieldChange() {
     this.isDirty.set(true);
   }
 
-
-  cancelEditModule(module?: Module) {
+  /** Cancel edit mode. */
+  cancelEditModule() {
     this.editingModuleId.set(null);
-
   }
 
-  /**
-   * Saves the changes for the currently edited module.
-   * @param moduleId The ID of the module to save.
-   */
+  /** Persist edited row and refresh. */
   saveModule(module: Module) {
-    const payLoad: Module = {
+    const payload: Module = {
       ...module,
-      id: module.id,
       moduleName: this.editedModuleName(),
       description: this.editedModuleDescription(),
-    }
-    this.moduleService.saveModule(payLoad).subscribe({
-      next: () => {
-        this.refresh.update(v => v + 1);
-        this.editingModuleId.set(null);
-      },
-      error: (err) => {
-        console.error('Error saving module:', err);
-      }
-    });
+    };
 
-
+    this.moduleService
+      .saveModule(payload)
+      .pipe(takeUntilDestroyed())
+      .subscribe({
+        next: () => {
+          this.loadModules();
+          this.editingModuleId.set(null);
+        },
+        error: (err) => {
+          console.error('[ModulePage] save error:', err);
+        },
+      });
   }
 
-
-
+  /** Optimistic toggle with revert on error. */
   toggleModuleStatus(module: Module, next: boolean) {
-
     const prev = module.status;
-    module.status = next
-    this.moduleService.updateStatus(module.id, next).subscribe({
-      next: (res) => {
-        this.refresh.update(v => v + 1);
-      },
-      error: (err) => {
-        console.error('Error updating module status:', err,
-          module.status = prev
-        );
-      }
-    })
+    module.status = next;
+
+    this.moduleService
+      .updateStatus(module.id, next)
+      .pipe(takeUntilDestroyed())
+      .subscribe({
+        error: (err) => {
+          console.error('[ModulePage] status error:', err);
+          module.status = prev;
+        },
+      });
   }
-
-  // called by paginator (or anywhere) to change page
-  loadPage(page: number, pageSize: number) {
-    this.page.set(page);
-    this.pageSize.set(pageSize);
-  }
-
-  // Connects the MatSort directive to the table's data source.
-  @ViewChild(MatSort)
-  set sort(sort: MatSort) {
-    this.dataSource.sort = sort;
-  }
-
-  // Connects the MatPaginator directive to the table's data source.
-  @ViewChild(MatPaginator)
-  set paginator(paginator: MatPaginator) {
-    this.dataSource.paginator = paginator;
-  }
-
-
-
-
-
-
-  /**
-   * Exports the current module configuration to an Excel file.
-   */
-  // exportToExcel() {
-  //   const dataToExport = this.modules().map(({ moduleName, description, status, icon, order }) => ({
-  //     'Module Name': moduleName,
-  //     'Description': description,
-  //     'Status': status ? 'Active' : 'Inactive',
-  //     'Icon': icon,
-  //     'Order': order,
-  //   }));
-
-  //   const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
-  //   const wb: XLSX.WorkBook = XLSX.utils.book_new();
-  //   XLSX.utils.book_append_sheet(wb, ws, 'Modules');
-  //   ws['!cols'] = [{ wch: 20 }, { wch: 40 }, { wch: 10 }, { wch: 15 }, { wch: 8 }];
-  //   const dateStr = new Date().toISOString().split('T')[0];
-  //   XLSX.writeFile(wb, `module-configuration-${dateStr}.xlsx`);
-  // }
-
-
-
-
 }
-
-
-
-

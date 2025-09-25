@@ -4,17 +4,13 @@ import { Module, ModuleResponse } from '../model/module.model';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../../environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class ModuleService {
-  private http = inject(HttpClient)
-  private apiUrl = environment.apiUrl
-
+  private http = inject(HttpClient);
+  private apiUrl = environment.apiUrl;
 
   getModules(page: number, pageSize: number): Observable<ModuleResponse> {
     return this.http.get<ModuleResponse>(`${this.apiUrl}/Modules?page=${page}&pageSize=${pageSize}`);
-
   }
 
   saveModule(module: Module): Observable<Module> {
@@ -22,6 +18,8 @@ export class ModuleService {
   }
 
   updateStatus(id: number, status: boolean): Observable<Module> {
+    // If your backend expects query params instead of a boolean body, switch to:
+    // return this.http.patch<Module>(`${this.apiUrl}/Modules/${id}/status?status=${status}`, {});
     return this.http.patch<Module>(`${this.apiUrl}/Modules/${id}/status`, status);
   }
 }
