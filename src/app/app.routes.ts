@@ -61,7 +61,8 @@ export const routes: Routes = [
               import('./features/site-admin/sub-features/organization/pages/organization-page/organization-page')
                 .then(m => m.OrganizationPage),
           },
-        ]
+        ],
+        
       },
       {
         path: 'view-profile',

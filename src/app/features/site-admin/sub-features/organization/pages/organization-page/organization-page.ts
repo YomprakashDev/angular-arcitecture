@@ -7,14 +7,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { OrganizationService } from '../../services/organization.service';
-import { LucideAngularModule, X } from 'lucide-angular';
+
 import { OrganizationData } from '../../models/organization.model';
 import { OrganizationDetails } from "../../components/organization-details/organization-details";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { catchError, EMPTY, finalize } from 'rxjs';
 import { AddOraganizationModel } from '../../components/add-oraganization-model/add-oraganization-model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
+import { LucideAngularModule,LogOut , CircleX ,MonitorCog ,SquarePen, FileText ,GripVertical,Eye  } from 'lucide-angular';
 @Component({
   selector: 'app-organization-page',
   standalone: true,
@@ -40,6 +40,14 @@ export class OrganizationPage {
   readonly searchTerm = signal('');
   readonly isLoading = signal(true);
   readonly error = signal<string | null>(null);
+ readonly viewIcon = Eye
+ readonly editIcon = SquarePen
+ readonly deleteIcon = GripVertical
+ readonly fileIcon = FileText
+ readonly cogIcon = MonitorCog
+ readonly logoutIcon = LogOut
+ readonly closeIcon = CircleX
+
 
    // Raw data source (used directly by the table)
    readonly organizations = signal<OrganizationData[]>([]);
