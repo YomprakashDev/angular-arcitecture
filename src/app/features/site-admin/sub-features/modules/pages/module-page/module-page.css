@@ -1,19 +1,289 @@
+/* Custom table styles */
+
+
+.module-table {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+ 
+}
+
+.module-table .mat-mdc-table {
+  background: transparent;
+}
+
+.module-table .mat-mdc-header-row {
+  background-color: #F1F3F6;
+
+}
+
+.module-table .mat-mdc-header-cell {
+  color: #7E7A88;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: 'Mulish', sans-serif;
+ 
+
+}
+
+.module-table .mat-mdc-row {
+  color: #182330;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+/* Zebra striping for even rows */
+.module-table .mat-mdc-row:nth-child(even) {
+  background-color: #F7F8FA;
+  border: none;
+}
+
+.module-table .mat-mdc-row:hover {
+  background-color: #e9ecef; /* Adjusted for better visibility on all rows */
+}
+
+.module-table .mat-mdc-cell {
+  border-bottom: none;
+  font-size: 14px;
+}
+
+.actions-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.drag-handle {
+  color: #787a7f;
+  cursor: move;
+}
+
+.edit-icon {
+  color: #787A7F;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.icon {
+  color: #220303;
+}
+
+.edit-icon:hover {
+  color: #495057;
+}
+
+.module-icon {
+  color: #606060;
+  font-size: 20px;
+}
+
+.module-name {
+  font-weight: 500;
+  color: #212529;
+}
+
+.module-description {
+  color: #6c757d;
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+
+
+
+/* Base container */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 22px;
+   -webkit-tap-highlight-color: transparent;
+}
+
+/* Hide default checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Track */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #ccc;
+  border-radius: 34px;
+  transition: .3s;
+}
+
+/* Knob */
+.slider::before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: .3s;
+}
+
+/* Checked state */
+.switch input:checked + .slider {
+  background-color: #6D79FA; /* Indigo-500, matches your screenshot */
+}
+.switch input:checked + .slider::before {
+  transform: translateX(18px);
+}
+.module-table {
+  position: relative;
+}
+
+.loading-overlay {
+  position: absolute;
+  inset: 0; /* top/right/bottom/left 0 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.6);
+  z-index: 20;
+}
+
+.drag-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------------------------
+   Inline edit field styling
+   (only applies to mat-form-field.edit-field inside .module-table)
+   --------------------------- */
+
+.module-table mat-form-field.edit-field {
+  --input-bg: transparent;         /* change if you want white background */
+  --input-border: #E9ECEF;
+  --input-border-focus: #6D79FA;   /* indigo accent from your theme */
+  --input-color: #1D1D21;          /* module title color */
+  font-family: 'Mulish', sans-serif;
+  font-size: 14px;
+  margin: 0;                       /* avoid any extra outside space */
+  padding: 0;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* Ensure the material-internal wrapper behaves like a compact input box */
+.module-table mat-form-field.edit-field .mat-mdc-form-field-flex,
+.module-table mat-form-field.edit-field .mat-form-field-infix {
+  display: flex;
+  align-items: center;            /* vertically center input inside the row */
+  height: 16px;                   /* fixed compact height to avoid jumps */
+  padding: 0 10px;                /* horizontal breathing room */
+  border-radius: 6px;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  transition: border-color .15s ease, box-shadow .15s ease;
+  box-sizing: border-box;
+}
+
+/* Input itself: full height, no inner padding that increases row height */
+.module-table mat-form-field.edit-field input[matInput],
+.module-table mat-form-field.edit-field textarea[matInput] {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--input-color);
+  font-size: 14px;
+  line-height: 20px;
+  box-sizing: border-box;
+}
+
+/* Focus / active state: colored border + subtle shadow */
+.module-table mat-form-field.edit-field:focus-within .mat-mdc-form-field-flex,
+.module-table mat-form-field.edit-field:focus-within .mat-form-field-infix {
+  border-color: var(--input-border-focus);
+  box-shadow: 0 0 0 4px rgba(109,121,250,0.10);  /* subtle focus ring */
+}
+
+/* Hide subscript/hint height when not used (prevents extra reserved space) */
+.module-table mat-form-field.edit-field .mat-mdc-form-field-subscript-wrapper,
+.module-table mat-form-field.edit-field .mat-form-field-subscript-wrapper {
+  display: none;
+}
+
+/* Keep table cells vertically centered (prevents jumps when switching to edit) */
+.module-table td,
+.module-table th,
+.module-table .mat-mdc-cell {
+  vertical-align: middle;
+}
+
+/* Small screens: slightly smaller padding so compactness remains */
+@media (max-width: 768px) {
+  .module-table mat-form-field.edit-field .mat-mdc-form-field-flex,
+  .module-table mat-form-field.edit-field .mat-form-field-infix {
+    height: 34px;
+    padding: 0 0px;
+  }
+}
+
 
 /* Inline edit input: compact, subtle, brand-aligned */
 .edit-input {
   width: 100%;
-  height: 36px;
+  height: 36px;                  /* compact row height */
   padding: 0 10px;
-  border: 1px solid #eaeaea;
+  border: 1px solid #eaeaea;     /* matches table border */
   border-radius: 8px;
   background: #ffffff;
-  color: #1D1D21;
+  color: #1D1D21;                /* headline color */
   font-family: Mulish, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   font-size: 14px;
   line-height: 1;
   outline: none;
   transition: border-color 120ms ease, box-shadow 120ms ease, background 120ms ease;
 }
-.edit-input::placeholder { color: #9ca3af; }
-.edit-input:hover { border-color: #cac6d3; }
-.edit-input:focus { border-color: #6D7BFA; box-shadow: 0 0 0 3px rgba(109, 123, 250, 0.15); }
+
+/* Placeholder subtlety */
+.edit-input::placeholder {
+  color: #9ca3af; /* neutral-400 */
+  opacity: 1;
+}
+
+/* Hover: soft lift */
+.edit-input:hover {
+  border-color: #cac6d3;         /* your neutral used in comments */
+}
+
+/* Focus: brand accent with subtle ring */
+.edit-input:focus {
+  border-color: #6D7BFA;
+  box-shadow: 0 0 0 3px rgba(109, 123, 250, 0.15);
+}
+
+.module-table .mdc-data-table__cell,
+.module-table .mdc-data-table__header-cell {
+  border-bottom: 0 !important;
+}
+/* Apply only inside this table */
+.module-table .mdc-data-table__header-cell {
+  padding: 0 12px !important;                 /* kill MDC padding */
+}
+
+.module-table .mat-mdc-header-cell .mat-sort-header-container {
+  padding: 0 !important;                 /* kill container padding */
+  margin: 0;                             /* avoid extra space */
+}
+
+.module-table .mat-mdc-header-cell .mat-sort-header-arrow {
+  margin-left: 4px;                      /* tiny gap for arrow */
+}

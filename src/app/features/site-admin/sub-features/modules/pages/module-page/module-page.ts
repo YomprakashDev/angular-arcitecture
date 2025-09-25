@@ -14,25 +14,27 @@ import { Module } from '../../model/module.model';
 import { EMPTY } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { LoadingSpinner } from "../../../../../../shared/components/ui/loading-spinner/loading-spinner";
+import { ErrorBanner } from "../../../../../../shared/components/ui/error-banner/error-banner";
 
-/** Minimal, Tailwind-first Modules page (material table + inline edit). */
+/** Minimal, Tailwind-first Modules page */
 @Component({
   selector: 'app-module-page',
   standalone: true,
   imports: [
     CommonModule,
     FormsModule,
-    // Angular Material (only what’s really used)
     MatTableModule,
     MatIconModule,
     MatButtonModule,
     MatInputModule,
     MatProgressSpinnerModule,
-    // lucide icons
     LucideAngularModule,
-  ],
+    LoadingSpinner,
+    ErrorBanner
+],
   templateUrl: './module-page.html',
-  styleUrls: ['./module-page.css'], // can be empty now (kept for future styles if needed)
+  styleUrls: ['./module-page.css'], 
 })
 export class ModulePage {
   /** Table columns */
@@ -112,7 +114,6 @@ export class ModulePage {
 
     this.moduleService
       .saveModule(payload)
-      .pipe(takeUntilDestroyed())
       .subscribe({
         next: () => {
           this.loadModules();
@@ -131,7 +132,6 @@ export class ModulePage {
 
     this.moduleService
       .updateStatus(module.id, next)
-      .pipe(takeUntilDestroyed())
       .subscribe({
         error: (err) => {
           console.error('[ModulePage] status error:', err);

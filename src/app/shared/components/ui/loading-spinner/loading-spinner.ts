@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
-
+import { Component, input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-loading-spinner',
-  imports: [],
+  standalone: true,
+  imports: [MatProgressSpinnerModule, CommonModule],
   templateUrl: './loading-spinner.html',
-  styleUrl: './loading-spinner.css'
+  styleUrls: ['./loading-spinner.css']
 })
 export class LoadingSpinner {
-
+  show = input<boolean>(false);
+  diameter = input<number>(48);
 }

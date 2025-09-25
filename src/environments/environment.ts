@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://erp.iguru.guru/CLM/api' 
+  apiUrl: 'http://192.168.100.52/api' 
 };

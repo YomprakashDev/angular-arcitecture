@@ -1,138 +1,160 @@
-<!-- Loading overlay (Tailwind) -->
-@if (isLoading()) {
-  <div class="fixed inset-0 z-50 grid place-items-center bg-white/60">
-    <mat-progress-spinner mode="indeterminate" diameter="48" aria-label="Loading"></mat-progress-spinner>
-  </div>
-}
 
-<!-- Error panel (Tailwind) -->
-@if (error()) {
-  <div class="m-4 rounded border border-red-200 bg-red-50 p-3 text-sm text-red-800" [attr.aria-busy]="isLoading() ? 'true' : 'false'">
-    {{ error() }}
-  </div>
-}
+<app-loading-spinner [show]="isLoading()" [diameter]="48"></app-loading-spinner>
 
-<!-- Content -->
-@if (!isLoading() && !error()) {
-  <div class="flex h-full w-full rounded-lg bg-white">
-    <div class="flex-1 p-6">
-      <div class="mb-4 flex w-full items-center justify-between">
-        <h1 class="text-2xl font-bold text-[#1D1D21]">Modules</h1>
-      </div>
+<app-error-banner [message]="error()"></app-error-banner>
 
-      <div class="relative overflow-hidden rounded-lg border border-[#eaeaea]">
-        <table mat-table [dataSource]="dataSource" class="w-full bg-white">
-          <!-- Actions -->
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef class="bg-[#F1F3F6] px-3 py-3 text-left text-sm font-bold tracking-wider text-[#7E7A88]">
-              Actions
-            </th>
-            <td mat-cell *matCellDef="let module" class="flex items-center whitespace-nowrap px-3 py-3">
-              <span class="mr-2 inline-flex cursor-move" aria-label="Drag handle">
-                <lucide-angular [img]="dragIcon" class="text-[#787A7F]"></lucide-angular>
-              </span>
 
-              @if (editingModuleId() !== module.id) {
-                <button type="button" (click)="editModule(module)" mat-icon-button aria-label="Edit module">
-                  <lucide-angular [img]="editIcon" class="text-[#787A7F]"></lucide-angular>
-                </button>
-              } @else {
-                <button type="button" (click)="saveModule(module)" mat-icon-button color="primary" [disabled]="!isDirty()" aria-label="Save module">
-                  <mat-icon>save</mat-icon>
-                </button>
-                <button type="button" (click)="cancelEditModule()" mat-icon-button color="warn" aria-label="Cancel edit">
-                  <mat-icon>cancel</mat-icon>
-                </button>
-              }
-            </td>
-          </ng-container>
+@if (!isLoading() && !error() ) {
+  <div class="flex w-full h-full bg-white rounded-lg">
+  <div class="flex-1 p-6">
+    <div class="flex justify-between w-full">
+      <h1 class="text-2xl mb-4 font-bold text-[#1D1D21]">Modules</h1>
+    </div>
+    <div class="relative overflow-hidden rounded-lg module-table border border-[#eaeaea]">
+      <table mat-table [dataSource]="dataSource" class="w-full bg-white">
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="tracking-wider">Actions</th>
+          <td mat-cell *matCellDef="let module" class="flex items-center whitespace-nowrap">
+            <span class="mr-2 cursor-move drag-handle" aria-label="Drag handle">
+              <lucide-angular [img]="dragIcon" class="text-[#787A7F]"></lucide-angular>
+            </span>
+            @if (editingModuleId() !== module.id) {
+            <button
+              (click)="editModule(module)"
+              mat-icon-button
+              class="edit-icon"
+              aria-label="Edit module"
+            >
+              <lucide-angular [img]="editIcon" class="edit-icon text-[#787A7F]"></lucide-angular>
+            </button>
+            } @else {
+            <button
+              (click)="saveModule(module)"
+              mat-icon-button
+              color="primary"
+              [disabled]="!isDirty()"
+              aria-label="Savemodule"
+            >
+              <mat-icon>save</mat-icon>
+            </button>
+            <button
+              (click)="cancelEditModule()"
+              type="button"
+              mat-icon-button
+              color="warn"
+              aria-label="Cancel edit"
+            >
+              <mat-icon>cancel</mat-icon>
+            </button>
+            }
+          </td>
+        </ng-container>
 
-          <!-- Status -->
-          <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef class="bg-[#F1F3F6] px-3 py-3 text-left text-sm font-bold tracking-wider text-[#7E7A88]">
-              Status
-            </th>
-            <td mat-cell *matCellDef="let module" class="whitespace-nowrap px-3 py-3">
-              <!-- Tailwind peer-based toggle -->
-              <label class="inline-flex cursor-pointer items-center">
-                <input
-                  type="checkbox"
-                  class="peer sr-only"
-                  [checked]="module.status"
-                  (change)="toggleModuleStatus(module, $event.target.checked)"
-                />
-                <span class="relative inline-block h-5 w-10 rounded-full bg-gray-300 transition-colors peer-checked:bg-indigo-500">
-                  <span class="absolute left-0.5 top-0.5 inline-block h-4 w-4 rounded-full bg-white transition-transform peer-checked:translate-x-5"></span>
-                </span>
-              </label>
-            </td>
-          </ng-container>
+        <ng-container matColumnDef="status">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="text-sm font-bold tracking-wider text-left text-gray-700"
+          >
+            Status
+          </th>
+          <td mat-cell *matCellDef="let module" class="p-4 whitespace-nowrap">
+            <label class="switch">
+              <input
+                type="checkbox"
+                [checked]="module.status"
+                (change)="toggleModuleStatus(module, $event.target.checked)"
+              />
 
-          <!-- Module Name -->
-          <ng-container matColumnDef="moduleName">
-            <th mat-header-cell *matHeaderCellDef class="bg-[#F1F3F6] px-3 py-3 text-left text-sm font-bold tracking-wider text-[#7E7A88]">
-              Module Name
-            </th>
-            <td mat-cell *matCellDef="let module" class="px-3 py-3 font-[Mulish] text-[14px] leading-[100%] tracking-[0%]">
-              @if (editingModuleId() !== module.id) {
-                {{ module.moduleName }}
-              } @else {
-                <input
-                  class="edit-input"
-                  matInput
-                  [ngModel]="editedModuleName()"
-                  (ngModelChange)="editedModuleName.set($event); onFieldChange()"
-                  placeholder="Module name"
-                />
-              }
-            </td>
-          </ng-container>
+              <span class="slider"></span>
+            </label>
+          </td>
+        </ng-container>
 
-          <!-- Description -->
-          <ng-container matColumnDef="description">
-            <th mat-header-cell *matHeaderCellDef class="bg-[#F1F3F6] px-3 py-3 text-left text-sm font-bold tracking-wider text-[#7E7A88]">
-              Description
-            </th>
-            <td mat-cell *matCellDef="let module" class="px-3 py-3">
-              @if (editingModuleId() !== module.id) {
-                {{ module.description }}
-              } @else {
-                <input
-                  class="edit-input"
-                  matInput
-                  [ngModel]="editedModuleDescription()"
-                  (ngModelChange)="editedModuleDescription.set($event); onFieldChange()"
-                  placeholder="Description"
-                />
-              }
-            </td>
-          </ng-container>
+        <ng-container matColumnDef="moduleName">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            sortActionDescription="Sort by module name"
+            class="p-4 text-sm font-bold tracking-wider text-left text-gray-700"
+          >
+            Module Name
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let module"
+            class="p-4 whitespace-nowrap font-[Mulish] font-normal text-[14px] leading-[100%] tracking-[0%]"
+          >
+            @if (editingModuleId() !== module.id) {
+            {{ module.moduleName }}
+            } @else {
 
-          <!-- Icon -->
-          <ng-container matColumnDef="icon">
-            <th mat-header-cell *matHeaderCellDef class="bg-[#F1F3F6] px-3 py-3 text-left text-sm font-bold tracking-wider text-[#7E7A88]">
-              Icon
-            </th>
-            <td mat-cell *matCellDef="let module" class="px-3 py-3">
-              <mat-icon class="text-[#606060] text-[20px]">{{ module.icon }}</mat-icon>
-            </td>
-          </ng-container>
+            <input
+              class="edit-input"
+              matInput
+              [ngModel]="editedModuleName()"
+              (ngModelChange)="editedModuleName.set($event); onFieldChange()"
+              placeholder="Module name"
+            />
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns" class=""></tr>
-          <tr
-            mat-row
-            *matRowDef="let row; columns: displayedColumns; trackBy: trackById"
-            class="even:bg-[#F7F8FA] hover:bg-gray-100 transition-colors"
-          ></tr>
+            }
+          </td>
+        </ng-container>
 
-          <!-- Empty state -->
-          <tr class="mat-row" *ngIf="!isLoading() && (dataSource.data?.length ?? 0) === 0">
-            <td class="mat-cell p-6 text-center text-gray-500" [attr.colspan]="displayedColumns.length">
-              No modules found.
-            </td>
-          </tr>
-        </table>
-      </div>
+        <ng-container matColumnDef="description">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            sortActionDescription="Sort by description"
+            class="text-sm font-bold tracking-wider text-left text-gray-700"
+          >
+            Description
+          </th>
+          <td mat-cell *matCellDef="let module" class="p-4">
+            @if (editingModuleId() !== module.id) {
+            {{ module.description }}
+            } @else {
+
+            <input
+              class="edit-input"
+              matInput
+              [ngModel]="editedModuleDescription()"
+              (ngModelChange)="editedModuleDescription.set($event); onFieldChange()"
+              placeholder="Description"
+            />
+
+            }
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="icon">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="p-4 text-sm font-bold tracking-wider text-left text-gray-700"
+          >
+            Icon
+          </th>
+          <td mat-cell *matCellDef="let module" class="p-4 whitespace-nowrap">
+            <mat-icon class="module-icon">{{ module.icon }}</mat-icon>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-gray-50"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr class="mat-row" *ngIf="!isLoading() && (dataSource.data?.length ?? 0) === 0">
+          <td
+            class="mat-cell p-6 text-center text-gray-500"
+            [attr.colspan]="displayedColumns.length"
+          >
+            No modules found.
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
+</div>
 }
+
+
+

@@ -18,8 +18,6 @@ export class ModuleService {
   }
 
   updateStatus(id: number, status: boolean): Observable<Module> {
-    // If your backend expects query params instead of a boolean body, switch to:
-    // return this.http.patch<Module>(`${this.apiUrl}/Modules/${id}/status?status=${status}`, {});
     return this.http.patch<Module>(`${this.apiUrl}/Modules/${id}/status`, status);
   }
 }
