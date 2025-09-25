@@ -14,7 +14,7 @@
     <div class="p-4">
       <div class="rounded-xl border border-gray-200 bg-[#F0F2F5]">
         @if (currentStep() === 0) {
-          <app-add-company-information [formGroup]="companyForm"></app-add-company-information>
+          <app-add-company-information [formGroup]="organizationForm"></app-add-company-information>
         } @if (currentStep() === 1) {
           <app-add-package-information [formGroup]="packageForm"></app-add-package-information>
         } @if (currentStep() === 2) {

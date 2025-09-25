@@ -14,7 +14,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { catchError, EMPTY, finalize } from 'rxjs';
 import { AddOraganizationModel } from '../../components/add-oraganization-model/add-oraganization-model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { LucideAngularModule,LogOut , CircleX ,MonitorCog ,SquarePen, FileText ,GripVertical,Eye  } from 'lucide-angular';
+import { LucideAngularModule, LogOut, CircleX, MonitorCog, SquarePen, FileText, GripVertical, Eye } from 'lucide-angular';
 @Component({
   selector: 'app-organization-page',
   standalone: true,
@@ -24,6 +24,7 @@ import { LucideAngularModule,LogOut , CircleX ,MonitorCog ,SquarePen, FileText ,
     MatProgressSpinnerModule,
     LucideAngularModule,
     AddOraganizationModel,
+    OrganizationDetails
   ],
   templateUrl: './organization-page.html',
   styleUrls: ['./organization-page.css'],
@@ -40,17 +41,17 @@ export class OrganizationPage {
   readonly searchTerm = signal('');
   readonly isLoading = signal(true);
   readonly error = signal<string | null>(null);
- readonly viewIcon = Eye
- readonly editIcon = SquarePen
- readonly deleteIcon = GripVertical
- readonly fileIcon = FileText
- readonly cogIcon = MonitorCog
- readonly logoutIcon = LogOut
- readonly closeIcon = CircleX
+  readonly viewIcon = Eye
+  readonly editIcon = SquarePen
+  readonly deleteIcon = GripVertical
+  readonly fileIcon = FileText
+  readonly cogIcon = MonitorCog
+  readonly logoutIcon = LogOut
+  readonly closeIcon = CircleX
 
 
-   // Raw data source (used directly by the table)
-   readonly organizations = signal<OrganizationData[]>([]);
+  // Raw data source (used directly by the table)
+  readonly organizations = signal<OrganizationData[]>([]);
   // IMPORTANT: datasource typed to nested API model
   dataSource = new MatTableDataSource<OrganizationData>([]);
 
@@ -60,7 +61,25 @@ export class OrganizationPage {
   // services
   private readonly organizationService = inject(OrganizationService);
 
- constructor() {
+
+  viewOrganizationDetails = signal<OrganizationData | null>(null);
+  isViewOrganizationModalOpen = signal(false);
+  isInactiveOrganizationModalOpen = signal(false);
+
+  viewOrganization(org: OrganizationData) {
+    this.viewOrganizationDetails.set(org);
+    this.isViewOrganizationModalOpen.set(true);
+  }
+
+  cancleInactiveOrganization() {
+    this.isInactiveOrganizationModalOpen.set(false);
+  }
+
+  inActiveOrganization(org: OrganizationData) {
+    this.isInactiveOrganizationModalOpen.set(true);
+    console.log(org)
+  }
+  constructor() {
     // Load data into organizations() and stop spinner; show a simple error on failure
     this.organizationService
       .getOrganizations()

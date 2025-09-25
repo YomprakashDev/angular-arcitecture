@@ -23,11 +23,11 @@ export class AddOraganizationModel {
   readonly closeIcon = X;
 
   // forms 
-  companyForm: FormGroup;
+  organizationForm: FormGroup;
   packageForm: FormGroup;
 
   constructor(private fb: FormBuilder) {
-    this.companyForm = this.fb.group({
+    this.organizationForm = this.fb.group({
       organizationName: ['', Validators.required],
       industry: ['', Validators.required],
       orgUrlSlug: ['', [Validators.pattern(/^[a-z0-9-]+$/i)]],
@@ -60,12 +60,12 @@ export class AddOraganizationModel {
 
   // minimal: keep your method name, just guard with validation before next
   nextStep() {
-    const step = this.currentStep();
-    const valid = step === 0 ? this.companyForm.valid : step === 1 ? this.packageForm.valid : true;
-    if (!valid) {
-      (step === 0 ? this.companyForm : this.packageForm).markAllAsTouched();
-      return;
-    }
+    // const step = this.currentStep();
+    // const valid = step === 0 ? this.companyForm.valid : step === 1 ? this.packageForm.valid : true;
+    // if (!valid) {
+    //   (step === 0 ? this.companyForm : this.packageForm).markAllAsTouched();
+    //   return;
+    // }
     this.currentStep.update(i => i + 1);
   }
 
@@ -79,13 +79,13 @@ export class AddOraganizationModel {
 
   save() {
     // minimal: keep your console + close behavior; just ensure both forms are valid
-    if (!this.companyForm.valid || !this.packageForm.valid) {
-      this.companyForm.markAllAsTouched();
-      this.packageForm.markAllAsTouched();
-      return;
-    }
-    console.log(this.companyForm.value);
-    console.log(this.packageForm.value);
+    // if (!this.companyForm.valid || !this.packageForm.valid) {
+    //   this.companyForm.markAllAsTouched();
+    //   this.packageForm.markAllAsTouched();
+    //   return;
+    // }
+    console.log({ organization: this.organizationForm.value, package: this.packageForm.value }); // console.log(  this.companyForm.value);
+
     this.close.emit();
   }
 

@@ -74,7 +74,7 @@
           <th mat-header-cell *matHeaderCellDef scope="col">Actions</th>
           <td mat-cell *matCellDef="let org">
             <div class="flex items-center">
-              <button mat-icon-button aria-label="View module">
+              <button (click)="viewOrganization(org)" mat-icon-button aria-label="View module">
                 <lucide-angular [img]="viewIcon" class="text-[#787A7F] text-xs"></lucide-angular>
               </button>
               <button mat-icon-button aria-label="Edit module">
@@ -89,7 +89,11 @@
               <button mat-icon-button aria-label="View module">
                 <lucide-angular [img]="logoutIcon" class="text-[#787A7F] text-xs"></lucide-angular>
               </button>
-              <button mat-icon-button aria-label="View module">
+              <button
+                (click)="inActiveOrganization(org)"
+                mat-icon-button
+                aria-label="inactive module"
+              >
                 <lucide-angular [img]="closeIcon" class="text-[#787A7F] text-xs"></lucide-angular>
               </button>
             </div>
@@ -132,11 +136,70 @@
     </div>
   </div>
 </div>
+} @if(isViewOrganizationModalOpen()){
+<app-organization-details
+  [organizationDetails]="viewOrganizationDetails()"
+></app-organization-details>
 }
 
 <!-- modal -->
 @if (isAddOrganizationModalOpen()) {
 <div class="modal-overlay">
   <app-add-oraganization-model (close)="closeModal()"></app-add-oraganization-model>
+</div>
+} @if(isInactiveOrganizationModalOpen()) {
+<div class="modal-overlay">
+  @if (isInactiveOrganizationModalOpen()) {
+  <!-- Backdrop -->
+  <div class="fixed inset-0 z-40 bg-black/30" aria-hidden="true"></div>
+
+  <!-- Dialog -->
+  <div
+    class="fixed inset-0 z-50 flex overflow-hidden items-center justify-center p-4"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="confirmTitle"
+  >
+    <div class="w-full max-w-md rounded-2xl bg-white shadow-xl">
+      <!-- Red top border -->
+      <div class="h-2 w-full rounded-t-2xl bg-red-500"></div>
+
+      <div class="px-8 pb-8 pt-6 text-center">
+        <!-- Red circle with X -->
+        <div
+          class="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full border-4 border-red-200"
+        >
+          <svg viewBox="0 0 24 24" class="h-7 w-7 text-red-500" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M6.4 5l-.7.7L11 11l-5.3 5.3.7.7L11.7 12l5.3 5.3.7-.7L12.4 11l5.3-5.3-.7-.7L11.7 10.3 6.4 5z"
+            />
+          </svg>
+        </div>
+
+        <h2 id="confirmTitle" class="mb-7 text-xl font-semibold text-gray-900">
+          Are you sure, you want to Inactive
+        </h2>
+
+        <div class="flex items-center justify-center gap-4">
+          <button
+            (click)="cancleInactiveOrganization()"
+            type="button"
+            class="min-w-[110px] rounded-lg border border-gray-300 px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="button"
+            class="min-w-[110px] rounded-lg bg-red-500 px-6 py-3 text-base font-semibold text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          >
+            Yes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
 </div>
 }

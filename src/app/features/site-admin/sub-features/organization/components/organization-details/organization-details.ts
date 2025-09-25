@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+import { OrganizationData } from '../../models/organization.model';
 
 @Component({
   selector: 'app-organization-details',
@@ -38,4 +39,8 @@ export class OrganizationDetails {
     startDate: '1 July 2025',
     validUpto: '3 July 2026'
   };
+
+
+  organizationDetails = input.required<OrganizationData | null>()
+
 }
