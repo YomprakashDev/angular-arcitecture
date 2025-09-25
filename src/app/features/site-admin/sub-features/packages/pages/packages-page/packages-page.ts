@@ -17,7 +17,8 @@ import { PackageService } from '../../services/package.service';
 import { catchError, finalize, of, tap } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PackagesResponse } from '../../models/package.model';
-import { LucideAngularModule, SquarePen, GripVertical } from 'lucide-angular';
+import { LucideAngularModule, SquarePen, GripVertical,Eye  } from 'lucide-angular';
+import { AddViewPackages } from "../../components/add-view-packages/add-view-packages";
 
 // Row model for the table (what you actually render)
 export interface ModuleRow {
@@ -50,9 +51,7 @@ export interface PackageRow {
     MatSortModule,
     MatPaginatorModule,
     LucideAngularModule,
-    MatProgressSpinnerModule
-
-  ],
+    MatProgressSpinnerModule, AddViewPackages],
   templateUrl: './packages-page.html',
   styleUrls: ['./packages-page.css']
 })
@@ -70,7 +69,12 @@ export class PackagesPage {
    */
   readonly editIcon = SquarePen;
   readonly dragIcon = GripVertical;
+  readonly viewIcon = Eye
+  isAddView = signal(false)
 
+  toggleAddView(){
+    this.isAddView.set(true)
+  }
   private packageService = inject(PackageService);
 
   // loading signal
