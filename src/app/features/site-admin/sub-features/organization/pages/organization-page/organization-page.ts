@@ -36,10 +36,10 @@ export class OrganizationPage {
     { id: 'active', label: 'Active' },
     { id: 'inactive', label: 'Inactive' },
   ]);
-  readonly isAddOrganizationModalOpen = signal(true);
+  readonly isAddOrganizationModalOpen = signal(false);
   readonly activeTab = signal<'active' | 'inactive'>('active');
   readonly searchTerm = signal('');
-  readonly isLoading = signal(false);
+  readonly isLoading = signal(true);
   readonly error = signal<string | null>(null);
   readonly viewIcon = Eye
   readonly editIcon = SquarePen
