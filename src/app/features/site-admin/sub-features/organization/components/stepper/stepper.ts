@@ -1,5 +1,6 @@
 import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { LucideAngularModule } from "lucide-angular";
 
 type Step = { number: number; label: string };
 
@@ -7,8 +8,9 @@ type Step = { number: number; label: string };
   selector: 'app-stepper',
   standalone: true,
   imports: [
-    CommonModule
-  ],
+    CommonModule,
+    LucideAngularModule
+],
   templateUrl: './stepper.html',
   styleUrls: ['./stepper.css']
 })

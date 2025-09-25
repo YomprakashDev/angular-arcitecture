@@ -3,11 +3,11 @@
     <li *ngFor="let step of steps; let i = index" class="flex items-center">
       <div class="flex items-center">
         <span
-          class="flex items-center justify-center w-8 h-8 text-sm font-semibold border rounded-full"
+          class="flex items-center justify-center w-8 h-8 text-lg font-semibold rounded-full"
           [ngClass]="
             i === currentStep()
-              ? 'border-indigo-500 text-indigo-600'
-              : 'border-gray-300 text-gray-500'
+              ? 'border-[#6D7BFA] text-[#6D7BFA] border-2'
+              : 'border-[#DFDDE5] text-[#182330]  border'
           "
           [attr.aria-current]="i === currentStep() ? 'step' : null"
         >
@@ -15,11 +15,11 @@
         </span>
 
         <span
-          class="ml-2"
+          class="ml-2 font-semibold text-[16px]"
           [ngClass]="
             i === currentStep()
-              ? 'text-indigo-600 font-medium'
-              : 'text-gray-600'
+              ? 'text-[#6D7BFA] '
+              : 'text-[#182330]'
           "
         >
           {{ step.label }}

@@ -36,7 +36,7 @@ export class OrganizationPage {
     { id: 'active', label: 'Active' },
     { id: 'inactive', label: 'Inactive' },
   ]);
-  readonly isAddOrganizationModalOpen = signal(false);
+  readonly isAddOrganizationModalOpen = signal(true);
   readonly activeTab = signal<'active' | 'inactive'>('active');
   readonly searchTerm = signal('');
   readonly isLoading = signal(false);
