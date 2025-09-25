@@ -36,7 +36,7 @@ export const routes: Routes = [
         path: 'admin',
         loadComponent: () => import('./features/site-admin/pages/site-admin-page/site-admin-page').then(m => m.SiteAdminPage),
         children: [
-          { path: '', pathMatch: 'full', redirectTo: 'modules' }, // CHANGED: default tab
+          { path: '', pathMatch: 'full', redirectTo: 'modules' }, 
           {
             path: 'modules',
             loadComponent: () =>
