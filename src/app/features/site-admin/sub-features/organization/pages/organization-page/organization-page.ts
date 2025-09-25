@@ -39,7 +39,7 @@ export class OrganizationPage {
   readonly isAddOrganizationModalOpen = signal(false);
   readonly activeTab = signal<'active' | 'inactive'>('active');
   readonly searchTerm = signal('');
-  readonly isLoading = signal(true);
+  readonly isLoading = signal(false);
   readonly error = signal<string | null>(null);
   readonly viewIcon = Eye
   readonly editIcon = SquarePen
