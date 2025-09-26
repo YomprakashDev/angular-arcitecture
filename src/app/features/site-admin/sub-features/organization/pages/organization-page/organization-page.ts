@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, ViewChild } from '@angular/core';
 import { Button } from '../../../../../../shared/components/ui/button/button';
 import { Tabs, Tab } from '../../../../../../shared/components/tabs/tabs';
 import { CommonModule } from '@angular/common';
@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { OrganizationService } from '../../services/organization.service';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 import { OrganizationData } from '../../models/organization.model';
 import { OrganizationDetails } from "../../components/organization-details/organization-details";
@@ -24,7 +25,9 @@ import { LucideAngularModule, LogOut, CircleX, MonitorCog, SquarePen, FileText, 
     MatProgressSpinnerModule,
     LucideAngularModule,
     AddOraganizationModel,
-    OrganizationDetails
+    OrganizationDetails,
+    MatPaginatorModule
+
   ],
   templateUrl: './organization-page.html',
   styleUrls: ['./organization-page.css'],
@@ -49,6 +52,9 @@ export class OrganizationPage {
   readonly logoutIcon = LogOut
   readonly closeIcon = CircleX
 
+
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   // Raw data source (used directly by the table)
   readonly organizations = signal<OrganizationData[]>([]);
@@ -80,20 +86,28 @@ export class OrganizationPage {
     console.log(org)
   }
   constructor() {
-    // Load data into organizations() and stop spinner; show a simple error on failure
-    this.organizationService
-      .getOrganizations()
-      .pipe(
-        takeUntilDestroyed(),
-        finalize(() => this.isLoading.set(false)),
-        catchError((err) => {
-          console.error(err);
-          this.error.set('Failed to load organizations.');
-          return EMPTY;
-        })
-      )
-      .subscribe((res) => this.organizations.set(res));
+    this.loadOrganizations();
   }
+
+  loadOrganizations() {
+    this.isLoading.set(true);
+    this.organizationService.getOrganizations()
+      .pipe(
+        catchError((err) => {
+          this.error.set(err.message);
+          return EMPTY;
+        }),
+        finalize(() => this.isLoading.set(false)),
+        takeUntilDestroyed()
+      )
+      .subscribe((orgs) => {
+        this.organizations.set(orgs);
+        this.dataSource = new MatTableDataSource(orgs);
+        this.dataSource.paginator = this.paginator;
+      });
+  }
+
+
 
   // events
   setActiveTab(tabId: string) {
@@ -103,8 +117,10 @@ export class OrganizationPage {
     this.isAddOrganizationModalOpen.set(true);
   }
   closeModal() {
+
     this.isAddOrganizationModalOpen.set(false);
   }
+
 
 
 }
