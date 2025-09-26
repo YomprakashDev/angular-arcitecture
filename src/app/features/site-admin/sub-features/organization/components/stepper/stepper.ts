@@ -1,18 +1,21 @@
 import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { LucideAngularModule } from "lucide-angular";
 
 type Step = { number: number; label: string };
 
 @Component({
   selector: 'app-stepper',
-  imports: [ 
-    CommonModule
+  standalone: true,
+  imports: [
+    CommonModule,
+    LucideAngularModule
 ],
   templateUrl: './stepper.html',
-  styleUrl: './stepper.css'
+  styleUrls: ['./stepper.css']
 })
 export class Stepper {
- // static data (no click handlers / routing)
+  // static data (no click handlers / routing)
   steps: Step[] = [
     { number: 1, label: 'Company Information' },
     { number: 2, label: 'Package Information' },

@@ -1,284 +1,263 @@
 <!-- Company Information -->
-<div class="p-6">
-  <form [formGroup]="formGroup" class="overflow-auto space-y-8" novalidate>
+<div class="w-full p-6">
+  <form [formGroup]="formGroup" class="overflow-auto " novalidate>
     <!-- ========== TOP SECTION ========== -->
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-      <!-- Upload tile (spans both rows) -->
-      <div class="md:col-span-2 md:row-span-2">
-        <label class="block mb-2 text-sm font-semibold text-gray-700"> </label>
-        <div class="w-[176px] h-[160px] md:h-[180px] flex items-center justify-center rounded-xl border-2 border-dashed border-[#BFBFBF] bg-[#ECF4FF] p-4">
+    <div class="flex flex-col gap-6 md:flex-row">
+      <!-- Upload tile (fixed left) -->
+      <div class="flex justify-center flex-shrink-0 md:justify-start">
+        <div
+          class="min-w-[176px] h-[140px] flex items-center justify-center rounded-xl {{ logoPreview?'':'border-2 border-dashed border-[#BFBFBF] bg-[#ECF4FF]' }}">
+         @if(logoPreview){
+              <img [src]="logoPreview" alt="Logo Preview" class="object-cover w-full h-full rounded" />
+              }
+                @else{
           <label for="logo" class="flex flex-col items-center gap-2 text-center cursor-pointer">
-            <div class="p-3 rounded-full bg-indigo-50">
-              <img src='' class="h-9 w-9" alt="Upload Logo" />
+            <div class="p-3 rounded-full">
+            
+            
+                <img src="/assets/images/common/uploadimg-placeholder.png" class="h-9 w-9" alt="Upload Logo" />
+              
             </div>
-            <div class="text-sm font-semibold text-indigo-600">Upload Your Logo</div>
-            <p class="text-xs text-gray-500">Supported JPG, JPEG, PNG</p>
-            <!-- ✅ wire file to control via change handler -->
+            <div class="text-sm font-semibold text-[#182330]"><span class="text-[#1B79E7]">Upload</span> Your Logo</div>
+            <p class="text-xs text-[#7E7A88]">Supported JPG, JPEG, PNG</p>
             <input id="logo" type="file" accept="image/*" class="sr-only" (change)="onLogoSelected($event)" />
           </label>
+          }
         </div>
       </div>
 
-      <!-- Row 1 -->
-      <div class="md:col-span-6 md:col-start-3">
-        <label class="block mb-2 text-sm font-semibold text-gray-700">
-          Organization Name <span class="text-red-500">*</span>
-        </label>
-        <input
-          formControlName="organizationName"
-          type="text"
-          placeholder="Enter Organization Name"
-          [attr.aria-invalid]="isInvalid('organizationName')"
-          class="w-full px-3 py-2 text-sm placeholder-gray-400 bg-white border
-                 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-100
-                 border-gray-200"
-          [class.border-red-300]="isInvalid('organizationName')" />
-        @if (isInvalid('organizationName')) {
-          <p class="mt-1 text-xs text-red-600">Organization name is required.</p>
-        }
-      </div>
-
-      <div class="md:col-span-4 md:col-start-9">
-        <label class="block mb-2 text-sm font-semibold text-gray-700">
-          Industry / Sector <span class="text-red-500">*</span>
-        </label>
-        <div class="relative">
-          <select formControlName="industry" class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg appearance-none">
-            <option value="" selected>Select</option>
-            <option *ngFor="let ind of industries" [value]="ind">{{ ind }}</option>
-          </select>
-          <svg class="absolute w-5 h-5 text-gray-400 -translate-y-1/2 pointer-events-none right-3 top-1/2"
-               viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/>
-          </svg>
-        </div>
-        @if (isInvalid('industry')) {
-          <p class="mt-1 text-xs text-red-600">Industry is required.</p>
-        }
-      </div>
-
-      <!-- Row 2 (aligned under row 1, leaving space for logo) -->
-      <div class="md:col-span-6 md:col-start-3">
-        <label class="block mb-2 text-sm font-semibold text-gray-700">Organization URL</label>
-        <div class="flex w-full">
-          <div class="inline-flex items-center px-3 text-sm text-gray-500 bg-white border border-gray-200 rounded-l-lg">
-            https://contracts.yourdomain.com/
+      <!-- Right side form -->
+      <div class="flex flex-col flex-1 gap-6">
+        <!-- Row 1: Org Name (70%) + Industry (30%) -->
+        <div class="grid grid-cols-10 gap-6">
+          <!-- Org Name -->
+          <div class="col-span-7">
+            <label class="block mb-2 text-sm font-semibold text-[#262626]">
+              Organization Name <span class="text-[#DA1414]">*</span>
+            </label>
+            <input formControlName="organizationName" type="text" placeholder="Enter Organization Name"
+              class="w-full px-3 py-2  text-sm placeholder-[#7E7A88] bg-white rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-indigo-100"
+              [class.border-red-300]="isInvalid('organizationName')" />
           </div>
-          <input
-            formControlName="orgUrlSlug"
-            type="text"
-            placeholder="organization-name"
-            class="flex-1 px-3 py-2 text-sm placeholder-gray-400 bg-white border border-gray-200 rounded-r-lg focus:outline-none focus:ring-2 focus:ring-indigo-100" />
-        </div>
-        @if (isInvalid('orgUrlSlug')) {
-          <p class="mt-1 text-xs text-red-600">Use letters, numbers, and hyphens only.</p>
-        }
-      </div>
 
-      <div class="md:col-span-4 md:col-start-9">
-        <label class="block mb-2 text-sm font-semibold text-gray-700">GST Number</label>
-        <input
-          formControlName="gst"
-          type="text"
-          placeholder="Enter GST Number"
-          class="w-full px-3 py-2 text-sm placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-100" />
+          <!-- Industry -->
+          <div class="col-span-3">
+            <label class="block mb-2 text-sm font-semibold text-[#262626]">
+              Industry / Sector <span class="text-[#DA1414]">*</span>
+            </label>
+            <div class="relative">
+              <select formControlName="industry" class="w-full px-3 py-2 text-sm bg-white rounded-lg appearance-none">
+                <option value="" selected>Select</option>
+                <option *ngFor="let ind of industries" [value]="ind">{{ ind }}</option>
+              </select>
+              <svg class="absolute w-5 h-5 text-gray-400 -translate-y-1/2 pointer-events-none right-3 top-1/2"
+                viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd"
+                  d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+                  clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: Org URL (50%) + GST (50%) -->
+        <div class="grid grid-cols-4 gap-6">
+          <!-- Org URL -->
+          <div class="col-span-2">
+            <label class="block mb-2 text-sm font-semibold text-[#262626]">Organization URL</label>
+            <div class="flex w-full">
+              <div class="inline-flex items-center text-sm text-gray-500 ">
+                https://contracts.yourdomain.com/
+              </div>
+              <input formControlName="orgUrlSlug" type="text" placeholder="organization-name"
+                class="flex-1 py-2 text-sm placeholder-[#7E7A88] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-100" />
+            </div>
+          </div>
+
+          <!-- GST Number -->
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-[#262626]">GST Number</label>
+            <input formControlName="gst" type="text" placeholder="Enter GST Number"
+              class="w-full px-3 py-2 text-sm placeholder-gray-400 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-100" />
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-[#262626]">PAN Number</label>
+            <input formControlName="pan" type="text" placeholder="Enter PAN Number"
+              class="w-full px-3 py-2 text-sm placeholder-gray-400 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-100" />
+          </div>
+        </div>
       </div>
     </div>
 
+
+
     <!-- ========== MIDDLE SECTION ========== -->
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-      <!-- Row 1 -->
-      <div class="md:col-span-6">
-        <label class="block mb-2 text-sm font-semibold text-gray-700">
-          Street Address <span class="text-red-500">*</span>
+    <div class="grid w-full grid-cols-1 gap-4 mt-2 md:grid-cols-2">
+
+      <!-- Left side: Street Address (half width) -->
+      <div>
+        <label class="block mb-2 text-sm font-semibold text-[#262626]">
+          Street Address <span class="text-[#DA1414]">*</span>
         </label>
-        <textarea
-          formControlName="street"
-          rows="4"
-          placeholder="Enter Street Address"
+        <textarea formControlName="street" rows="5" placeholder="Enter Street Address"
           [class.border-red-300]="isInvalid('street')"
-          class="w-full px-3 py-2 text-sm placeholder-gray-400 bg-white border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-indigo-100"></textarea>
+          class="w-full px-3 py-2 text-sm placeholder-gray-400 bg-white rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-indigo-100"></textarea>
         @if (isInvalid('street')) {
-          <p class="mt-1 text-xs text-red-600">Street address is required.</p>
+        <p class="mt-1 text-xs text-red-600">Street address is required.</p>
         }
       </div>
 
-      <div class="md:col-span-2 md:col-start-7">
-        <label class="block mb-2 text-sm font-semibold text-gray-700">
-          Zip Code / Postal Code <span class="text-red-500">*</span>
-        </label>
-        <input
-          formControlName="zip"
-          type="text"
-          placeholder="123456"
-          [class.border-red-300]="isInvalid('zip')"
-          class="w-full px-3 py-2 text-sm placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-100" />
-        @if (isInvalid('zip')) {
+      <!-- Right side: All other fields stacked with 2-column grid -->
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+
+        <!-- Zip -->
+        <div>
+          <label class="block mb-2 text-sm font-semibold text-[#262626]">
+            Zip Code / Postal Code <span class="text-[#DA1414]">*</span>
+          </label>
+          <input formControlName="zip" type="text" placeholder="123456" [class.border-red-300]="isInvalid('zip')"
+            class="w-full px-3 py-2 text-sm placeholder-gray-400 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-100" />
+          @if (isInvalid('zip')) {
           <p class="mt-1 text-xs text-red-600">Enter a valid zip / postal code.</p>
-        }
-      </div>
+          }
+        </div>
 
-      <div class="md:col-span-2 md:col-start-9">
-        <label class="block mb-2 text-sm font-semibold text-gray-700">
-          Country <span class="text-red-500">*</span>
-        </label>
-        <div class="relative">
-          <select formControlName="country" class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg appearance-none">
+        <!-- Country -->
+        <div>
+          <label class="block mb-2 text-sm font-semibold text-[#262626]">
+            Country <span class="text-[#DA1414]">*</span>
+          </label>
+          <select formControlName="country" class="w-full px-3 py-2 text-sm bg-white rounded-lg appearance-none">
             <option value="" selected>Select</option>
             <option *ngFor="let c of countries" [value]="c">{{ c }}</option>
           </select>
-          <svg class="absolute w-5 h-5 text-gray-400 -translate-y-1/2 pointer-events-none right-3 top-1/2"
-               viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/>
-          </svg>
-        </div>
-        @if (isInvalid('country')) {
+          @if (isInvalid('country')) {
           <p class="mt-1 text-xs text-red-600">Country is required.</p>
-        }
-      </div>
+          }
+        </div>
 
-      <div class="md:col-span-2 md:col-start-11">
-        <label class="block mb-2 text-sm font-semibold text-gray-700">
-          State <span class="text-red-500">*</span>
-        </label>
-        <div class="relative">
-          <select formControlName="state" class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg appearance-none">
+        <!-- State -->
+        <div>
+          <label class="block mb-2 text-sm font-semibold text-[#262626]">
+            State <span class="text-[#DA1414]">*</span>
+          </label>
+          <select formControlName="state" class="w-full px-3 py-2 text-sm bg-white rounded-lg appearance-none">
             <option value="" selected>Select</option>
             <option *ngFor="let s of states" [value]="s">{{ s }}</option>
           </select>
-          <svg class="absolute w-5 h-5 text-gray-400 -translate-y-1/2 pointer-events-none right-3 top-1/2"
-               viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/>
-          </svg>
-        </div>
-        @if (isInvalid('state')) {
+          @if (isInvalid('state')) {
           <p class="mt-1 text-xs text-red-600">State is required.</p>
-        }
-      </div>
+          }
+        </div>
 
-      <!-- Row 2 -->
-      <div class="md:col-span-3 md:col-start-7">
-        <label class="block mb-2 text-sm font-semibold text-gray-700">
-          Currency <span class="text-red-500">*</span>
-        </label>
-        <div class="relative">
-          <select formControlName="currency" class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg appearance-none">
+        <!-- Currency -->
+        <div>
+          <label class="block mb-2 text-sm font-semibold text-[#262626]">
+            Currency <span class="text-[#DA1414]">*</span>
+          </label>
+          <select formControlName="currency" class="w-full px-3 py-2 text-sm bg-white rounded-lg appearance-none">
             <option value="" selected>Select</option>
             <option *ngFor="let cur of currencies" [value]="cur">{{ cur }}</option>
           </select>
-          <svg class="absolute w-5 h-5 text-gray-400 -translate-y-1/2 pointer-events-none right-3 top-1/2"
-               viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/>
-          </svg>
-        </div>
-        @if (isInvalid('currency')) {
+          @if (isInvalid('currency')) {
           <p class="mt-1 text-xs text-red-600">Currency is required.</p>
-        }
-      </div>
+          }
+        </div>
 
-      <div class="md:col-span-3 md:col-start-10">
-        <label class="block mb-2 text-sm font-semibold text-gray-700">
-          Time Zone <span class="text-red-500">*</span>
-        </label>
-        <div class="relative">
-          <select formControlName="timezone" class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg appearance-none">
+        <!-- Time Zone -->
+        <div>
+          <label class="block mb-2 text-sm font-semibold text-[#262626]">
+            Time Zone <span class="text-[#DA1414]">*</span>
+          </label>
+          <select formControlName="timezone" class="w-full px-3 py-2 text-sm bg-white rounded-lg appearance-none">
             <option value="" selected>Select</option>
             <option *ngFor="let tz of timezones" [value]="tz">{{ tz }}</option>
           </select>
-          <svg class="absolute w-5 h-5 text-gray-400 -translate-y-1/2 pointer-events-none right-3 top-1/2"
-               viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/>
-          </svg>
-        </div>
-        @if (isInvalid('timezone')) {
+          @if (isInvalid('timezone')) {
           <p class="mt-1 text-xs text-red-600">Time zone is required.</p>
-        }
+          }
+        </div>
+
       </div>
     </div>
 
+
     <!-- ========== BOTTOM SECTION (Contact Details) ========== -->
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-      <div class="md:col-span-12 pt-1">
-        <h3 class="text-sm font-semibold text-gray-700">Contact Details</h3>
+    <div class="">
+      <div class="pt-1 ">
+        <h3 class="text-lg font-bold text-[#182330]">Contact Details</h3>
       </div>
 
-      <!-- Row 1 -->
-      <div class="md:col-span-4">
-        <label class="block mb-2 text-sm font-semibold text-gray-700">
-          Contact Person Name <span class="text-red-500">*</span>
-        </label>
-        <input
-          formControlName="contactName"
-          type="text"
-          placeholder="Enter Contact Person Name"
-          [class.border-red-300]="isInvalid('contactName')"
-          class="w-full px-3 py-2 text-sm placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-100" />
-        @if (isInvalid('contactName')) {
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+
+
+        <div class="col-span-1">
+          <label class="block mb-2 text-sm font-semibold text-[#262626]">
+            Contact Person Name <span class="text-[#DA1414]">*</span>
+          </label>
+          <input formControlName="contactName" type="text" placeholder="Enter Contact Person Name"
+            [class.border-red-300]="isInvalid('contactName')"
+            class="w-full px-3 py-2 text-sm placeholder-gray-400 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-100" />
+          @if (isInvalid('contactName')) {
           <p class="mt-1 text-xs text-red-600">Contact person name is required.</p>
-        }
-      </div>
+          }
+        </div>
 
-      <div class="md:col-span-4">
-        <label class="block mb-2 text-sm font-semibold text-gray-700">
-          Email <span class="text-red-500">*</span>
-        </label>
-        <input
-          formControlName="contactEmail"
-          type="email"
-          placeholder="Enter Email"
-          [class.border-red-300]="isInvalid('contactEmail')"
-          autocomplete="email"
-          class="w-full px-3 py-2 text-sm placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-100" />
-        @if (isInvalid('contactEmail')) {
+        <div class="col-span-1 ">
+          <label class="block mb-2 text-sm font-semibold text-[#262626]">
+            Email <span class="text-[#DA1414]">*</span>
+          </label>
+          <input formControlName="contactEmail" type="email" placeholder="Enter Email"
+            [class.border-red-300]="isInvalid('contactEmail')" autocomplete="email"
+            class="w-full px-3 py-2 text-sm placeholder-gray-400 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-100" />
+          @if (isInvalid('contactEmail')) {
           <p class="mt-1 text-xs text-red-600">Enter a valid email address.</p>
-        }
-      </div>
+          }
+        </div>
 
-      <div class="md:col-span-4">
-        <label class="block mb-2 text-sm font-semibold text-gray-700">
-          Contact Number <span class="text-red-500">*</span>
-        </label>
-        <input
-          formControlName="contactPhone"
-          type="tel"
-          maxlength="10"
-          placeholder="Enter Contact Number"
-          [class.border-red-300]="isInvalid('contactPhone')"
-          autocomplete="tel"
-          class="w-full px-3 py-2 text-sm placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-100" />
-        @if (isInvalid('contactPhone')) {
+        <div class="col-span-1 ">
+          <label class="block mb-2 text-sm font-semibold text-[#262626]">
+            Contact Number <span class="text-[#DA1414]">*</span>
+          </label>
+          <input formControlName="contactPhone" type="tel" maxlength="10" placeholder="Enter Contact Number"
+            [class.border-red-300]="isInvalid('contactPhone')" autocomplete="tel"
+            class="w-full px-3 py-2 text-sm placeholder-gray-400 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-100" />
+          @if (isInvalid('contactPhone')) {
           <p class="mt-1 text-xs text-red-600">Enter a valid phone number.</p>
-        }
-      </div>
+          }
+        </div>
 
-      <!-- Row 2 -->
-      <div class="md:col-span-2">
-        <label class="block mb-2 text-sm font-semibold text-gray-700">Team Size</label>
-        <div class="relative">
-          <select formControlName="teamSize" class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg appearance-none">
-            <option value="" selected>Select</option>
-            <option *ngFor="let ts of teamSizes" [value]="ts">{{ ts }}</option>
-          </select>
-          <svg class="absolute w-5 h-5 text-gray-400 -translate-y-1/2 pointer-events-none right-3 top-1/2"
-               viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/>
-          </svg>
+
+
+        <!-- Row 2 -->
+        <div class="w-full max-w-2xs">
+          <label class="block mb-2 text-sm font-semibold text-[#262626]">Team Size</label>
+          <div class="relative">
+            <select formControlName="teamSize" class="w-full px-3 py-2 text-sm bg-white rounded-lg appearance-none">
+              <option value="" selected>Select</option>
+              <option *ngFor="let ts of teamSizes" [value]="ts">{{ ts }}</option>
+            </select>
+            <svg class="absolute w-5 h-5 text-gray-400 -translate-y-1/2 pointer-events-none right-3 top-1/2"
+              viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+                clip-rule="evenodd" />
+            </svg>
+          </div>
+        </div>
+
+        <div class="flex-1">
+          <label class="block mb-2 text-sm font-semibold text-[#262626]">Website URL</label>
+          <input formControlName="website" type="url" placeholder="Enter URL"
+            [class.border-red-300]="isInvalid('website')" autocomplete="url"
+            class="w-full px-3 py-2 text-sm placeholder-gray-400 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-100" />
+          @if (isInvalid('website')) {
+          <p class="mt-1 text-xs text-red-600">Enter a valid URL (https://…)</p>
+          }
         </div>
       </div>
 
-      <div class="md:col-span-10">
-        <label class="block mb-2 text-sm font-semibold text-gray-700">Website URL</label>
-        <input
-          formControlName="website"
-          type="url"
-          placeholder="Enter URL"
-          [class.border-red-300]="isInvalid('website')"
-          autocomplete="url"
-          class="w-full px-3 py-2 text-sm placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-100" />
-        @if (isInvalid('website')) {
-          <p class="mt-1 text-xs text-red-600">Enter a valid URL (https://…)</p>
-        }
-      </div>
     </div>
   </form>
 </div>

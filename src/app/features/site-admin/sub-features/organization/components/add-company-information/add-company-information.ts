@@ -21,6 +21,8 @@ export class AddCompanyInformation {
 
   @Input() formGroup!: FormGroup;
 
+  logoPreview: string | null = null;
+
   // file -> FormControl(File|null) (Reactive Forms cannot bind File directly without a change handler)
   onLogoSelected(evt: Event) {
     const file = (evt.target as HTMLInputElement).files?.[0] ?? null;
@@ -28,6 +30,12 @@ export class AddCompanyInformation {
     ctrl?.setValue(file, { emitEvent: true });
     ctrl?.markAsDirty();
     ctrl?.markAsTouched();
+
+    if (file) {
+      this.logoPreview = URL.createObjectURL(file);
+    } else {
+      this.logoPreview = null;
+    }
   }
 
   // tiny helper for showing errors only when touched/dirty

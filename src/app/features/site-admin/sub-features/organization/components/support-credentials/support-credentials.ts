@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-support-credentials',
+  standalone: true,
   imports: [],
   templateUrl: './support-credentials.html',
-  styleUrl: './support-credentials.css'
+  styleUrls: ['./support-credentials.css']
 })
 export class SupportCredentials {
 
