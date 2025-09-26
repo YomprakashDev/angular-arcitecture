@@ -31,58 +31,54 @@ export interface PackageInfo {
   userCount: number;
   dealAmount: number;
   gst: number;
-  startDate: string;   // ISO date string (e.g., 2025-09-19T00:00:00)
-  validUpto: string;   // ISO date string
+  startDate: string;  
+  validUpto: string;   
 }
 
 export interface CreateOrganizationRequest {
-  organization: OrganizationCreate;
-  package: OrganizationPackageCreate;
+  organization: OrganizationDto;
+  package: PackageDto;
 }
 
-export interface OrganizationCreate {
+// organization.dto.ts
+export interface OrganizationDto {
   modifiedBy: number;
-  modifiedDate: ISODateTimeString;
-
+  modifiedDate: string;      // ISO datetime
   timeZone: string;
   webURL: string;
   address: string;
-
-  createdDate: ISODateTimeString;
-  organizationID: number;      // if server sets this, you can make it optional
-  organization: string;        // organization name
+  createdDate: string;       // ISO datetime
+  organizationID: number;
+  organization: string;      // org name
   organizationCode: string;
-  logo: string;                 // URL or base64 per API
-
+  logo: string;
   emailID: string;
-  industry: number;            // industry ID
+  industry: number;          // ID
   gstNumber: string;
   zipCode: string;
-  countryID: number;           // country ID
-  stateID: number;             // state ID
+  countryID: number;         // ID
+  stateID: number;           // ID
   contactPersonName: string;
   contactNumber: string;
-  currency: number;            // currency ID
-  status: number;              // numeric status (e.g., 0/1)
+  currency: number;          // ID
+  status: number;            // 0/1
   createdBy: number;
 }
 
-export interface OrganizationPackageCreate {
-  validFrom: ISODateTimeString;
-  validTo: ISODateTimeString;
-
-  organizationID: number;      // link to organization
-  packageID: number;           // selected package ID
-  status: number;              // numeric status (e.g., 0/1)
+// package.dto.ts
+export interface PackageDto {
+  validFrom: string;               // ISO datetime
+  validTo: string;                 // ISO datetime
+  organizationID: number;
+  packageID: number;               // ID
+  status: number;                  // 0/1
   noOfUsers: number;
   puc: number;
   dealAmount: number;
   gst: number;
-
   createdBy: number;
-  createdDate: ISODateTimeString;
+  createdDate: string;             // ISO datetime
   modifiedBy: number;
-  modifiedDate: ISODateTimeString;
-
-  organizationPackageID: number; // if server sets this, you can make it optional
+  modifiedDate: string;            // ISO datetime
+  organizationPackageID: number;
 }

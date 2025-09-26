@@ -10,8 +10,12 @@ import { ReactiveFormsModule, FormGroup } from '@angular/forms';
   styleUrls: ['./add-package-information.css']
 })
 export class AddPackageInformation {
-  // static options only (no logic required)
-  packages = ['Silver', 'Gold', 'Platinum'];
+// add-package-information.ts (or the component that owns this template)
+packages = [
+  { id: 1, name: 'Silver' },
+  { id: 2, name: 'Gold' },
+  { id: 3, name: 'Platinum' },
+];
 
   @Input() formGroup!: FormGroup;
 

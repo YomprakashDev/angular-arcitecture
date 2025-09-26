@@ -1,4 +1,4 @@
-import { Component, computed, EventEmitter, inject, output, Output, signal } from '@angular/core';
+import { Component, computed, inject, output,  signal } from '@angular/core';
 import { LucideAngularModule, X } from 'lucide-angular';
 import { Stepper } from "../stepper/stepper";
 import { AddCompanyInformation } from "../add-company-information/add-company-information";
@@ -30,38 +30,51 @@ export class AddOraganizationModel {
   packageForm: FormGroup;
 
   constructor(private fb: FormBuilder) {
+    const nowIso = new Date().toISOString();
+
     this.organizationForm = this.fb.group({
-      organizationName: ['', Validators.required],
-      industry: ['3', Validators.required],
-      orgUrlSlug: ['', [Validators.pattern(/^[a-z0-9-]+$/i)]],
-      gst: ['', []],
-      street: ['', Validators.required],
-      zip: ['', [Validators.required, Validators.pattern(/^[0-9]{4,10}$/)]],
-      country: ['', Validators.required],
-      state: ['', Validators.required],
-      currency: ['', Validators.required],
-      timezone: ['', Validators.required],
-      contactName: ['', Validators.required],
-      contactEmail: ['', [Validators.required, Validators.email]],
-      contactPhone: ['', [Validators.required, Validators.pattern(/^[\d+\-() ]{7,20}$/)]],
-      teamSize: [''],
-      website: ['', [Validators.pattern(/^https?:\/\/.+$/)]],
-      logo: [null as File | null]
+      modifiedBy: [0],
+      modifiedDate: [nowIso, Validators.required],
+      timeZone: ['', Validators.required],
+      webURL: ['', []],
+      address: ['', Validators.required],
+      createdDate: [nowIso, Validators.required],
+      organizationID: [0],
+      organization: ['', Validators.required],
+      organizationCode: [''],
+      logo: [''],
+      emailID: ['', [Validators.required, Validators.email]],
+      industry: [null as number | null, [Validators.required, Validators.min(1)]],
+      gstNumber: [''],
+      zipCode: ['', [Validators.required, Validators.pattern(/^\d{4,10}$/)]],
+      countryID: [null as number | null, Validators.required],
+      stateID: [null as number | null, Validators.required],
+      contactPersonName: ['', Validators.required],
+      contactNumber: ['', [Validators.required, Validators.pattern(/^[\d+\-() ]{7,20}$/)]],
+      currency: [null as number | null, Validators.required],
+      status: [1],
+      createdBy: [0],
     });
 
     this.packageForm = this.fb.group({
-      package: ['', Validators.required],
-      usersCount: [20, [Validators.required, Validators.min(1)]],
+      validFrom: [nowIso, Validators.required],
+      validTo: [nowIso, Validators.required],
+      organizationID: [0],
+      packageID: [null as number | null, [Validators.required, Validators.min(1)]],
+      status: [1],
+      noOfUsers: [20, [Validators.required, Validators.min(1)]],
       puc: [20000, [Validators.min(0)]],
       dealAmount: [null, [Validators.required, Validators.min(0)]],
       gst: [2000, [Validators.min(0)]],
-      totalDealValue: [{ value: 410000, disabled: true }], // keep your initial value
-      startDate: ['22-02-2025', [Validators.required]],
-      validUpto: ['25-03-2026', [Validators.required]],
+      createdBy: [0],
+      createdDate: [nowIso, Validators.required],
+      modifiedBy: [0],
+      modifiedDate: [nowIso, Validators.required],
+      organizationPackageID: [0],
     });
   }
 
-  // minimal: keep your method name, just guard with validation before next
+
   nextStep() {
     const step = this.currentStep();
     const valid = step === 0 ? this.organizationForm.valid : step === 1 ? this.packageForm.valid : true;
@@ -80,7 +93,25 @@ export class AddOraganizationModel {
     this.close.emit();
   }
 
+
   save() {
+
+    const org = { ...this.organizationForm.value };
+    const pkg = { ...this.packageForm.value };
+
+    if (typeof org.logo !== 'string') {
+      org.logo = '';
+    }
+    // 2) Convert date-only (yyyy-MM-dd) to ISO
+    const toIso = (v: string) => (v && v.includes('T') ? v : new Date(v).toISOString());
+
+    org.createdDate = toIso(org.createdDate);
+    org.modifiedDate = toIso(org.modifiedDate);
+    pkg.createdDate = toIso(pkg.createdDate);
+    pkg.modifiedDate = toIso(pkg.modifiedDate);
+    pkg.validFrom = toIso(pkg.validFrom);
+    pkg.validTo = toIso(pkg.validTo);
+
     // minimal: keep your console + close behavior; just ensure both forms are valid
     if (!this.organizationForm.valid || !this.packageForm.valid) {
       this.organizationForm.markAllAsTouched();
@@ -88,10 +119,16 @@ export class AddOraganizationModel {
       return;
     }
 
-    const payLoad: CreateOrganizationRequest = { organization: this.organizationForm.value, package: this.packageForm.value };
-
-    this.organizationService.addNewOrganization(payLoad).subscribe(res => console.log(res));
-    this.close.emit();
+    const payload: CreateOrganizationRequest = { organization: org, package: pkg };
+    this.organizationService.addNewOrganization(payload).subscribe({
+      next: (res) => {
+        console.log('Created organization:', res);
+        this.close.emit();
+      },
+      error: (err) => {
+        console.error('Create org failed:', err);
+      }
+    });
   }
 
 }

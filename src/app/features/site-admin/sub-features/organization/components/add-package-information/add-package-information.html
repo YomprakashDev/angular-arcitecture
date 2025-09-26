@@ -1,20 +1,19 @@
-<!-- Card -->
+<!-- Package Card -->
 <div class="p-6">
   <form [formGroup]="formGroup" class="grid grid-cols-1 gap-4 md:gap-5 lg:grid-cols-12" novalidate>
-
     <!-- Package -->
     <div class="lg:col-span-4">
       <label class="form-label">Package <span class="req">*</span></label>
       <div class="relative">
-        <select formControlName="package" class="form-select" autocomplete="off" aria-label="Select package">
-          <option value="" selected>Select package</option>
-          <option *ngFor="let p of packages" [value]="p">{{ p }}</option>
+        <select formControlName="packageID" class="form-select" autocomplete="off" aria-label="Select package">
+          <option [ngValue]="null" selected>Select package</option>
+          <option *ngFor="let p of packages" [ngValue]="p.id">{{ p.name }}</option>
         </select>
         <svg class="chev" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/>
         </svg>
       </div>
-      @if (isInvalid('package')) {
+      @if (isInvalid('packageID')) {
         <p class="mt-1 text-xs text-red-600">Package is required.</p>
       }
     </div>
@@ -23,14 +22,14 @@
     <div class="lg:col-span-4">
       <label class="form-label">Users Count <span class="req">*</span></label>
       <input
-        formControlName="usersCount"
+        formControlName="noOfUsers" 
         type="number"
         inputmode="numeric"
         placeholder="Enter"
         class="form-input"
         min="1"
         aria-label="Users count" />
-      @if (isInvalid('usersCount')) {
+      @if (isInvalid('noOfUsers')) {
         <p class="mt-1 text-xs text-red-600">Enter at least 1 user.</p>
       }
     </div>
@@ -75,17 +74,10 @@
         aria-label="GST (percent or absolute)" />
     </div>
 
-    <!-- Total Deal Value (read-only, driven by parent form logic) -->
+    <!-- Total Deal Value (read-only, computed in TS if you want) -->
     <div class="lg:col-span-4">
       <label class="form-label">Total Deal Value</label>
-      <input
-        formControlName="totalDealValue"
-        type="number"
-        inputmode="decimal"
-        class="form-input"
-        readonly
-        aria-readonly="true"
-        aria-label="Total deal value" />
+      <input type="number" inputmode="decimal" class="form-input" readonly aria-readonly="true" aria-label="Total deal value" />
     </div>
 
     <!-- Start Date -->
@@ -93,8 +85,8 @@
       <label class="form-label">Start Date <span class="req">*</span></label>
       <div class="relative">
         <input
-          formControlName="startDate"
-          type="text"
+          formControlName="validFrom"
+          type="date"
           class="form-input pr-10"
           placeholder="dd-MM-yyyy"
           inputmode="numeric"
@@ -107,7 +99,7 @@
           <line x1="3" y1="10" x2="21" y2="10" stroke-width="1.5"></line>
         </svg>
       </div>
-      @if (isInvalid('startDate')) {
+      @if (isInvalid('validFrom')) {
         <p class="mt-1 text-xs text-red-600">Start date is required.</p>
       }
     </div>
@@ -117,8 +109,8 @@
       <label class="form-label">Valid Upto <span class="req">*</span></label>
       <div class="relative">
         <input
-          formControlName="validUpto"
-          type="text"
+          formControlName="validTo"
+          type="date"
           class="form-input pr-10"
           placeholder="dd-MM-yyyy"
           inputmode="numeric"
@@ -131,10 +123,9 @@
           <line x1="3" y1="10" x2="21" y2="10" stroke-width="1.5"></line>
         </svg>
       </div>
-      @if (isInvalid('validUpto')) {
+      @if (isInvalid('validTo')) {
         <p class="mt-1 text-xs text-red-600">Valid upto is required.</p>
       }
     </div>
-
   </form>
 </div>
