@@ -21,21 +21,21 @@
         } @if (currentStep() === 1) {
           <app-add-package-information [formGroup]="packageForm"></app-add-package-information>
         } @if (currentStep() === 2) {
-          <app-support-credentials></app-support-credentials>
+          <app-support-credentials [supportResponse]="supportResponse()"></app-support-credentials>
         }
       </div>
     </div>
 
     <!-- footer -->
     <div class="flex items-center justify-center p-4 space-x-4">
-      @if (!isFirstStep()) {
+      @if (!isFirstStep() && !isLastStep()) {
         <button
           type="button"
           (click)="prevStep()"
           class="flex items-center justify-center gap-2 min-w-[98px] px-4 py-2 border border-[#CAC6D3] font-bold text-[#7E7A88] bg-transparent rounded">
           Previous
         </button>
-      } @else {
+      } @else if(isFirstStep()) {
         <!-- minimal: Cancel now actually closes -->
         <button
           type="button"
@@ -45,7 +45,7 @@
         </button>
       }
 
-      @if (!isLastStep()) {
+      @if (!isLastStep() && !isSecondStep()) {
         <!-- minimal: disable Next if current step is invalid -->
         <button
           type="button"
@@ -53,12 +53,19 @@
           class="flex items-center justify-center min-w-[98px] text-[16px] gap-2 px-4 text-center py-2 font-bold text-white bg-[#6D7BFA] rounded-lg">
           Next
         </button>
-      } @else {
+      } @else if(isSecondStep() && !isFirstStep()) {
         <button
           (click)="save()"
           type="button"
           class="flex items-center justify-center gap-2 min-w-[98px] px-4 py-2 text-white bg-[#6D7BFA] rounded">
           Save
+        </button>
+      }@else if(isLastStep()){
+         <button
+         (click)="closeModal()"
+          type="button"
+          class="flex items-center justify-center gap-2 min-w-[98px] px-4 py-2 text-white bg-[#6D7BFA] rounded">
+          Close
         </button>
       }
     </div>

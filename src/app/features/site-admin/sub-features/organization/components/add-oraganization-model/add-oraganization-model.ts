@@ -5,7 +5,7 @@ import { AddCompanyInformation } from "../add-company-information/add-company-in
 import { AddPackageInformation } from "../add-package-information/add-package-information";
 import { SupportCredentials } from "../support-credentials/support-credentials";
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { CreateOrganizationRequest } from '../../models/organization.model';
+import { CreateOrganizationRequest, SupportCredentialsDto } from '../../models/organization.model';
 import { OrganizationService } from '../../services/organization.service';
 
 @Component({
@@ -18,6 +18,7 @@ export class AddOraganizationModel {
   // steps
   currentStep = signal<number>(0);
   stepLabels = ['Company Information', 'Package Information', 'Support Credentials'];
+  isSecondStep = computed(() => this.currentStep() === this.stepLabels.length - 2);
   isLastStep = computed(() => this.currentStep() === this.stepLabels.length - 1);
   isFirstStep = computed(() => this.currentStep() === 0);
 
@@ -25,6 +26,7 @@ export class AddOraganizationModel {
   close = output<void>()
   readonly closeIcon = X;
 
+  supportResponse = signal<SupportCredentialsDto | null>(null);
   // forms 
   organizationForm: FormGroup;
   packageForm: FormGroup;
@@ -37,20 +39,20 @@ export class AddOraganizationModel {
       modifiedDate: [nowIso, Validators.required],
       timeZone: ['', Validators.required],
       webURL: ['', []],
-      address: ['', Validators.required],
+      address: ['fafdsfsf', Validators.required],
       createdDate: [nowIso, Validators.required],
       organizationID: [0],
-      organization: ['', Validators.required],
+      organization: ['name', Validators.required],
       organizationCode: [''],
       logo: [''],
-      emailID: ['', [Validators.required, Validators.email]],
+      emailID: ['ompy@example.com', [Validators.required, Validators.email]],
       industry: [null as number | null, [Validators.required, Validators.min(1)]],
-      gstNumber: [''],
-      zipCode: ['', [Validators.required, Validators.pattern(/^\d{4,10}$/)]],
+      gstNumber: ['342432324'],
+      zipCode: ['516390', [Validators.required, Validators.pattern(/^\d{4,10}$/)]],
       countryID: [null as number | null, Validators.required],
       stateID: [null as number | null, Validators.required],
-      contactPersonName: ['', Validators.required],
-      contactNumber: ['', [Validators.required, Validators.pattern(/^[\d+\-() ]{7,20}$/)]],
+      contactPersonName: ['om', Validators.required],
+      contactNumber: ['6301034162', [Validators.required, Validators.pattern(/^[\d+\-() ]{7,20}$/)]],
       currency: [null as number | null, Validators.required],
       status: [1],
       createdBy: [0],
@@ -121,9 +123,11 @@ export class AddOraganizationModel {
 
     const payload: CreateOrganizationRequest = { organization: org, package: pkg };
     this.organizationService.addNewOrganization(payload).subscribe({
-      next: (res) => {
+      next: (res: SupportCredentialsDto) => {
         console.log('Created organization:', res);
-        this.close.emit();
+   
+        this.supportResponse.set(res);
+        this.currentStep.set(2);
       },
       error: (err) => {
         console.error('Create org failed:', err);

@@ -82,3 +82,11 @@ export interface PackageDto {
   modifiedDate: string;            // ISO datetime
   organizationPackageID: number;
 }
+
+
+export interface SupportCredentialsDto {
+  organizationID: number;
+  supportUserId: number;
+  supportUserEmailID: string | null;
+  supportUserPassword: string | null;
+}

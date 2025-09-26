@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+import { SupportCredentialsDto } from '../../models/organization.model';
 
 @Component({
   selector: 'app-support-credentials',
@@ -9,4 +10,5 @@ import { Component } from '@angular/core';
 })
 export class SupportCredentials {
 
+  supportResponse = input<SupportCredentialsDto | null>(null);
 }
