@@ -13,7 +13,7 @@ type SiteAdminTab = 'modules' | 'sub-modules' | 'packages' | 'organizations';
 @Component({
   selector: 'app-site-admin-page',
   standalone: true,
-  imports: [Tabs,RouterOutlet],
+  imports: [Tabs, RouterOutlet],
   templateUrl: './site-admin-page.html',
   styleUrls: ['./site-admin-page.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -30,11 +30,13 @@ export class SiteAdminPage {
   ]);
 
 
-   private router = inject(Router);
+  readonly showTabs = signal(true);
+
+  private router = inject(Router);
   private route = inject(ActivatedRoute);
 
 
-    constructor() {
+  constructor() {
     this.router.events.pipe(
       filter(e => e instanceof NavigationEnd),
       startWith(null),
@@ -56,8 +58,8 @@ export class SiteAdminPage {
    * Updates the current tab when the user selects a new one.
    * @param tabId The ID of the selected tab.
    */
-  setActiveTab(tabId:string){
-   this.router.navigate([tabId], { relativeTo: this.route });
+  setActiveTab(tabId: string) {
+    this.router.navigate([tabId], { relativeTo: this.route });
   }
 
 }

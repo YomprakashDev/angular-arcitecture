@@ -1,9 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { SubModulePage } from "../../../sub-modules/pages/sub-module-page/sub-module-page";
 
 @Component({
   selector: 'app-add-view-packages',
-  imports: [FormsModule],
+  imports: [FormsModule, SubModulePage],
   templateUrl: './add-view-packages.html',
   styleUrl: './add-view-packages.css'
 })

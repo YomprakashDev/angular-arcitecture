@@ -66,7 +66,7 @@ export class SubModulePage {
 
         },
         error: (err) => {
-            this.error.set('Failed to load modules. Please try again.');
+          this.error.set('Failed to load modules. Please try again.');
           console.error(err)
         }
       });
