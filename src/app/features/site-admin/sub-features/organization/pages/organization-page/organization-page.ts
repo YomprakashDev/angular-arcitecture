@@ -89,8 +89,10 @@ export class OrganizationPage {
     this.loadOrganizations();
   }
 
-  loadOrganizations() {
+  loadOrganizations(): void {
     this.isLoading.set(true);
+    this.error.set(null);
+    
     this.organizationService.getOrganizations()
       .pipe(
         catchError((err) => {

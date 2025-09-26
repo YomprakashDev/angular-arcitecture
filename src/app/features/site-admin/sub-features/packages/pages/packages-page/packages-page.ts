@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { effect, inject, signal } from '@angular/core';
+import { inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,8 +14,8 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 //import { Button } from '../../../../../../shared/components/ui/button/button';
 import { PackageService } from '../../services/package.service';
-import { catchError, finalize, of, tap } from 'rxjs';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, EMPTY, finalize, of, tap } from 'rxjs';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { PackagesResponse } from '../../models/package.model';
 import { LucideAngularModule, SquarePen, GripVertical,Eye  } from 'lucide-angular';
 import { AddViewPackages } from "../../components/add-view-packages/add-view-packages";
@@ -58,7 +58,8 @@ export interface PackageRow {
 export class PackagesPage {
   // Configuration for the table columns.
   displayedColumns: string[] = ['actions', 'status', 'packageName', 'modules'];
-
+ // source-of-truth (matches your org approach)
+  packages = signal<PackagesResponse>([]);
   // State for inline editing.
   editingModuleId = signal<number | null>(null);
   editedModuleName = signal('');
@@ -72,49 +73,54 @@ export class PackagesPage {
   readonly viewIcon = Eye
   isAddView = signal(false)
 
+
   toggleAddView(){
     this.isAddView.set(true)
   }
   private packageService = inject(PackageService);
 
   // loading signal
-  isLoading = signal<boolean>(true);
+  isLoading = signal<boolean>(false);
   error = signal<string | null>(null);
 
-  private packages$ = this.packageService.getPackages().pipe(
-    tap(() => {
-      this.isLoading.set(true);
-      this.error.set(null);
-      console.log('[PackagesPage] calling API…');
-    }),
-    finalize(() => {
-      this.isLoading.set(false);
-      console.log('[PackagesPage] request finalized');
-    }),
-    catchError(err => {
-      console.error('[PackagesPage] API error:', err);
-      this.error.set('Failed to load packages');
-      return of<PackagesResponse>([]);
-    })
-  );
 
   // material data source
   dataSource = new MatTableDataSource<PackageRow>([]);
 
+   constructor() {
+    this.loadPackages();
+  }
   // Keep packages in a signal
-  packages = toSignal(this.packages$, { initialValue: [] as PackagesResponse });
-  constructor() {
-    // When packages change, map to rows and feed the table
-    effect(() => {
-      const resp = this.packages(); // PackagesResponse ([])
-      console.log(resp);
-      this.dataSource.data = resp.map(pkg => ({
-        packageName: pkg.packageName,
-        packageID: pkg.packageID,
-        modules: pkg.modules.map(m => m.moduleName),
-        status: pkg.modules.some(m => m.moduleStatus),
-      }));
-    });
+loadPackages(): void {
+    this.isLoading.set(true);
+    this.error.set(null);
+
+    this.packageService.getPackages()
+      .pipe(
+        catchError(err => {
+          console.error('[PackagesPage] API error:', err);
+          this.error.set('Failed to load packages.');
+          this.dataSource.data = [];
+          return EMPTY;
+        }),
+        finalize(() => this.isLoading.set(false)),
+        takeUntilDestroyed()
+      )
+      .subscribe(resp => {
+        // keep the raw API in a signal (like your org page)
+        this.packages.set(resp);
+
+        // map to rows for the table
+        const rows: PackageRow[] = resp.map(pkg => ({
+          packageID: pkg.packageID,
+          packageName: pkg.packageName,
+          modules: (pkg.modules ?? []).map(m => m.moduleName),
+          status: (pkg.modules ?? []).some(m => m.moduleStatus),
+        }));
+
+        this.dataSource = new MatTableDataSource(rows);
+
+      });
   }
 
 

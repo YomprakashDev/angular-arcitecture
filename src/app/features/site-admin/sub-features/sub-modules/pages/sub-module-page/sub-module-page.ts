@@ -3,8 +3,9 @@ import { MenuItemComponent } from '../../../../../../shared/components/ui/menu-i
 import { ContractsPage } from '../contracts-page/contracts-page';
 import { SubModulesService } from '../../services/sub-modules.service';
 import { Module as ModuleNode, Modules, SubModule } from '../../models/sub-module.model';
-import { finalize } from 'rxjs';
+import { catchError, EMPTY, finalize } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 type ModuleMin = { id: number; name: string };
 
 @Component({
@@ -50,25 +51,17 @@ export class SubModulePage {
   private loadSubModules(): void {
     this.isLoading.set(true);
     this.error.set(null);
-    this.subModuleService.getSubModules().pipe(finalize(() => this.isLoading.set(false)))
-      .subscribe({
-        next: (res: Modules) => {
-          this.items.set(res);
-          if (res.length > 0) {
-            const firstId = res[0].moduleID;
-            this.selectItem(firstId);
-          } else {
-            this.selectedItem.set(null);
-            this.selectedSubModules = [];
-          }
 
-
-
-        },
-        error: (err) => {
-          this.error.set('Failed to load modules. Please try again.');
-          console.error(err)
-        }
+    this.subModuleService.getSubModules()
+      .pipe(catchError((err) => {
+        this.error.set(err.message);
+        return EMPTY;
+      }),
+        finalize(() => this.isLoading.set(false)),
+        takeUntilDestroyed()
+      )
+      .subscribe((res) => {
+        this.items.set(res);
       });
   }
 

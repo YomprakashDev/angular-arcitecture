@@ -2,14 +2,19 @@
 
 @if (isLoading()) {
 <!-- loading overlay -->
-<div class="loading-overlay">
+<div class="loading-overlay" aria-live="polite">
   <mat-progress-spinner
     mode="indeterminate"
     diameter="48"
     aria-label="Loading"
   ></mat-progress-spinner>
 </div>
-} @else {
+
+} @if (error()) {
+<div class="mt-4 p-3 rounded border border-red-200 bg-red-50 text-red-800 text-sm">
+  {{ error() }}
+</div>
+} @if(!isLoading() && !error() ) {
 <div class="flex w-full h-full bg-white rounded-lg">
   <div class="flex-1 p-6">
     <div class="flex items-center justify-between">
@@ -21,11 +26,6 @@
       ></app-button>
     </div>
 
-    @if (error()) {
-    <div class="mt-4 p-3 rounded border border-red-200 bg-red-50 text-red-800 text-sm">
-      {{ error() }}
-    </div>
-    }
 
     <div class="flex items-center justify-center p-4">
       <div class="flex items-center justify-between w-full">
@@ -133,7 +133,7 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
- 
+
       <!-- <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]" showFirstLastButtons>
   </mat-paginator> -->
     </div>
