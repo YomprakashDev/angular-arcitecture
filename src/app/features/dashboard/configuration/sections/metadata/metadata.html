@@ -1,7 +1,56 @@
 <div class="flex bg-white w-full h-full">
 
  <div class="flex-1 p-6">
-   <h1 class="text-2xl font-bold text-[#1D1D21]"> Metadata</h1>
+<div class="p-6">
+  <!-- Title -->
+  <h1 class="text-[22px] font-semibold text-[#1D1D21] mb-4">Meta Data</h1>
+
+  <!-- Card + Material table -->
+  <div class="overflow-hidden rounded-xl border border-[#F0F0F0] bg-white">
+    <table mat-table [dataSource]="rows" class="w-full mat-elevation-z0 text-sm">
+
+      <!-- Contract Type -->
+      <ng-container matColumnDef="contractType">
+        <th mat-header-cell *matHeaderCellDef class="px-4 py-3 font-medium text-[#6B7280] bg-[#F6F8FB]">
+          Contract Type
+        </th>
+        <td mat-cell *matCellDef="let r" class="px-4 py-3">
+          <a class="text-[#4376F0] hover:underline" href="javascript:void(0)">{{ r.contractType }}</a>
+        </td>
+      </ng-container>
+
+      <!-- Number of Contracts -->
+      <ng-container matColumnDef="contracts">
+        <th mat-header-cell *matHeaderCellDef class="px-4 py-3 font-medium text-[#6B7280] bg-[#F6F8FB]">
+          Number of Contracts
+        </th>
+        <td mat-cell *matCellDef="let r" class="px-4 py-3 text-[#1D1D21]">
+          {{ r.contracts }}
+        </td>
+      </ng-container>
+
+      <!-- Last Updated -->
+      <ng-container matColumnDef="lastUpdated">
+        <th mat-header-cell *matHeaderCellDef class="px-4 py-3 font-medium text-[#6B7280] bg-[#F6F8FB]">
+          Last Updated
+        </th>
+        <td mat-cell *matCellDef="let r" class="px-4 py-3 text-[#1D1D21]">
+          {{ r.lastUpdated }}
+        </td>
+      </ng-container>
+
+      <!-- Rows -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns" class="!bg-[#F6F8FB]"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        class="odd:bg-white even:bg-[#F9FAFC]"
+      ></tr>
+    </table>
+  </div>
+
+ 
+</div>
 
  </div>
 </div>
