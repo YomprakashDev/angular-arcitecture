@@ -1,7 +1,219 @@
 <div class="flex bg-white w-full h-full">
 
  <div class="flex-1 p-6">
-   <h1 class="text-2xl font-bold text-[#1D1D21]"> Workflow</h1>
+<div class="p-6 w-full">
+  <!-- Header row -->
+  <div class="mb-4  flex items-center justify-between gap-4">
+    <h1 class="text-[22px] font-semibold text-[#1D1D21]">Workflows</h1>
+
+    <button
+      type="button"
+      class="inline-flex items-center gap-2 rounded-lg bg-[#7C83FF] px-4 py-2 text-white text-sm font-semibold shadow-sm hover:brightness-95"
+    >
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" />
+      </svg>
+      Setup Workflow
+    </button>
+  </div>
+
+  <!-- Tabs + filter + search -->
+  <div class="mb-4 w-full flex flex-wrap items-center gap-3">
+    <!-- Tabs -->
+    <div class="flex items-center gap-2">
+      <button
+        class="rounded-lg bg-[#7C83FF] px-4 py-2 text-white text-sm font-semibold"
+      >
+        Template
+      </button>
+      <button
+        class="rounded-lg bg-[#F2F3FF] px-4 py-2 text-[#7C83FF] text-sm font-semibold"
+      >
+        Legacy
+      </button>
+    </div>
+
+    <div class="ml-0 flex items-center gap-3">
+      <!-- Filter (static) -->
+      <div
+        class="relative inline-flex h-10 items-center rounded-lg border border-[#E6E6E6] bg-white px-3 text-sm"
+      >
+        <span class="text-[#1D1D21]">All</span>
+        <svg
+          class="ml-2 h-4 w-4 text-[#9CA3AF]"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </div>
+
+      <!-- Search (static) -->
+      <div
+        class="relative inline-flex h-10 w-[320px] items-center rounded-lg border border-[#E6E6E6] bg-white px-3"
+      >
+        <svg
+          class="mr-2 h-4 w-4 text-[#9CA3AF]"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="M21 21l-4.35-4.35"></path>
+        </svg>
+        <input
+          class="w-full bg-transparent text-sm outline-none placeholder:text-[#9CA3AF]"
+          placeholder="Search here"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="overflow-hidden rounded-xl border border-[#F0F0F0] bg-white">
+    <table mat-table [dataSource]="rows" class="mat-elevation-z0 w-full text-sm">
+      <!-- Actions -->
+      <ng-container matColumnDef="actions">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="bg-[#F6F8FB] px-4 py-3 text-left font-medium text-[#6B7280]"
+        >
+          Actions
+        </th>
+        <td mat-cell *matCellDef="let _" class="px-4 py-3">
+          <div class="flex items-center gap-3 text-[#787A7F]">
+            <!-- pencil -->
+            <span
+              class="inline-flex h-6 w-6 items-center justify-center rounded border border-[#E6E6E6] hover:bg-[#F7F7FA]"
+              title="Edit"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M12 20h9"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M16.5 3.5l4 4L8 20H4v-4l12.5-12.5z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  fill="none"
+                />
+              </svg>
+            </span>
+            <!-- circle toggle-ish icon -->
+            <span
+              class="inline-flex h-6 w-6 items-center justify-center rounded border border-[#E6E6E6] hover:bg-[#F7F7FA]"
+              title="Status"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="6.5" stroke="currentColor" />
+              </svg>
+            </span>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Workflow Name -->
+      <ng-container matColumnDef="name">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="bg-[#F6F8FB] px-4 py-3 text-left font-medium text-[#6B7280]"
+        >
+          Workflow Name
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let r"
+          class="px-4 py-3 text-[#1D1D21] max-w-[420px] truncate"
+          title="{{ r.name }}"
+        >
+          {{ r.name }}
+        </td>
+      </ng-container>
+
+      <!-- Contract Type -->
+      <ng-container matColumnDef="contractType">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="bg-[#F6F8FB] px-4 py-3 text-left font-medium text-[#6B7280]"
+        >
+          Contract Type
+        </th>
+        <td mat-cell *matCellDef="let r" class="px-4 py-3 text-[#1D1D21]">
+          {{ r.contractType }}
+        </td>
+      </ng-container>
+
+      <!-- Description -->
+      <ng-container matColumnDef="description">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="bg-[#F6F8FB] px-4 py-3 text-left font-medium text-[#6B7280]"
+        >
+          Description
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let r"
+          class="px-4 py-3 text-[#1D1D21] max-w-[560px] truncate"
+          title="{{ r.description }}"
+        >
+          {{ r.description }}
+        </td>
+      </ng-container>
+
+      <!-- Created By -->
+      <ng-container matColumnDef="createdBy">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="bg-[#F6F8FB] px-4 py-3 text-left font-medium text-[#6B7280]"
+        >
+          Created By
+        </th>
+        <td mat-cell *matCellDef="let r" class="px-4 py-3 text-[#1D1D21]">
+          {{ r.createdBy }}
+        </td>
+      </ng-container>
+
+      <!-- Last Action Taken On -->
+      <ng-container matColumnDef="lastAction">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="bg-[#F6F8FB] px-4 py-3 text-left font-medium text-[#6B7280]"
+        >
+          Last Action Taken On
+        </th>
+        <td mat-cell *matCellDef="let r" class="px-4 py-3 text-[#1D1D21]">
+          {{ r.lastAction }}
+        </td>
+      </ng-container>
+
+      <!-- header/rows -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        class="odd:bg-white even:bg-[#F9FAFC]"
+      ></tr>
+    </table>
+  </div>
+
+</div>
 
  </div>
 </div>
