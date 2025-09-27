@@ -24,7 +24,7 @@ export const routes: Routes = [
       },
       {
         path: 'configuration',
-        loadComponent: () => import('./features/dashboard/configuration/configure-page/configuration').then(m => m.Configuration)
+        loadComponent: () => import('./features/dashboard/pages/configure-page/configuration').then(m => m.Configuration)
       },
 
       {

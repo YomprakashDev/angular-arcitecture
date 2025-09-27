@@ -2,6 +2,7 @@
   [tabs]="tabs()"
   (tabChanged)="setActiveTab($event.id)"
   [defaultActiveTab]="'counter-party'"
+  [activeTabInput]="currentTab()"
 ></app-tabs>
 
 <div class="p-6">
