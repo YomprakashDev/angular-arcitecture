@@ -26,8 +26,7 @@
       ></app-button>
     </div>
 
-
-    <div class="flex items-center justify-center p-4">
+    <div class="flex items-center justify-center">
       <div class="flex items-center justify-between w-full">
         <app-tabs
           [tabs]="tabs()"
@@ -62,14 +61,13 @@
             />
           </div>
 
-          <app-button text="Export" variant="secondary"></app-button>
+          <app-button text="Export" variant="secondary" (clicked)="exportToExcel()"></app-button>
         </div>
       </div>
     </div>
 
     <div class="card">
-      <!-- Bind directly to the array signal; no computed(), no MatTableDataSource -->
-      <table mat-table [dataSource]="organizations()" class="orgs-table mat-elev-0">
+      <table mat-table [dataSource]="dataSource" class="orgs-table mat-elev-0">
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef scope="col">Actions</th>
           <td mat-cell *matCellDef="let org">
@@ -85,6 +83,9 @@
               </button>
               <button mat-icon-button aria-label="View module">
                 <lucide-angular [img]="cogIcon" class="text-[#787A7F] text-xs"></lucide-angular>
+              </button>
+              <button mat-icon-button aria-label="View module">
+                <img src="assets/icons/svgs/cloud-access.svg" class="text-[#787A7F] text-xs" />
               </button>
               <button mat-icon-button aria-label="View module">
                 <lucide-angular [img]="logoutIcon" class="text-[#787A7F] text-xs"></lucide-angular>
@@ -133,9 +134,8 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
-
-      <!-- <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]" showFirstLastButtons>
-  </mat-paginator> -->
+      <mat-paginator [pageSize]="6" [pageSizeOptions]="[5, 10, 25, 50, 100]" showFirstLastButtons>
+      </mat-paginator>
     </div>
   </div>
 </div>

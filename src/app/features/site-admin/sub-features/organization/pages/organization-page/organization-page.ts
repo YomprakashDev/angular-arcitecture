@@ -8,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { OrganizationService } from '../../services/organization.service';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-
+import * as XLSX from 'xlsx';
 import { OrganizationData } from '../../models/organization.model';
 import { OrganizationDetails } from "../../components/organization-details/organization-details";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -54,11 +54,19 @@ export class OrganizationPage {
 
 
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  // Raw data source (used directly by the table)
+  @ViewChild(MatPaginator)
+  set matPaginator(p: MatPaginator) {
+    if (p) {
+      this.paginator = p;
+      this.dataSource.paginator = p;
+    }
+  }
+  private paginator!: MatPaginator;
+
+
   readonly organizations = signal<OrganizationData[]>([]);
-  // IMPORTANT: datasource typed to nested API model
+
   dataSource = new MatTableDataSource<OrganizationData>([]);
 
   // table columns
@@ -92,7 +100,7 @@ export class OrganizationPage {
   loadOrganizations(): void {
     this.isLoading.set(true);
     this.error.set(null);
-    
+
     this.organizationService.getOrganizations()
       .pipe(
         catchError((err) => {
@@ -104,8 +112,8 @@ export class OrganizationPage {
       )
       .subscribe((orgs) => {
         this.organizations.set(orgs);
-        this.dataSource = new MatTableDataSource(orgs);
-        this.dataSource.paginator = this.paginator;
+        this.dataSource.data = orgs;
+        if (this.paginator) this.paginator.firstPage();
       });
   }
 
@@ -118,10 +126,57 @@ export class OrganizationPage {
   addOrganization() {
     this.isAddOrganizationModalOpen.set(true);
   }
-  closeModal() {
 
+  closeModal() {
     this.isAddOrganizationModalOpen.set(false);
   }
+
+
+  exportToExcel() {
+    // 1. Get your data (from signal)
+    const orgs = this.organizations();
+
+    if (!orgs || orgs.length === 0) {
+      console.warn('No data to export');
+      return;
+    }
+
+    // 2. Map data into flat rows (because Excel sheets don’t support nested objects directly)
+    const exportData = orgs.map((org, index) => ({
+      '#': index + 1,
+      'Organization Name': org.orgDetails?.organizationName ?? '',
+      'Industry': org.orgDetails?.industryName ?? '',
+      'Website': org.orgDetails?.organizationalURL ?? '',
+      'GST Number': org.orgDetails?.gstNumber ?? '',
+      'Address': org.orgDetails?.address ?? '',
+      'Zip Code': org.orgDetails?.zipCode ?? '',
+      'State': org.orgDetails?.stateName ?? '',
+      'Country': org.orgDetails?.countryName ?? '',
+      'Currency': org.orgDetails?.currencyCode ?? '',
+      'Time Zone': org.orgDetails?.timeZone ?? '',
+      'Contact Person': org.contactDetails?.contactPersonName ?? '',
+      'Phone': org.contactDetails?.contactNumber ?? '',
+      'Email': org.contactDetails?.emailID ?? '',
+      'Package': org.packageInfo?.packageName ?? '',
+      'Users': org.packageInfo?.userCount ?? '',
+      'Deal Amount': org.packageInfo?.dealAmount ?? '',
+      'GST': org.packageInfo?.gst ?? '',
+      'Start Date': org.packageInfo?.startDate ?? '',
+      'Valid Upto': org.packageInfo?.validUpto ?? ''
+    }));
+
+    // 3. Convert to worksheet
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(exportData);
+
+    // 4. Create workbook and append worksheet
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Organizations');
+
+    // 5. Save as Excel file
+    XLSX.writeFile(wb, 'organizations.xlsx');
+  }
+
+
 
 
 
