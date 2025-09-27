@@ -26,6 +26,7 @@ export class Modal {
    * An output event that emits when the modal is closed.
    */
   closed = output<void>();
+  save = output<void>();
 
   /**
    * Emits the `closed` event.
@@ -33,4 +34,9 @@ export class Modal {
   closeModal() {
     this.closed.emit();
   }
+
+  onSave() {
+    this.save.emit();
+  }
+
 }

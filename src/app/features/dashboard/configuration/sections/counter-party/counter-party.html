@@ -1,14 +1,14 @@
 <div class="flex bg-white w-full h-full">
   <div class="flex-1 p-6">
     <div class="p-6">
-      <!-- Title row -->
+      <!-- Header -->
       <div class="flex items-center justify-between mb-4">
         <h1 class="text-[22px] font-semibold text-[#1D1D21]">Counter Party</h1>
 
         <button
+          (click)="addCounterParty()"
           class="inline-flex items-center gap-2 rounded-lg bg-[#6C63FF] text-white px-4 py-2.5 text-sm font-semibold shadow-sm hover:brightness-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#6C63FF]"
         >
-          <!-- plus icon in a circle -->
           <span class="inline-flex items-center justify-center rounded-full bg-white/20 w-6 h-6">
             <svg
               viewBox="0 0 24 24"
@@ -28,158 +28,226 @@
       <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
         <div class="flex items-center gap-3">
           <!-- Type -->
-          <div class="relative">
-            <select
-              class="appearance-none rounded-lg border border-[#E5E7EB] bg-white px-3 pr-9 py-2 text-sm text-[#1D1D21] min-w-[120px]"
+          <mat-form-field appearance="outline" class="w-[140px]">
+            <mat-select
               [value]="selectedType()"
+              (valueChange)="selectedType.set($event)"
               aria-label="Filter by type"
             >
-              <option value="">Type</option>
-              <option *ngFor="let t of types" [value]="t">{{ t }}</option>
-            </select>
-            <svg
-              class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </div>
+              <mat-option [value]="''">Type</mat-option>
+              @for (t of types; track t) {
+              <mat-option [value]="t">{{ t }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
 
           <!-- Country -->
-          <div class="relative">
-            <select
-              class="appearance-none rounded-lg border border-[#E5E7EB] bg-white px-3 pr-9 py-2 text-sm text-[#1D1D21] min-w-[140px]"
+          <mat-form-field appearance="outline" class="w-[160px]">
+            <mat-select
               [value]="selectedCountry()"
+              (valueChange)="selectedCountry.set($event)"
               aria-label="Filter by country"
             >
-              <option value="">Country</option>
-              <option *ngFor="let c of countries" [value]="c">{{ c }}</option>
-            </select>
-            <svg
-              class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </div>
+              <mat-option [value]="''">Country</mat-option>
+              @for (c of countries; track c) {
+              <mat-option [value]="c">{{ c }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
         </div>
 
         <!-- Search -->
-        <div class="relative w-full max-w-sm">
-          <input
-            type="text"
-            placeholder="Search Here"
-            class="w-full rounded-lg border border-[#E5E7EB] pl-10 pr-3 py-2 text-sm placeholder:text-[#9AA0A6] focus:outline-none"
-            [value]="search()"
-            aria-label="Search"
-          />
-          <svg
-            class="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <circle cx="11" cy="11" r="8"></circle>
-            <path d="m21 21-4.35-4.35"></path>
-          </svg>
-        </div>
+        <mat-form-field appearance="outline" class="w-full max-w-sm">
+          <mat-icon matPrefix svgIcon="" class="mr-2">
+            <!-- simple search icon -->
+            <svg
+              viewBox="0 0 24 24"
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+          </mat-icon>
+          <input matInput placeholder="Search Here" [value]="search()" />
+        </mat-form-field>
       </div>
 
       <!-- Table -->
       <div class="overflow-hidden rounded-xl border border-[#EDEFF2] bg-white">
-        <table class="w-full border-collapse text-sm">
-          <thead class="bg-[#F6F7FB] text-[#6B7280]">
-            <tr>
-              <th class="text-left font-semibold px-4 py-3">Actions</th>
-              <th class="text-left font-semibold px-4 py-3">Counterparty Name</th>
-              <th class="text-left font-semibold px-4 py-3">Type</th>
-              <th class="text-left font-semibold px-4 py-3">Address</th>
-              <th class="text-left font-semibold px-4 py-3">City</th>
-              <th class="text-left font-semibold px-4 py-3">State</th>
-              <th class="text-left font-semibold px-4 py-3">Country</th>
-              <th class="text-left font-semibold px-4 py-3">Contact Name</th>
-              <th class="text-left font-semibold px-4 py-3">Contact Number</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let r of allRows(); let i = index" class="border-t border-[#F0F2F5]">
-              <!-- Actions -->
-              <td class="px-4 py-3">
-                <div class="flex items-center gap-3 text-[#8A8F98]">
-                  <button class="p-1 hover:text-[#111827]" aria-label="View">
-                    <svg
-                      viewBox="0 0 24 24"
-                      class="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.8"
-                    >
-                      <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"></path>
-                      <circle cx="12" cy="12" r="3"></circle>
-                    </svg>
-                  </button>
-                  <button class="p-1 hover:text-[#111827]" aria-label="Edit">
-                    <svg
-                      viewBox="0 0 24 24"
-                      class="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.8"
-                    >
-                      <path d="M12 20h9"></path>
-                      <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
-                    </svg>
-                  </button>
-                  <button class="p-1 hover:text-[#DC2626]" aria-label="Delete">
-                    <svg
-                      viewBox="0 0 24 24"
-                      class="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.8"
-                    >
-                      <polyline points="3 6 5 6 21 6"></polyline>
-                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
-                      <path d="M10 11v6M14 11v6"></path>
-                      <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"></path>
-                    </svg>
-                  </button>
-                </div>
-              </td>
+        <table mat-table [dataSource]="dataSource" matSort class="w-full mat-elevation-0">
+          <!-- Actions -->
+          <ng-container matColumnDef="actions">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="px-4 py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
+            >
+              Actions
+            </th>
+            <td mat-cell *matCellDef="let r" class="px-4 py-3">
+              <div class="flex items-center gap-2 text-[#8A8F98]">
+                <button  mat-icon-button matTooltip="View">
+                  <svg
+                    viewBox="0 0 24 24"
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                  >
+                    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </button>
+                <button (click)="editCounterParty()" mat-icon-button matTooltip="Edit">
+                  <svg
+                    viewBox="0 0 24 24"
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                  >
+                    <path d="M12 20h9"></path>
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
+                  </svg>
+                </button>
+                <button (click)="deleteCounterParty()" mat-icon-button matTooltip="Delete">
+                  <svg
+                    viewBox="0 0 24 24"
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                  >
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                    <path d="M10 11v6M14 11v6"></path>
+                    <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"></path>
+                  </svg>
+                </button>
+              </div>
+            </td>
+          </ng-container>
 
-              <!-- Name -->
-              <td class="px-4 py-3">
-                <ng-container *ngIf="r.link; else plainName">
-                  <a [href]="r.link" class="text-[#1B79E7] hover:underline">{{ r.name }}</a>
-                </ng-container>
-                <ng-template #plainName>
-                  <span class="text-[#1D1D21]">{{ r.name }}</span>
-                </ng-template>
-              </td>
+          <!-- Name -->
+          <ng-container matColumnDef="name">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="px-4 py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
+            >
+              Counterparty Name
+            </th>
+            <td mat-cell *matCellDef="let r" class="px-4 py-3">
+              <a [href]="r.link || '#'" class="text-[#1B79E7] hover:underline">{{ r.name }}</a>
+            </td>
+          </ng-container>
 
-              <!-- Other cells -->
-              <td class="px-4 py-3 text-[#1D1D21]">{{ r.type }}</td>
-              <td class="px-4 py-3 text-[#1D1D21]">{{ r.address }}</td>
-              <td class="px-4 py-3 text-[#1D1D21]">{{ r.city }}</td>
-              <td class="px-4 py-3 text-[#1D1D21]">{{ r.state }}</td>
-              <td class="px-4 py-3 text-[#1D1D21]">{{ r.country }}</td>
-              <td class="px-4 py-3 text-[#1D1D21]">{{ r.contactName }}</td>
-              <td class="px-4 py-3 text-[#1D1D21]">{{ r.contactNumber }}</td>
-            </tr>
-          </tbody>
+          <!-- Type -->
+          <ng-container matColumnDef="type">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="px-4 py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
+            >
+              Type
+            </th>
+            <td mat-cell *matCellDef="let r" class="px-4 py-3 text-[#1D1D21]">{{ r.type }}</td>
+          </ng-container>
+
+          <!-- Address -->
+          <ng-container matColumnDef="address">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="px-4 py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
+            >
+              Address
+            </th>
+            <td mat-cell *matCellDef="let r" class="px-4 py-3 text-[#1D1D21]">{{ r.address }}</td>
+          </ng-container>
+
+          <!-- City -->
+          <ng-container matColumnDef="city">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="px-4 py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
+            >
+              City
+            </th>
+            <td mat-cell *matCellDef="let r" class="px-4 py-3 text-[#1D1D21]">{{ r.city }}</td>
+          </ng-container>
+
+          <!-- State -->
+          <ng-container matColumnDef="state">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="px-4 py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
+            >
+              State
+            </th>
+            <td mat-cell *matCellDef="let r" class="px-4 py-3 text-[#1D1D21]">{{ r.state }}</td>
+          </ng-container>
+
+          <!-- Country -->
+          <ng-container matColumnDef="country">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="px-4 py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
+            >
+              Country
+            </th>
+            <td mat-cell *matCellDef="let r" class="px-4 py-3 text-[#1D1D21]">{{ r.country }}</td>
+          </ng-container>
+
+          <!-- Contact Name -->
+          <ng-container matColumnDef="contactName">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="px-4 py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
+            >
+              Contact Name
+            </th>
+            <td mat-cell *matCellDef="let r" class="px-4 py-3 text-[#1D1D21]">
+              {{ r.contactName }}
+            </td>
+          </ng-container>
+
+          <!-- Contact Number -->
+          <ng-container matColumnDef="contactNumber">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="px-4 py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
+            >
+              Contact Number
+            </th>
+            <td mat-cell *matCellDef="let r" class="px-4 py-3 text-[#1D1D21]">
+              {{ r.contactNumber }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]" showFirstLastButtons> </mat-paginator>
       </div>
     </div>
   </div>
 </div>
+
+@if(isAdding()){
+<app-modal [isOpen]="isAdding()"  (closed)="isAdding.set(false)" [title]="'Add Counter Party'">
+  <app-counterparty-form></app-counterparty-form>
+</app-modal>
+}
+
+@if(isDeleting()){
+  <app-confirm-dialog [variant]="'danger'" [text]="'Are you sure you want to delete this counterparty?'" [open]="isDeleting()" (closed)="isDeleting.set(false)"></app-confirm-dialog>
+}

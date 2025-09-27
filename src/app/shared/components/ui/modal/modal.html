@@ -1,25 +1,45 @@
 @if (isOpen()) {
-  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-    <div class="bg-white rounded-lg shadow-lg w-full max-w-[80%]">
-      <!-- header -->
-      <div class="flex items-center justify-between p-4">
-        <h2 class="text-xl font-bold">{{ title() }}</h2>
-        <button (click)="closeModal()" class="text-gray-500 hover:text-gray-700">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+  <div class="bg-white rounded-lg shadow-lg w-full max-w-[80%]">
+    <!-- header -->
+    <div class="flex items-center justify-between p-4">
+      <h2 class="text-xl font-bold">{{ title() }}</h2>
+      <button (click)="closeModal()" class="text-gray-500 hover:text-gray-700">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <!-- body slot -->
+    <div class="p-4 overflow-y-auto max-h-[80vh]">
+      <ng-content></ng-content>
+    </div>
+    <div class="flex items-center gap-4 justify-center p-4">
+      <button
+          type="button"
+          (click)="closeModal()"
+          class="flex items-center justify-center min-w-[98px] gap-2 px-4 py-2 border border-[#7E7A88] text-[16px] font-bold text-[#7E7A88] bg-transparent rounded-lg">
+          Cancel
         </button>
-      </div>
-
-      <!-- NEW: stepper slot (sits *between* header and body) -->
-      <div class="px-4 pb-2">
-        <ng-content select="[modal-stepper]"></ng-content>
-      </div>
-
-      <!-- body slot -->
-      <div class="p-4">
-
-      </div>
+        <button
+          (click)="onSave()"  
+          type="button"
+          class="flex items-center justify-center gap-2 min-w-[98px] px-4 py-2 text-white bg-[#6D7BFA] rounded">
+          Save
+        </button>
     </div>
   </div>
+</div>
 }

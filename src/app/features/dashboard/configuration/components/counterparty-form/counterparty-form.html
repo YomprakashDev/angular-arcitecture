@@ -1,0 +1,212 @@
+<form [formGroup]="form"  class="w-full">
+  <!-- Card -->
+  <div class="rounded-2xl bg-[#EEF2F6] p-6 md:p-8 space-y-8">
+
+    <!-- Counterparty Information -->
+    <div>
+      <h2 class="text-2xl font-bold text-[#1D1D21] mb-4">Counterparty Information</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        <!-- Counter Party Name -->
+        <div class="md:col-span-4">
+          <label class="block text-sm font-semibold text-[#1D1D21] mb-2">
+            Counter Party Name<span class="text-red-500">*</span>
+          </label>
+          <input
+            formControlName="counterPartyName"
+            type="text"
+            placeholder="Enter Counter Party Name"
+            class="w-full rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 text-[15px] placeholder-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-indigo-100"
+/>
+        </div>
+
+        <!-- Type -->
+        <div class="md:col-span-4">
+          <label class="block text-sm font-semibold text-[#1D1D21] mb-2">
+            Type<span class="text-red-500">*</span>
+          </label>
+          <div class="relative">
+            <select
+              formControlName="type"
+              class="w-full appearance-none rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 text-[15px] focus:outline-none focus:ring-2 focus:ring-indigo-100"
+           >
+              <option value="" selected>Select</option>
+              <option *ngFor="let t of typeOptions" [value]="t.id">{{ t.label }}</option>
+            </select>
+            <svg class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Website URL -->
+        <div class="md:col-span-4">
+          <label class="block text-sm font-semibold text-[#1D1D21] mb-2">Website URL</label>
+          <input
+            formControlName="websiteUrl"
+            type="url"
+            placeholder="https://contracts.yourdomain.com"
+            class="w-full rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 text-[15px] placeholder-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-indigo-100" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Address Details -->
+    <div>
+      <h2 class="text-2xl font-bold text-[#1D1D21] mb-4">Address Details</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        <!-- Street Address -->
+        <div class="md:col-span-6">
+          <label class="block text-sm font-semibold text-[#1D1D21] mb-2">
+            Street Address<span class="text-red-500">*</span>
+          </label>
+          <textarea
+            formControlName="streetAddress"
+            placeholder="Enter Street Address"
+            rows="5"
+            class="w-full resize-none rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 text-[15px] placeholder-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-indigo-100"
+          ></textarea>
+        </div>
+
+        <!-- City -->
+        <div class="md:col-span-3">
+          <label class="block text-sm font-semibold text-[#1D1D21] mb-2">City</label>
+          <input
+            formControlName="city"
+            type="text"
+            placeholder="Enter City"
+            class="w-full rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 text-[15px] placeholder-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-indigo-100" />
+        </div>
+
+        <!-- State -->
+        <div class="md:col-span-3">
+          <label class="block text-sm font-semibold text-[#1D1D21] mb-2">
+            State<span class="text-red-500">*</span>
+          </label>
+          <input
+            formControlName="state"
+            type="text"
+            placeholder="Enter State"
+            class="w-full rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 text-[15px] placeholder-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-indigo-100"
+           />
+        </div>
+
+        <!-- Country -->
+        <div class="md:col-span-3">
+          <label class="block text-sm font-semibold text-[#1D1D21] mb-2">
+            Country<span class="text-red-500">*</span>
+          </label>
+          <div class="relative">
+            <select
+              formControlName="country"
+              class="w-full appearance-none rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 text-[15px] focus:outline-none focus:ring-2 focus:ring-indigo-100"
+             >
+              <option value="" selected>Select</option>
+              <option *ngFor="let c of countryOptions" [value]="c.id">{{ c.label }}</option>
+            </select>
+            <svg class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Set as Primary -->
+        <div class="md:col-span-3 flex items-end">
+          <label class="inline-flex items-center gap-3 text-[#1D1D21]">
+            <input type="checkbox" formControlName="isPrimary" class="h-4 w-4 rounded border-[#D1D5DB] text-indigo-600 focus:ring-indigo-500" />
+            <span>Set as Primary</span>
+          </label>
+        </div>
+
+        <!-- Add Address button -->
+        <div class="md:col-span-12">
+          <button type="button"
+                 
+                  class="inline-flex items-center gap-3 rounded-xl bg-[#5B7CFA] px-5 py-3 text-white font-semibold shadow hover:opacity-95 focus:outline-none">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-width="2" stroke-linecap="round" d="M12 5v14M5 12h14"/>
+            </svg>
+            Add Address
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Details -->
+    <div>
+      <h2 class="text-2xl font-bold text-[#1D1D21] mb-4">Contact Details</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        <!-- Contact Person Name -->
+        <div class="md:col-span-3">
+          <label class="block text-sm font-semibold text-[#1D1D21] mb-2">
+            Contact Person Name<span class="text-red-500">*</span>
+          </label>
+          <input
+            formControlName="contactPersonName"
+            type="text"
+            placeholder="Enter Contact Person Name"
+            class="w-full rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 text-[15px] placeholder-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-indigo-100"
+            />
+        </div>
+
+        <!-- Email -->
+        <div class="md:col-span-3">
+          <label class="block text-sm font-semibold text-[#1D1D21] mb-2">
+            Email<span class="text-red-500">*</span>
+          </label>
+          <input
+            formControlName="email"
+            type="email"
+            placeholder="Enter Email"
+            class="w-full rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 text-[15px] placeholder-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-indigo-100"
+          />
+        </div>
+
+        <!-- Contact Number -->
+        <div class="md:col-span-3">
+          <label class="block text-sm font-semibold text-[#1D1D21] mb-2">
+            Contact Number<span class="text-red-500">*</span>
+          </label>
+          <input
+            formControlName="contactNumber"
+            type="tel"
+            placeholder="Enter Contact Number"
+            class="w-full rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 text-[15px] placeholder-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-indigo-100"
+            />
+        </div>
+
+        <!-- Designation -->
+        <div class="md:col-span-3">
+          <label class="block text-sm font-semibold text-[#1D1D21] mb-2">
+            Designation<span class="text-red-500">*</span>
+          </label>
+          <input
+            formControlName="designation"
+            type="text"
+            placeholder="Enter Designation"
+            class="w-full rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 text-[15px] placeholder-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-indigo-100"
+          >
+        </div>
+
+        <!-- Add Contact button -->
+        <div class="md:col-span-12">
+          <button type="button"
+             
+                  class="inline-flex items-center gap-3 rounded-xl bg-[#5B7CFA] px-5 py-3 text-white font-semibold shadow hover:opacity-95 focus:outline-none">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-width="2" stroke-linecap="round" d="M12 5v14M5 12h14"/>
+            </svg>
+            Add Contact
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div>
+
+   
+    </div>
+  </div>
+</form>
