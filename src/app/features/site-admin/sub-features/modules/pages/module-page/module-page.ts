@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, inject, signal, ViewChild } from '@angular/core';
+import { Component, inject, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,7 +20,7 @@ import { ToggleSwitch } from "../../../../../../shared/components/ui/toggle-swit
 import { Card } from "../../../../../../shared/components/ui/card/card";
 import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
 
-/** Minimal, Tailwind-first Modules page */
+/** Modules page */
 @Component({
   selector: 'app-module-page',
   standalone: true,
@@ -74,7 +74,7 @@ export class ModulePage  {
    
 
 
-  /** Load data with friendly error handling. */
+  /** Load data with error handling. */
   loadModules(): void {
     this.isLoading.set(true);
     this.error.set(null);
@@ -102,7 +102,7 @@ export class ModulePage  {
       );
   }
 
-  /** Track rows by stable id (perf). */
+  /** Track rows by stable id. */
   trackById = (_: number, row: Module) => row.id;
 
   /** Enter edit mode for a row. */
@@ -113,7 +113,7 @@ export class ModulePage  {
     this.isDirty.set(false);
   }
 
-  /** Mark inline fields dirty. */
+  /**  inline fields dirty. */
   onFieldChange() {
     this.isDirty.set(true);
   }
@@ -123,7 +123,7 @@ export class ModulePage  {
     this.editingModuleId.set(null);
   }
 
-  /** Persist edited row and refresh. */
+  /** Save Inline edited module name and description  */
   saveModule(module: Module) {
     const payload: Module = {
       ...module,
@@ -144,7 +144,7 @@ export class ModulePage  {
       });
   }
 
-  /** Optimistic toggle with revert on error. */
+  /**  toggle to status update */
   toggleModuleStatus(module: Module, next: boolean) {
     const prev = module.status;
     module.status = next;
