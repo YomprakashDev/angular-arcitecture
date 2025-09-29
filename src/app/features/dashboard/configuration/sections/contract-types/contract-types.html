@@ -1,112 +1,222 @@
 <div class="flex bg-white w-full h-full">
-
- <div class="flex-1 p-6">
-
-   <div class="">
-  <!-- Header row -->
-  <div class="flex items-center justify-between mb-4">
-    <h1 class="text-2xl font-bold text-[#1D1D21]">Contract Types</h1>
-
-    <div class="flex items-center gap-4">
-      <!-- Search -->
-      <div class="relative w-80">
-        <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" width="20" height="20" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path>
-        </svg>
-        <input
-        
-          type="text"
-          placeholder="Search Here"
-          class="w-full pl-10 pr-4 py-2 rounded-lg placeholder:text-[#787A7F] font-normal border border-[#d9d9d9] focus:outline-none text-sm" />
+  <div class="flex-1 p-6">
+    <div class="">
+      <!-- Header row -->
+      <div class="flex items-center justify-between mb-4">
+        <h1 class="text-2xl font-bold text-[#1D1D21]">Contract Types</h1>
+        <!-- Add button (your shared button component) -->
+        <app-button
+          (clicked)="addContractTypes()"
+          text="Add Contract Types"
+          variant="primary"
+        ></app-button>
       </div>
 
-      <!-- Add button (your shared button component) -->
-      <app-button text="Add Contract Types" variant="primary" ></app-button>
+      <div class="flex items-center w-full justify-between gap-4">
+        <!-- Filter row -->
+        <div class="mb-3">
+          <label class="sr-only" for="type-filter">Contract type</label>
+          <div class="inline-flex items-center gap-2">
+            <select
+              id="type-filter"
+              class="px-3 py-2 rounded-lg border border-[#d9d9d9] text-sm text-[#1D1D21] min-w-[180px]"
+            >
+              <option value="">Contract type</option>
+            </select>
+          </div>
+        </div>
+        <!-- Search -->
+        <div class="relative w-80">
+          <svg
+            class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+          <input
+            type="text"
+            placeholder="Search Here"
+            class="w-full pl-10 pr-4 py-2 rounded-lg placeholder:text-[#787A7F] font-normal border border-[#d9d9d9] focus:outline-none text-sm"
+          />
+        </div>
+      </div>
+
+      <!-- Table card -->
+      <div class="bg-white rounded-lg border border-[#eee]">
+        <div class="overflow-x-auto">
+          <!-- Make table wider so horizontal scroll appears if needed -->
+          <table mat-table [dataSource]="rows()" class="w-full min-w-[1000px]">
+            <!-- Actions (sticky) -->
+            <ng-container matColumnDef="actions" sticky>
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-left px-4 py-3 text-[#6B7280] font-semibold"
+              >
+                Actions
+              </th>
+              <td mat-cell *matCellDef="let row" class="px-4 py-3">
+                <div class="flex items-center gap-2">
+                  <button class="p-1 rounded hover:bg-gray-100" mat-icon-button aria-label="Edit">
+                    <lucide-angular
+                      [img]="editIcon"
+                      class="w-4 h-4 text-[#787A7F]"
+                    ></lucide-angular>
+                  </button>
+                  <button
+                    class="p-1 rounded hover:bg-gray-100"
+                    mat-icon-button
+                    aria-label="Download"
+                  >
+                    <lucide-angular
+                      [img]="downloadIcon"
+                      class="w-4 h-4 text-[#787A7F]"
+                    ></lucide-angular>
+                  </button>
+                  <button class="p-1 rounded hover:bg-gray-100" mat-icon-button aria-label="Delete">
+                    <lucide-angular
+                      [img]="deleteIcon"
+                      class="w-4 h-4 text-[#787A7F]"
+                    ></lucide-angular>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- Status (sticky) -->
+            <ng-container matColumnDef="status" sticky>
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-left px-4 py-3 text-[#6B7280] font-semibold"
+              >
+                Status
+              </th>
+              <td mat-cell *matCellDef="let row" class="px-4 py-3">
+                <mat-slide-toggle [checked]="row.active"> </mat-slide-toggle>
+              </td>
+            </ng-container>
+
+            <!-- Contract Type -->
+            <ng-container matColumnDef="contractType">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-left px-4 py-3 text-[#6B7280] font-semibold"
+              >
+                Contract Type
+              </th>
+              <td mat-cell *matCellDef="let row" class="px-4 py-3 text-[#1D1D21]">
+                {{ row.contractType }}
+              </td>
+            </ng-container>
+
+            <!-- Workflow -->
+            <ng-container matColumnDef="workflow">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-left px-4 py-3 text-[#6B7280] font-semibold"
+              >
+                Workflow
+              </th>
+              <td mat-cell *matCellDef="let row" class="px-4 py-3">{{ row.workflow }}</td>
+            </ng-container>
+
+            <!-- Modified By -->
+            <ng-container matColumnDef="modifiedBy">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-left px-4 py-3 text-[#6B7280] font-semibold"
+              >
+                Modified By
+              </th>
+              <td mat-cell *matCellDef="let row" class="px-4 py-3">{{ row.modifiedBy }}</td>
+            </ng-container>
+
+            <!-- Last Modified On -->
+            <ng-container matColumnDef="lastModifiedOn">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-left px-4 py-3 text-[#6B7280] font-semibold"
+              >
+                Last Modified On
+              </th>
+              <td mat-cell *matCellDef="let row" class="px-4 py-3">{{ row.lastModifiedOn }}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
+</div>
 
-  <!-- Filter row -->
-  <div class="mb-3">
-    <label class="sr-only" for="type-filter">Contract type</label>
-    <div class="inline-flex items-center gap-2">
-      <select id="type-filter"
-        
-        class="px-3 py-2 rounded-lg border border-[#d9d9d9] text-sm text-[#1D1D21] min-w-[180px]">
-        <option value="">Contract type</option>
-      
-      </select>
-    </div>
-  </div>
+@if(addNewContractTypeModalOpen()){
 
-  <!-- Table card -->
-  <div class="bg-white rounded-lg border border-[#eee]">
-    <div class="overflow-x-auto">
-      <!-- Make table wider so horizontal scroll appears if needed -->
-      <table mat-table [dataSource]="rows()" class="w-full min-w-[1000px]">
-        <!-- Actions (sticky) -->
-        <ng-container matColumnDef="actions" sticky>
-          <th mat-header-cell *matHeaderCellDef class="text-left px-4 py-3 text-[#6B7280] font-semibold">Actions</th>
-          <td mat-cell *matCellDef="let row" class="px-4 py-3">
-            <div class="flex items-center gap-2">
-              <button class="p-1 rounded hover:bg-gray-100"  mat-icon-button aria-label="Edit">
-                <lucide-angular [img]="editIcon" class="w-4 h-4 text-[#787A7F]"></lucide-angular>
-              </button>
-              <button class="p-1 rounded hover:bg-gray-100"  mat-icon-button aria-label="Download">
-                <lucide-angular [img]="downloadIcon" class="w-4 h-4 text-[#787A7F]"></lucide-angular>
-              </button>
-              <button class="p-1 rounded hover:bg-gray-100" mat-icon-button aria-label="Delete">
-                <lucide-angular [img]="deleteIcon" class="w-4 h-4 text-[#787A7F]"></lucide-angular>
-              </button>
+  <app-modal
+  [modelContainerClass]="'max-w-[680px]'"
+    [isOpen]="addNewContractTypeModalOpen()"
+    (closed)="addNewContractTypeModalOpen.set(false)"
+    [title]="'Add Contract Type'"
+  >
+    <div class="p-2 mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <label class="block text-lg font-semibold text-gray-900 mb-2">
+            Contract Type<span class="text-red-500">*</span>
+          </label>
+          <div class="relative">
+            <input
+              type="text"
+              class="w-full p-4 text-gray-700 bg-white border-none rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value=""
+              placeholder="Enter Contract Type"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-lg font-semibold text-gray-900 mb-2">
+            Workflow Mapping<span class="text-red-500">*</span>
+          </label>
+          <div class="relative">
+            <div
+              class="w-full p-4 text-gray-700 bg-white rounded-lg shadow-sm border border-transparent flex justify-between items-center cursor-default"
+            >
+              <span class="text-gray-500">workflowMappingValue</span>
+              <svg
+                class="w-5 h-5 text-gray-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
             </div>
-          </td>
-        </ng-container>
-
-        <!-- Status (sticky) -->
-        <ng-container matColumnDef="status" sticky>
-          <th mat-header-cell *matHeaderCellDef class="text-left px-4 py-3 text-[#6B7280] font-semibold">Status</th>
-          <td mat-cell *matCellDef="let row" class="px-4 py-3">
-            <mat-slide-toggle
-              [checked]="row.active"
-             >
-            </mat-slide-toggle>
-          </td>
-        </ng-container>
-
-        <!-- Contract Type -->
-        <ng-container matColumnDef="contractType">
-          <th mat-header-cell *matHeaderCellDef class="text-left px-4 py-3 text-[#6B7280] font-semibold">Contract Type</th>
-          <td mat-cell *matCellDef="let row" class="px-4 py-3 text-[#1D1D21]">
-            {{ row.contractType }}
-          </td>
-        </ng-container>
-
-        <!-- Workflow -->
-        <ng-container matColumnDef="workflow">
-          <th mat-header-cell *matHeaderCellDef class="text-left px-4 py-3 text-[#6B7280] font-semibold">Workflow</th>
-          <td mat-cell *matCellDef="let row" class="px-4 py-3">{{ row.workflow }}</td>
-        </ng-container>
-
-        <!-- Modified By -->
-        <ng-container matColumnDef="modifiedBy">
-          <th mat-header-cell *matHeaderCellDef class="text-left px-4 py-3 text-[#6B7280] font-semibold">Modified By</th>
-          <td mat-cell *matCellDef="let row" class="px-4 py-3">{{ row.modifiedBy }}</td>
-        </ng-container>
-
-        <!-- Last Modified On -->
-        <ng-container matColumnDef="lastModifiedOn">
-          <th mat-header-cell *matHeaderCellDef class="text-left px-4 py-3 text-[#6B7280] font-semibold">Last Modified On</th>
-          <td mat-cell *matCellDef="let row" class="px-4 py-3">{{ row.lastModifiedOn }}</td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-      </table>
+          </div>
+        </div>
+      </div>
     </div>
+  </app-modal>
 
-   
-  </div>
-</div>
 
- </div>
-</div>
+}

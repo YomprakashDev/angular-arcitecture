@@ -6,6 +6,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LucideAngularModule, SquarePen, Download, Trash2 } from 'lucide-angular';
 import { Button } from "../../../../../shared/components/ui/button/button";
+import { Modal } from "../../../../../shared/components/ui/modal/modal";
 
 interface ContractTypeRow {
   id: number;
@@ -19,7 +20,7 @@ interface ContractTypeRow {
 
 @Component({
   selector: 'app-contract-types',
-  imports: [CommonModule, MatTableModule, MatSlideToggleModule, MatPaginatorModule, MatProgressSpinnerModule, LucideAngularModule, Button],
+  imports: [CommonModule, MatTableModule, MatSlideToggleModule, MatPaginatorModule, MatProgressSpinnerModule, LucideAngularModule, Button, Modal],
   templateUrl: './contract-types.html',
   styleUrl: './contract-types.css'
 })
@@ -49,4 +50,9 @@ export class ContractTypes {
     { id: 5, active: true, contractType: 'SOW', workflow: 'Approval Flow 1', modifiedBy: 'John Doe', lastModifiedOn: '01 May 25 at 10:00 AM' },
   ]);
 
+  addNewContractTypeModalOpen = signal(false);
+  addContractTypes(){
+    this.addNewContractTypeModalOpen.set(true);
+
+  }
 }

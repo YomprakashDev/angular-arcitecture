@@ -24,6 +24,8 @@ export class Modal {
    */
   title = input<string>('Modal');
 
+  modelContainerClass= input<string>('');
+
   /**
    * An output event that emits when the modal is closed.
    */
