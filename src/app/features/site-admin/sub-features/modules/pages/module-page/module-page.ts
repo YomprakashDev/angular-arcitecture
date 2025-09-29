@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { AfterViewInit, Component, inject, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,6 +17,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LoadingSpinner } from "../../../../../../shared/components/ui/loading-spinner/loading-spinner";
 import { ErrorBanner } from "../../../../../../shared/components/ui/error-banner/error-banner";
 import { ToggleSwitch } from "../../../../../../shared/components/ui/toggle-switch/toggle-switch";
+import { Card } from "../../../../../../shared/components/ui/card/card";
+import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
 
 /** Minimal, Tailwind-first Modules page */
 @Component({
@@ -33,12 +35,14 @@ import { ToggleSwitch } from "../../../../../../shared/components/ui/toggle-swit
     LucideAngularModule,
     LoadingSpinner,
     ErrorBanner,
-    ToggleSwitch
-],
+    ToggleSwitch,
+    Card,
+    MatPaginatorModule
+  ],
   templateUrl: './module-page.html',
-  styleUrls: ['./module-page.css'], 
+  styleUrls: ['./module-page.css'],
 })
-export class ModulePage {
+export class ModulePage  {
   /** Table columns */
   displayedColumns = ['actions', 'status', 'moduleName', 'description', 'icon'];
 
@@ -65,6 +69,11 @@ export class ModulePage {
     this.loadModules();
   }
 
+  @ViewChild(MatPaginator)
+  private paginator!: MatPaginator;
+   
+
+
   /** Load data with friendly error handling. */
   loadModules(): void {
     this.isLoading.set(true);
@@ -82,7 +91,15 @@ export class ModulePage {
           return EMPTY;
         })
       )
-      .subscribe((res) => (this.dataSource.data = res.data ?? []));
+      .subscribe((res) => {
+        this.dataSource.data = res.data ?? [];
+        if (this.paginator) {
+          this.dataSource.paginator = this.paginator;
+
+      }
+        
+      }
+      );
   }
 
   /** Track rows by stable id (perf). */

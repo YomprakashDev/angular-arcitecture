@@ -55,6 +55,11 @@ export class OrganizationPage {
 
 
 
+
+  readonly organizations = signal<OrganizationData[]>([]);
+
+  dataSource = new MatTableDataSource<OrganizationData>([]);
+
   @ViewChild(MatPaginator)
   set matPaginator(p: MatPaginator) {
     if (p) {
@@ -64,10 +69,6 @@ export class OrganizationPage {
   }
   private paginator!: MatPaginator;
 
-
-  readonly organizations = signal<OrganizationData[]>([]);
-
-  dataSource = new MatTableDataSource<OrganizationData>([]);
 
   // table columns
   readonly displayedColumns = ['actions', 'organization', 'contactPerson', 'email', 'phone'] as const;
