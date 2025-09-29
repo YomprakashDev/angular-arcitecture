@@ -11,7 +11,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Modal } from "../../../../../shared/components/ui/modal/modal";
 import { CounterpartyForm } from "../../components/counterparty-form/counterparty-form";
 import { ConfirmDialog } from "../../../../../shared/components/ui/confirm-dialog/confirm-dialog";
-
+import { Plus, Search, Eye, LucideAngularModule, SquarePen, Trash } from 'lucide-angular';
+import { ViewCounterpartyInformation } from "../../components/view-counterparty-information/view-counterparty-information";
 type CounterpartyType = 'Vendor' | 'Client' | 'Partner';
 
 interface Counterparty {
@@ -36,12 +37,13 @@ interface Counterparty {
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
-    MatTooltipModule, Modal, CounterpartyForm, ConfirmDialog],
+    MatTooltipModule, Modal, CounterpartyForm,
+    LucideAngularModule, ConfirmDialog, ViewCounterpartyInformation],
   templateUrl: './counter-party.html',
   styleUrls: ['./counter-party.css']
 })
 export class CounterParty {
-  // --- Filters (static for this mock) ---
+
   readonly types: CounterpartyType[] = ['Vendor', 'Client', 'Partner'];
   readonly countries = ['USA', 'India'];
   // ---------- Table ----------
@@ -66,6 +68,8 @@ export class CounterParty {
     { name: 'Acme Corp', link: '#', type: 'Vendor', address: '123 Main Street', city: 'Austin', state: 'TX', country: 'USA', contactName: 'John Doe', contactNumber: '6752970474' },
   ]);
 
+
+  // static data
   readonly allRows = signal<Counterparty[]>([
     {
       name: 'Acme Corp',
@@ -124,19 +128,31 @@ export class CounterParty {
     },
   ]);
 
+  readonly plus = Plus;
+  readonly searchIcon = Search;
+  readonly eyeIcon = Eye;
+  readonly editIcon = SquarePen;
+  readonly deleteIcon = Trash;
+
 
   // --- UI state  ---
   readonly selectedType = signal<string>('');
   readonly selectedCountry = signal<string>('');
   readonly search = signal<string>('');
+  isButtonsShowing = signal(false);
   isAdding = signal(false);
   isDeleting = signal(false);
+  isViewing = signal(false);
   addCounterParty() {
     this.isAdding.set(true);
   }
 
-  editCounterParty(){
-    
+  viewCounterParty() {
+    this.isViewing.set(true);
+  }
+
+  editCounterParty() {
+
   }
 
   deleteCounterParty() {

@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators,ReactiveFormsModule } from '@angular/forms';
+import {  LucideAngularModule,Trash } from 'lucide-angular';
 type Option = { id: string; label: string };
 
 @Component({
   selector: 'app-counterparty-form',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, LucideAngularModule],
   templateUrl: './counterparty-form.html',
   styleUrls: ['./counterparty-form.css']
 })
@@ -24,6 +25,7 @@ export class CounterpartyForm {
     { id: 'sg',  label: 'Singapore' },
   ];
 
+  readonly deleteIcon = Trash;
   private formBuilder = inject(FormBuilder);
 
   form = this.formBuilder.group({

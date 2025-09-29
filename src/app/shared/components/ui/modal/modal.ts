@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 
 /**
@@ -6,11 +7,12 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
  * It emits a `closed` event when the user clicks the close button.
  */
 @Component({
+  standalone: true,
   selector: 'app-modal',
   templateUrl: './modal.html',
-  styleUrl: './modal.css',
+  styleUrls: ['./modal.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
+  imports: [CommonModule],
 })
 export class Modal {
   /**
@@ -34,6 +36,8 @@ export class Modal {
   closeModal() {
     this.closed.emit();
   }
+
+  isButtonsShowing = input<boolean>(true);
 
   onSave() {
     this.save.emit();
