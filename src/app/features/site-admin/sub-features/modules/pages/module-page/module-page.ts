@@ -16,6 +16,7 @@ import { catchError, finalize } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LoadingSpinner } from "../../../../../../shared/components/ui/loading-spinner/loading-spinner";
 import { ErrorBanner } from "../../../../../../shared/components/ui/error-banner/error-banner";
+import { ToggleSwitch } from "../../../../../../shared/components/ui/toggle-switch/toggle-switch";
 
 /** Minimal, Tailwind-first Modules page */
 @Component({
@@ -31,7 +32,8 @@ import { ErrorBanner } from "../../../../../../shared/components/ui/error-banner
     MatProgressSpinnerModule,
     LucideAngularModule,
     LoadingSpinner,
-    ErrorBanner
+    ErrorBanner,
+    ToggleSwitch
 ],
   templateUrl: './module-page.html',
   styleUrls: ['./module-page.css'], 

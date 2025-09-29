@@ -59,15 +59,7 @@
             Status
           </th>
           <td mat-cell *matCellDef="let module" class="p-4 whitespace-nowrap">
-            <label class="switch">
-              <input
-                type="checkbox"
-                [checked]="module.status"
-                (change)="toggleModuleStatus(module, $event.target.checked)"
-              />
-
-              <span class="slider"></span>
-            </label>
+            <app-toggle-switch (stateChange)="toggleModuleStatus(module, $event)" [isChecked]="module.status"></app-toggle-switch>
           </td>
         </ng-container>
 

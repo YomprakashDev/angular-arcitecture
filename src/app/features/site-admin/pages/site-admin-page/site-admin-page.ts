@@ -41,7 +41,7 @@ export class SiteAdminPage {
       filter(e => e instanceof NavigationEnd),
       startWith(null),
       map(() => {
-        // deepest child under /admin
+
         let child = this.route.firstChild;
         while (child?.firstChild) child = child.firstChild;
         return ((child?.routeConfig?.path ?? 'modules') as SiteAdminTab);
