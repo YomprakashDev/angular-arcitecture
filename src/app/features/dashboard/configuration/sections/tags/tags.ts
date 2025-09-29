@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
+import { Modal } from "../../../../../shared/components/ui/modal/modal";
 
 interface TagRow {
   tagType: string;
@@ -10,11 +11,15 @@ interface TagRow {
 @Component({
   standalone: true,
   selector: 'app-tags',
-  imports: [CommonModule, MatTableModule],
+  imports: [CommonModule, MatTableModule, Modal],
   templateUrl: './tags.html',
   styleUrls: ['./tags.css'],
 })
 export class Tags {
+
+
+  isAddingNewTag =  signal<boolean>(false);
+  isEditingTag =  signal<boolean>(false);
   displayedColumns = ['actions', 'status', 'tagType', 'contractsTagged'];
 
   rows: TagRow[] = [
