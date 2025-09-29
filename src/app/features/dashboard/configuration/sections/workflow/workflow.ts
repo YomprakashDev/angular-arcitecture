@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
+import { Modal } from "../../../../../shared/components/ui/modal/modal";
 
 type WorkflowRow = {
   name: string;
@@ -12,7 +13,7 @@ type WorkflowRow = {
 @Component({
   selector: 'app-workflow',
   standalone: true,
-  imports: [CommonModule, MatTableModule],
+  imports: [CommonModule, MatTableModule, Modal],
   templateUrl: './workflow.html',
   styleUrls: ['./workflow.css']
 })
@@ -26,6 +27,8 @@ export class Workflow {
     'createdBy',
     'lastAction',
   ];
+
+  isNewWorkflowModalOpen = signal(false);
 
   // static data (no functionality yet)
   rows: WorkflowRow[] = [

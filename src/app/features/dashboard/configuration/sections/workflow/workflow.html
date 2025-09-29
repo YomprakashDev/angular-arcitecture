@@ -7,6 +7,7 @@
     <h1 class="text-[22px] font-semibold text-[#1D1D21]">Workflows</h1>
 
     <button
+    (click)="isNewWorkflowModalOpen.set(true)"
       type="button"
       class="inline-flex items-center gap-2 rounded-lg bg-[#7C83FF] px-4 py-2 text-white text-sm font-semibold shadow-sm hover:brightness-95"
     >
@@ -217,3 +218,103 @@
 
  </div>
 </div>
+
+
+<div>
+
+</div>
+@if(isNewWorkflowModalOpen()){
+<app-modal [isOpen]="isNewWorkflowModalOpen()" [modalBodyClass]="'bg-white'" (closed)="isNewWorkflowModalOpen.set(false)" [title]="'Add Workflow'">
+  <div class=" bg-[#F0F2F5]  rounded-xl p-4 mx-auto">
+  <label class="block text-xl font-semibold text-gray-900 mb-4">
+    Workflow Type<span class="text-red-500">*</span>
+  </label>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    
+    <div 
+      class="p-6 bg-white rounded-xl shadow-lg border-2"
+     
+    >
+      <div class="flex items-start">
+        <div class="w-6 h-6 rounded-full flex items-center justify-center mr-4 mt-1"
+>
+         </div>
+
+        <div>
+          <h3 class="text-lg font-bold text-gray-900 mb-2">Template Workflow</h3>
+          <p class="text-gray-600 mb-4">Create new contracts through this workflow.</p>
+        </div>
+        
+        <div class="ml-auto w-12 h-12 flex-shrink-0">
+            <svg class="w-full h-full text-orange-400" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div 
+      class="p-6 bg-white rounded-xl shadow-lg border-2"
+      
+    >
+      <div class="flex items-start">
+        <div class="w-6 h-6 rounded-full border border-gray-400 flex items-center justify-center mr-4 mt-1 bg-white">
+          </div>
+
+        <div>
+          <h3 class="text-lg font-bold text-gray-900 mb-2">Legacy Contract Workflow</h3>
+          <p class="text-gray-600 mb-4">Easily process your Legacy contracts through with this workflow.</p>
+        </div>
+        
+        <div class="ml-auto w-12 h-12 flex-shrink-0">
+            <svg class="w-full h-full text-yellow-500" fill="currentColor" viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    
+    <div>
+      <label class="block text-lg font-semibold text-gray-900 mb-2">
+        Workflow Name<span class="text-red-500">*</span>
+      </label>
+      <input
+        type="text"
+        placeholder="Enter Workflow Name"
+        class="w-full p-4 text-gray-700 bg-white border-none rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        value=""
+        disabled
+      />
+    </div>
+
+    <div>
+      <label class="block text-lg font-semibold text-gray-900 mb-2">
+        Contract Type<span class="text-red-500">*</span>
+      </label>
+      <div class="relative">
+        <div
+          class="w-full p-4 text-gray-500 bg-white rounded-lg shadow-sm border border-transparent flex justify-between items-center cursor-default"
+        >
+          <span>Select</span>
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="mt-8">
+    <label class="block text-lg font-semibold text-gray-900 mb-2">
+      Description
+    </label>
+    <textarea
+      placeholder="Enter Description"
+      rows="3"
+      class="w-full p-4 text-gray-700 bg-white border-none rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+      disabled
+    ></textarea>
+  </div>
+</div>
+</app-modal>
+}

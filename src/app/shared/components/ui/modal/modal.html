@@ -24,7 +24,8 @@
     </div>
 
     <!-- body slot -->
-    <div class="p-4 bg-[#F1F3F6] overflow-y-auto max-h-[80vh]">
+    <div [class]="modalBodyClass()"
+    class="p-4 bg-[#F1F3F6] overflow-y-auto max-h-[80vh]">
       <ng-content></ng-content>
     </div>
 
