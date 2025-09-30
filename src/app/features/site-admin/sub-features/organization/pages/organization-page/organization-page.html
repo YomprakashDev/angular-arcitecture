@@ -1,32 +1,18 @@
 <!-- organization-page.html -->
 
 @if (isLoading()) {
-<!-- loading overlay -->
-<div class="loading-overlay" aria-live="polite">
-  <mat-progress-spinner
-    mode="indeterminate"
-    diameter="48"
-    aria-label="Loading"
-  ></mat-progress-spinner>
-</div>
+<app-loading-spinner [show]="isLoading()" [diameter]="48"></app-loading-spinner>
 
 } @if (error()) {
-<div class="mt-4 p-3 rounded border border-red-200 bg-red-50 text-red-800 text-sm">
-  {{ error() }}
-</div>
+<app-error-banner [message]="error()"></app-error-banner>
 } @if(!isLoading() && !error() ) {
 <div class="flex w-full h-full bg-white rounded-lg">
   <div class="flex-1 p-6">
     <div class="flex items-center w-full justify-between">
       <h1 class="text-2xl font-bold text-[#1D1D21]">Organizations List</h1>
-      <app-button
-        (clicked)="addOrganization()"
-        text="Add Organization"
-        variant="primary"
-       
-      >
-      <lucide-angular [img]="icons.plus" class="text-white text-xs"></lucide-angular>
-    </app-button>
+      <app-button (clicked)="addOrganization()" text="Add Organization" variant="primary">
+        <lucide-angular [img]="icons.plus" class="text-white text-xs"></lucide-angular>
+      </app-button>
     </div>
 
     <div class="flex items-center justify-center">
@@ -42,7 +28,10 @@
         <div class="flex items-center space-x-4">
           <div class="relative w-72">
             <label class="sr-only" for="org-search">Search organizations</label>
-           <lucide-angular [img]="icons.search" class="absolute left-1 top-1/2 -translate-y-1/2 text-[#787A7F] text-xs"></lucide-angular>
+            <lucide-angular
+              [img]="icons.search"
+              class="absolute left-1 top-1/2 -translate-y-1/2 text-[#787A7F] text-xs"
+            ></lucide-angular>
             <input
               type="text"
               id="org-search"
@@ -72,13 +61,19 @@
                 <lucide-angular [img]="icons.file" class="text-[#787A7F] text-xs"></lucide-angular>
               </button>
               <button mat-icon-button aria-label="View module">
-                <lucide-angular [img]="icons.settings" class="text-[#787A7F] text-xs"></lucide-angular>
+                <lucide-angular
+                  [img]="icons.settings"
+                  class="text-[#787A7F] text-xs"
+                ></lucide-angular>
               </button>
               <button mat-icon-button aria-label="View module">
                 <img src="assets/icons/svgs/cloud-access.svg" class="text-[#787A7F] text-xs" />
               </button>
               <button mat-icon-button aria-label="View module">
-                <lucide-angular [img]="icons.logout" class="text-[#787A7F] text-xs"></lucide-angular>
+                <lucide-angular
+                  [img]="icons.logout"
+                  class="text-[#787A7F] text-xs"
+                ></lucide-angular>
               </button>
               <button
                 (click)="inActiveOrganization(org)"

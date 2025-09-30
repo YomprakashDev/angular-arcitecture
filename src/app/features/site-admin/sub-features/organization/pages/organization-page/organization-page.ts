@@ -17,6 +17,8 @@ import { AddOraganizationModel } from '../../components/add-oraganization-model/
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LucideAngularModule, } from 'lucide-angular';
 import { AppIcons } from '../../../../../../../assets/icons/icons';
+import { LoadingSpinner } from "../../../../../../shared/components/ui/loading-spinner/loading-spinner";
+import { ErrorBanner } from "../../../../../../shared/components/ui/error-banner/error-banner";
 @Component({
   selector: 'app-organization-page',
   standalone: true,
@@ -27,9 +29,10 @@ import { AppIcons } from '../../../../../../../assets/icons/icons';
     LucideAngularModule,
     AddOraganizationModel,
     OrganizationDetails,
-    MatPaginatorModule
-
-  ],
+    MatPaginatorModule,
+    LoadingSpinner,
+    ErrorBanner
+],
   templateUrl: './organization-page.html',
   styleUrls: ['./organization-page.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
