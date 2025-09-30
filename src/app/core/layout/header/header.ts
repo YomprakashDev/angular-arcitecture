@@ -1,6 +1,7 @@
 import { Component, HostListener, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { LucideAngularModule, Search,BellDot  } from 'lucide-angular';
+import { LucideAngularModule,   } from 'lucide-angular';
+import { AppIcons } from '../../../../assets/icons/icons';
 
 @Component({
   selector: 'app-header',
@@ -10,8 +11,7 @@ import { LucideAngularModule, Search,BellDot  } from 'lucide-angular';
 })
 export class Header {
 
-  readonly searchIcon = Search;
-  readonly bellIcon = BellDot;
+ icons = AppIcons
   
 
    showProfileMenu = signal(false);

@@ -12,7 +12,11 @@ import {
     ChevronUp,
     ChevronDown,
     Plus,
-    Search 
+    Search,
+    BellDot ,
+    Bell,
+    CircleUserRound ,
+    LockKeyhole 
 } from 'lucide-angular';
 
 /**
@@ -31,6 +35,10 @@ export const AppIcons = {
     chevronUp: ChevronUp,
     chevronDown: ChevronDown,
     plus: Plus,
-    search: Search
+    search: Search,
+    bellDot: BellDot,
+    notification: Bell,
+    user: CircleUserRound,
+    lock: LockKeyhole
 
 };
