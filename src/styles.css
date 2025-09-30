@@ -69,9 +69,27 @@ body {
   --color-surface-blue: #ecf4ff;
 }
 
-
 @layer components {
   .heading-page {
     @apply text-2xl mb-4 font-bold text-primary-black;
   }
+
+  .tab {
+    @apply px-4 py-2 rounded-lg text-[16px] font-[Mulish] border transition-colors;
+  }
+
+  /* Active state */
+  .tab-active {
+    @apply cursor-progress text-white font-bold bg-primary-blue border-primary-blue;
+  }
+
+  /* Inactive state */
+  .tab-inactive {
+    @apply cursor-pointer text-gray-subtle font-medium border-surface-soft2 hover:bg-gray-100;
+  }
+}
+
+
+@utility shadow-subtle {
+  box-shadow: 0px 6px 2px 0px #00000003;
 }
