@@ -8,66 +8,70 @@ body {
 }
 body {
   margin: 0;
-  font-family: 
-  'Mulish';
+  font-family: 'Mulish';
 }
-
 
 /* Define your palette */
 @theme {
   /* App surfaces & text */
-  --color-background: #F7F8FA;
-  --color-foreground: #1D1D21;
-  --color-border: #E6EAEF;
-  --color-muted: #F1F3F6;
+  --color-background: #f7f8fa;
+  --color-foreground: #1d1d21;
+  --color-border: #e6eaef;
+  --color-muted: #f1f3f6;
   --color-muted-foreground: #606060;
-  --color-ring: #6D7BFA;
+  --color-ring: #6d7bfa;
 
   /* Brand (named shades) */
-  --color-primary-blue: #6D7BFA;
-  --color-primary-black: #1D1D21;
-  --color-primary-hover: #5363F9;
-  --color-primary-tint: #ACB4FF;
-  --color-primary-surface: #E9ECFF;
-  --color-primary-wash: #ECF4FF;
+  --color-primary-blue: #6d7bfa;
+  --color-primary-black: #1d1d21;
+  --color-primary-hover: #5363f9;
+  --color-primary-tint: #acb4ff;
+  --color-primary-surface: #e9ecff;
+  --color-primary-wash: #ecf4ff;
 
-  --color-secondary: #6F42C1;
-  --color-accent: #FD7E14;
+  --color-secondary: #6f42c1;
+  --color-accent: #fd7e14;
 
   /* Links / extra blues */
-  --color-link: #1B79E7;
-  --color-link-strong: #0000FF;
+  --color-link: #1b79e7;
+  --color-link-strong: #0000ff;
 
   /* Status */
-  --color-success: #23B93E;
+  --color-success: #23b93e;
   --color-success-strong: #198754;
-  --color-warning: #FFC107;
-  --color-danger: #DC3545;
-  --color-danger-bright: #FF3333;
-  --color-info: #0DCAF0;
+  --color-warning: #ffc107;
+  --color-danger: #dc3545;
+  --color-danger-bright: #ff3333;
+  --color-info: #0dcaf0;
 
   /* Optional teals */
-  --color-teal-base: #79BBD0;
-  --color-teal-wash: #CFEEF8;
+  --color-teal-base: #79bbd0;
+  --color-teal-wash: #cfeef8;
 
   /* Neutrals (named) */
-  --color-gray-ink: #1D1D21;
+  --color-gray-ink: #1d1d21;
   --color-gray-deep: #182330;
-  --color-gray-subtle: #7E7A88;
-  --color-gray-subtleAlt: #787A7F;
+  --color-gray-subtle: #7e7a88;
+  --color-gray-subtleAlt: #787a7f;
   --color-gray-mutedText: #606060;
-  --color-gray-lineStrong: #D9D9D9;
-  --color-gray-line: #C6C6C6;
-  --color-gray-lineLight: #BFBFBF;
-    --color-gray-light: #eaeaea;
-
+  --color-gray-lineStrong: #d9d9d9;
+  --color-gray-line: #c6c6c6;
+  --color-gray-lineLight: #bfbfbf;
+  --color-gray-light: #eaeaea;
 
   /* Extra light surfaces */
-  --color-surface-base: #F7F8FA;
-  --color-surface-raised: #F1F3F6;
-  --color-surface-raised2: #F0F2F5;
-  --color-surface-soft: #EDEDED;
-  --color-surface-soft2: #F2F2F2;
-  --color-surface-soft3: #F3F5F8;
-  --color-surface-blue: #ECF4FF;
+  --color-surface-base: #f7f8fa;
+  --color-surface-raised: #f1f3f6;
+  --color-surface-raised2: #f0f2f5;
+  --color-surface-soft: #ededed;
+  --color-surface-soft2: #f2f2f2;
+  --color-surface-soft3: #f3f5f8;
+  --color-surface-blue: #ecf4ff;
+}
+
+
+@layer components {
+  .heading-page {
+    @apply text-2xl mb-4 font-bold text-primary-black;
+  }
 }

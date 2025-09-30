@@ -3,9 +3,7 @@
 
 @if (!isLoading() && !error() ) {
 <app-card>
-  <div class="flex justify-between w-full">
-    <h1 class="text-2xl mb-4 font-bold text-primary-black">Modules</h1>
-  </div>
+    <h1 class="heading-page">Modules</h1>
   <div class="relative overflow-hidden rounded-lg module-table border border-gray-light">
     <table mat-table [dataSource]="dataSource" class="w-full bg-white">
       <ng-container matColumnDef="actions">
