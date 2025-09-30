@@ -8,11 +8,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Modal } from "../../../../../shared/components/ui/modal/modal";
-import { CounterpartyForm } from "../../components/counterparty-form/counterparty-form";
-import { ConfirmDialog } from "../../../../../shared/components/ui/confirm-dialog/confirm-dialog";
+import { Modal } from '../../../../../../shared/components/ui/modal/modal';
+import { CounterpartyForm } from '../components/counterparty-form/counterparty-form';
+import { ConfirmDialog } from '../../../../../../shared/components/ui/confirm-dialog/confirm-dialog';
 import { Plus, Search, Eye, LucideAngularModule, SquarePen, Trash } from 'lucide-angular';
-import { ViewCounterpartyInformation } from "../../components/view-counterparty-information/view-counterparty-information";
+import { ViewCounterpartyInformation } from "../components/view-counterparty-information/view-counterparty-information";
 type CounterpartyType = 'Vendor' | 'Client' | 'Partner';
 
 interface Counterparty {

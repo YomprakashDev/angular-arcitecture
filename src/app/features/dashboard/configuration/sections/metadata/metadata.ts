@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
-import { MetadataPartyInformation } from '../../components/metadata-party-information/metadata-party-information';
+import { MetadataPartyInformation } from './components/metadata-party-information/metadata-party-information';
 type MetaRow = {
   contractType: string;
   contracts: string;      // keep as string to allow leading zeros (e.g., '04')

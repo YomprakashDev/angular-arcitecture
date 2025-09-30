@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
-import { Tabs } from "../../../../../shared/components/tabs/tabs";
-import { Button } from "../../../../../shared/components/ui/button/button";
+import { Tabs } from "../../../../../../../shared/components/tabs/tabs";
+import { Button } from "../../../../../../../shared/components/ui/button/button";
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'; // For the switch

@@ -5,8 +5,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LucideAngularModule, SquarePen, Download, Trash2 } from 'lucide-angular';
-import { Button } from "../../../../../shared/components/ui/button/button";
-import { Modal } from "../../../../../shared/components/ui/modal/modal";
+import { Button } from '../../../../../../shared/components/ui/button/button';
+import { Modal } from '../../../../../../shared/components/ui/modal/modal';
 
 interface ContractTypeRow {
   id: number;
@@ -20,7 +20,10 @@ interface ContractTypeRow {
 
 @Component({
   selector: 'app-contract-types',
-  imports: [CommonModule, MatTableModule, MatSlideToggleModule, MatPaginatorModule, MatProgressSpinnerModule, LucideAngularModule, Button, Modal],
+  imports: [CommonModule, MatTableModule,
+    MatSlideToggleModule, MatPaginatorModule,
+    MatProgressSpinnerModule, LucideAngularModule,
+    Button, Modal],
   templateUrl: './contract-types.html',
   styleUrl: './contract-types.css'
 })
@@ -42,7 +45,7 @@ export class ContractTypes {
   readonly displayedColumns = ['actions', 'status', 'contractType', 'workflow', 'modifiedBy', 'lastModifiedOn'] as const;
 
   // --- data (mock; replace with service call)
-   readonly rows = signal<ContractTypeRow[]>([
+  readonly rows = signal<ContractTypeRow[]>([
     { id: 1, active: false, contractType: 'MSA', workflow: 'Approval Flow 1', modifiedBy: 'John Doe', lastModifiedOn: '12 Jul 25 at 1:30 PM' },
     { id: 2, active: true, contractType: 'Employeeement Agreement', workflow: 'Approval Flow 2', modifiedBy: 'Jane Lee', lastModifiedOn: '05 Jun 25 at 12:30 PM' },
     { id: 3, active: false, contractType: 'NDA', workflow: 'Approval Flow 1', modifiedBy: 'John Doe', lastModifiedOn: '12 Jul 25 at 2:30 PM' },
@@ -51,7 +54,7 @@ export class ContractTypes {
   ]);
 
   addNewContractTypeModalOpen = signal(false);
-  addContractTypes(){
+  addContractTypes() {
     this.addNewContractTypeModalOpen.set(true);
 
   }
