@@ -16,7 +16,8 @@ import {
     BellDot ,
     Bell,
     CircleUserRound ,
-    LockKeyhole 
+    LockKeyhole ,
+    Settings 
 } from 'lucide-angular';
 
 /**
@@ -39,6 +40,7 @@ export const AppIcons = {
     bellDot: BellDot,
     notification: Bell,
     user: CircleUserRound,
-    lock: LockKeyhole
+    lock: LockKeyhole,
+    settingsIcon: Settings
 
 };

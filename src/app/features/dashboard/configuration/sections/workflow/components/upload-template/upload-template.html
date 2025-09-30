@@ -1,0 +1,70 @@
+ <!-- Card -->
+    <section class="bg-white">
+      <div class="p-6">
+        <h2 class="text-gray-900 font-medium">Upload Template Document</h2>
+
+        <!-- Dropzone (static) -->
+        <div class="mt-4">
+          <div
+            class="rounded-xl border-2 border-dashed border-indigo-200 bg-indigo-50 p-12 text-center flex flex-col items-center justify-center"
+            style="min-height: 220px"
+          >
+            <div class="h-14 w-14 rounded-full bg-white shadow flex items-center justify-center">
+              <!-- Heroicon: arrow-up-tray -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-7 w-7"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M7.5 9l4.5-4.5L16.5 9M12 4.5V15"
+                />
+              </svg>
+            </div>
+
+            <p class="mt-6 text-gray-700 font-medium">Drag and Drop here</p>
+            <p class="mt-1 text-gray-500">Or</p>
+            <a class="mt-1 text-indigo-600 hover:underline cursor-pointer">Browse files</a>
+
+            <div class="mt-6 flex items-center gap-4 text-sm text-gray-500">
+              <span>Accepted file types: DOCX or PDF,</span>
+              <span class="flex items-center gap-1">
+                <!-- lock icon -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="M16.5 10.5V7.5a4.5 4.5 0 10-9 0v3M6.75 10.5h10.5A1.75 1.75 0 0119 12.25v6A1.75 1.75 0 0117.25 20H6.75A1.75 1.75 0 015 18.25v-6A1.75 1.75 0 016.75 10.5z"
+                  />
+                </svg>
+                Secure
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="mt-8">
+          <h3 class="font-semibold text-gray-900">Instructions:</h3>
+          <ol class="mt-3 list-decimal list-inside text-gray-700 space-y-3">
+            <li>Accepted formats: DOCX, PDF only.</li>
+            <li>File size limit: 10MB.</li>
+            <li>Ensure the document is the latest approved version.</li>
+            <li>Avoid using scanned images; use text-based documents.</li>
+            <li>Uploaded documents are stored securely.</li>
+          </ol>
+        </div>
+      </div>
+    </section>

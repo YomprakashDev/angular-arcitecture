@@ -219,10 +219,6 @@
  </div>
 </div>
 
-
-<div>
-
-</div>
 @if(isNewWorkflowModalOpen()){
 <app-modal [isOpen]="isNewWorkflowModalOpen()" [modalBodyClass]="'bg-white'" (closed)="isNewWorkflowModalOpen.set(false)" [title]="'Add Workflow'">
   <div class=" bg-[#F0F2F5]  rounded-xl p-4 mx-auto">
@@ -318,3 +314,5 @@
 </div>
 </app-modal>
 }
+
+<app-agreement-workflow></app-agreement-workflow>
