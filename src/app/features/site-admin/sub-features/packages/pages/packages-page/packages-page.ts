@@ -19,6 +19,7 @@ import { PackagesResponse } from '../../models/package.model';
 import { LucideAngularModule,  } from 'lucide-angular';
 import { AddViewPackages } from "../../components/add-view-packages/add-view-packages";
 import { AppIcons } from '../../../../../../../assets/icons/icons';
+import { Card } from "../../../../../../shared/components/ui/card/card";
 
 
 export interface PackageRow {
@@ -42,7 +43,7 @@ export interface PackageRow {
     MatSortModule,
     MatPaginatorModule,
     LucideAngularModule,
-    MatProgressSpinnerModule, AddViewPackages],
+    MatProgressSpinnerModule, AddViewPackages, Card],
   templateUrl: './packages-page.html',
   styleUrls: ['./packages-page.css']
 })

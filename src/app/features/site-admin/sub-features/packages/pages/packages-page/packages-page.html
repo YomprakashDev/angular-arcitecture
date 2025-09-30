@@ -20,7 +20,7 @@
 
 
 @if(!isLoading() && !isAddView() && !error() ) {
-<div class="page">
+<app-card>
   <div class="page-header">
     <h1>Packages</h1>
     <button (click)="toggleAddView()" class="primary-btn flex items-center">
@@ -75,7 +75,9 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
   </div>
-</div>
+</app-card>
+
+
 
 } @if(isAddView()){
 <app-add-view-packages></app-add-view-packages>
