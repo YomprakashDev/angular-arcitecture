@@ -29,6 +29,8 @@ export class Button {
    */
   disabled = input<boolean>(false);
 
+  customClass = input<string>('');
+
   /**
    * An output event that emits when the button is clicked.
    */

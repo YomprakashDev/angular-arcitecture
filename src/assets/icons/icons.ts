@@ -1,4 +1,4 @@
-// src/app/shared/icons/icons.ts
+
 import {
     Eye,
     SquarePen,
@@ -7,6 +7,12 @@ import {
     MonitorCog,
     LogOut,
     CircleX,
+    Check,
+    ChevronRight,
+    ChevronUp,
+    ChevronDown,
+    Plus,
+    Search 
 } from 'lucide-angular';
 
 /**
@@ -20,4 +26,11 @@ export const AppIcons = {
     settings: MonitorCog,
     logout: LogOut,
     close: CircleX,
+    check: Check,
+    chevronRight: ChevronRight,
+    chevronUp: ChevronUp,
+    chevronDown: ChevronDown,
+    plus: Plus,
+    search: Search
+
 };

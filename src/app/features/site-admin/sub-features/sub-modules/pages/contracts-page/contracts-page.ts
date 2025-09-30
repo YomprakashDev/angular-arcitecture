@@ -1,21 +1,23 @@
 import { CommonModule } from '@angular/common';
 import { Component,inject, input, signal } from '@angular/core';
-import { LucideAngularModule, SquarePen, GripVertical } from 'lucide-angular';
-import { MatIconModule } from '@angular/material/icon';
+import { LucideAngularModule } from 'lucide-angular';
+
 import { Child,  SubModule } from '../../models/sub-module.model';
 import { SubModulesService } from '../../services/sub-modules.service';
 import { FormsModule } from '@angular/forms';
+import { AppIcons } from '../../../../../../../assets/icons/icons';
+import { ToggleSwitch } from "../../../../../../shared/components/ui/toggle-switch/toggle-switch";
 
 @Component({
   standalone: true,
   selector: 'app-contracts-page',
-  imports: [CommonModule, LucideAngularModule, MatIconModule, FormsModule],
+  imports: [CommonModule, LucideAngularModule, FormsModule, ToggleSwitch],
   templateUrl: './contracts-page.html',
   styleUrls: ['./contracts-page.css'],
 })
 export class ContractsPage {
-  editIcon = SquarePen;
-  dragIcon = GripVertical;
+
+  icons = AppIcons;
 
   editId = signal<number | null>(null)
   subModuleService = inject(SubModulesService);

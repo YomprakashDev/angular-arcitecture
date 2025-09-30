@@ -6,11 +6,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { LucideAngularModule, SquarePen, GripVertical } from 'lucide-angular';
-
+import { LucideAngularModule} from 'lucide-angular';
 import { ModuleService } from '../../services/module.service';
 import { Module } from '../../model/module.model';
-
 import { EMPTY } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -19,6 +17,7 @@ import { ErrorBanner } from "../../../../../../shared/components/ui/error-banner
 import { ToggleSwitch } from "../../../../../../shared/components/ui/toggle-switch/toggle-switch";
 import { Card } from "../../../../../../shared/components/ui/card/card";
 import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
+import { AppIcons } from '../../../../../../../assets/icons/icons';
 
 /** Modules page */
 @Component({
@@ -47,9 +46,7 @@ export class ModulePage  {
   displayedColumns = ['actions', 'status', 'moduleName', 'description', 'icon'];
 
   /** Icons */
-  readonly editIcon = SquarePen;
-  readonly dragIcon = GripVertical;
-
+readonly icons= AppIcons;
   /** UI state */
   isLoading = signal<boolean>(true);
   error = signal<string | null>(null);

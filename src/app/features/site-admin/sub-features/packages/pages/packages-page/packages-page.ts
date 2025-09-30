@@ -13,20 +13,13 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import * as XLSX from 'xlsx';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PackageService } from '../../services/package.service';
-import { catchError, EMPTY, finalize, of, tap } from 'rxjs';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { catchError, EMPTY, finalize,} from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PackagesResponse } from '../../models/package.model';
-import { LucideAngularModule, SquarePen, GripVertical,Eye  } from 'lucide-angular';
+import { LucideAngularModule,  } from 'lucide-angular';
 import { AddViewPackages } from "../../components/add-view-packages/add-view-packages";
+import { AppIcons } from '../../../../../../../assets/icons/icons';
 
-// Row model for the table (what you actually render)
-export interface ModuleRow {
-  id: number;
-  packageName: string;
-  modules: string[];
-  status: boolean;
-  order: number;
-}
 
 export interface PackageRow {
   packageID: number;
@@ -34,7 +27,6 @@ export interface PackageRow {
   modules: string[];
   status: boolean;
 }
-
 
 @Component({
   selector: 'app-packages-page',
@@ -67,9 +59,8 @@ export class PackagesPage {
   /**
    * The source of truth for the list of modules.
    */
-  readonly editIcon = SquarePen;
-  readonly dragIcon = GripVertical;
-  readonly viewIcon = Eye
+
+  icons = AppIcons;
   isAddView = signal(false)
 
 

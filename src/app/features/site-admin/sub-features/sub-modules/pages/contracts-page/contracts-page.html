@@ -1,4 +1,4 @@
-<div class="w-full mx-auto  bg-white">
+<div class="w-full mx-auto bg-white">
   @for ( item of subModules(); track item.subModuleId) {
   <div class="border-b-4 border-[#F3F5F8]">
     <div
@@ -8,7 +8,7 @@
       <div class="flex items-center space-x-2">
         <!-- Expand/Collapse icon for parent items with children -->
 
-        <button><lucide-angular [img]="dragIcon" class="text-[#787A7F]"></lucide-angular></button>
+        <button><lucide-angular [img]="icons.drag" class="text-[#787A7F]"></lucide-angular></button>
         @if (editId() !== item.subModuleId){
         <span class="text-lg font-semibold text-black">{{ item.subModuleName }}</span>
         } @if(editId() === item.subModuleId){
@@ -20,8 +20,12 @@
         />
         } @if(item.children.length > 0) {
 
-        <button  (click)="$event.stopPropagation(); toggleChildren(item.subModuleId)" class="text-gray-400 hover:text-gray-600">
-          <mat-icon>{{ item.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+        <button
+          (click)="$event.stopPropagation(); toggleChildren(item.subModuleId)"
+          class="text-gray-400 hover:text-gray-600"
+        >
+          item.expanded ? <lucide-angular [img]="icons.chevronDown"></lucide-angular> :
+          <lucide-angular [img]="icons.chevronUp"></lucide-angular>
         </button>
 
         }
@@ -33,7 +37,7 @@
           (click)="startEdit(item)"
           class="text-gray-400 hover:cursor-pointer hover:text-gray-600"
         >
-          <lucide-angular [img]="editIcon"></lucide-angular>
+          <lucide-angular [img]="icons.edit"></lucide-angular>
         </button>
         } @if(editId() === item.subModuleId){
         <button
@@ -50,12 +54,10 @@
         </button>
         } @if(editId() !== item.subModuleId){
         <button>
-          <label class="switch">
-            <input (change)="updateStatusSubModule(item, $event.target.checked)"
-             type="checkbox" [checked]="item.subModuleStatus" />
-            />
-            <span class="slider"></span>
-          </label>
+          <app-toggle-switch
+            [isChecked]="item.subModuleStatus"
+            (stateChange)="updateStatusSubModule(item, $event)"
+          ></app-toggle-switch>
         </button>
 
         }
@@ -73,10 +75,14 @@
               (click)="saveChildSubModuleName(child)"
               class="text-gray-400 hover:text-gray-600"
             >
-              <lucide-angular [img]="editIcon"></lucide-angular>
+              <lucide-angular [img]="icons.check"></lucide-angular>
             </button>
             <label class="switch">
-              <input (change)="updateStatusChild(child, $event.target.checked)" type="checkbox" [checked]="child.subChildStatus" />
+              <input
+                (change)="updateStatusChild(child, $event.target.checked)"
+                type="checkbox"
+                [checked]="child.subChildStatus"
+              />
               <span class="slider"></span>
             </label>
           </div>

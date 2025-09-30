@@ -25,6 +25,7 @@ export interface ModuleItem {
 export interface PackageItem {
   packageID: number;
   packageName: string;
+  packageStatus:number;
   modules: ModuleItem[];
 }
 

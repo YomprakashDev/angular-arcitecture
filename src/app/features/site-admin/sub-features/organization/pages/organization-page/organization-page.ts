@@ -15,7 +15,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { catchError, EMPTY, finalize } from 'rxjs';
 import { AddOraganizationModel } from '../../components/add-oraganization-model/add-oraganization-model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { LucideAngularModule, LogOut, CircleX, MonitorCog, SquarePen, FileText, GripVertical, Eye } from 'lucide-angular';
+import { LucideAngularModule, } from 'lucide-angular';
+import { AppIcons } from '../../../../../../../assets/icons/icons';
 @Component({
   selector: 'app-organization-page',
   standalone: true,
@@ -44,14 +45,8 @@ export class OrganizationPage {
   readonly searchTerm = signal('');
   readonly isLoading = signal(true);
   readonly error = signal<string | null>(null);
-  readonly viewIcon = Eye
-  readonly editIcon = SquarePen
-  readonly deleteIcon = GripVertical
-  readonly fileIcon = FileText
-  readonly cogIcon = MonitorCog
-  readonly logoutIcon = LogOut
-  readonly closeIcon = CircleX
 
+  icons = AppIcons;
 
 
 
