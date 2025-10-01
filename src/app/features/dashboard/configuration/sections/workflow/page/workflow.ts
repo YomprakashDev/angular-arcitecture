@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
-import { Modal } from "../../../../../shared/components/ui/modal/modal";
-import { AgreementWorkflow } from "./components/agreement-workflow/agreement-workflow";
+import { Modal } from '../../../../../../shared/components/ui/modal/modal';
+import { AgreementWorkflow } from '../components/agreement-workflow/agreement-workflow';
 
 type WorkflowRow = {
   name: string;

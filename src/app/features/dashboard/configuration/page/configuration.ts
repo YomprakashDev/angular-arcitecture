@@ -4,7 +4,7 @@ import { CounterParty } from '../sections/counter-party/page/counter-party';
 
 import { Tags } from "../sections/tags/tags";
 import { Metadata } from "../sections/metadata/metadata";
-import { Workflow } from "../sections/workflow/workflow";
+import { Workflow } from '../sections/workflow/page/workflow';
 import { ContractTypes } from '../sections/contract-types/page/contract-types';
 
 @Component({
