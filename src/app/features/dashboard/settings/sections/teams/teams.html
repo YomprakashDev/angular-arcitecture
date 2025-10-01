@@ -41,10 +41,11 @@
         </th>
         <td mat-cell *matCellDef="let row" class="px-4 py-3">
           <div class="flex items-center gap-3 text-gray-500">
-            <button type="button" aria-label="Edit" disabled>
+            <button type="button" aria-label="Edit" >
               <lucide-angular [img]="icons.edit"></lucide-angular>
             </button>
-            <button type="button" aria-label="Deactivate" disabled>
+            <button (click)="statusChange()" type="button" 
+            aria-label="Deactivate" >
               <lucide-angular [img]="icons.close"></lucide-angular>
             </button>
           </div>
@@ -109,7 +110,7 @@
         </th>
         <td mat-cell *matCellDef="let row" class="px-4 py-3">
           <span
-          (click)="viewTeamCount()"
+            (click)="viewTeamCount()"
             class="cursor-default underline decoration-indigo-600 underline-offset-4 text-indigo-700"
             >{{ row.count }}</span
           >
@@ -140,116 +141,127 @@
 </app-card>
 
 @if(isTeamAdding()){
-<app-modal [isOpen]="isTeamAdding()" [modalBodyClass]="'bg-white'" [modelContainerClass]="'max-w-[717px]'" 
- (closed)="isTeamAdding.set(false)" [title]="'Add New Team'">
-  
+<app-modal
+  [isOpen]="isTeamAdding()"
+  [modalBodyClass]="'bg-white'"
+  [modelContainerClass]="'max-w-[717px]'"
+  (closed)="isTeamAdding.set(false)"
+  [title]="'Add New Team'"
+>
+  <form class="space-y-2 bg-surface-raised2 rounded-md p-4">
+    <!-- Team Name -->
+    <div class="space-y-2">
+      <label for="teamName" class="form-label form-lable-required"> Team Name </label>
+      <input id="teamName" type="text" placeholder="Enter Team Name" class="form-input" />
+    </div>
 
+    <!-- Team Lead -->
+    <div class="space-y-3">
+      <label for="teamLead" class="form-label"> Team Lead </label>
+      <div class="relative">
+        <select id="teamLead" class="form-select">
+          <option selected disabled>Select</option>
+          <option>Pramod</option>
+          <option>Sumanth</option>
+          <option>Anvitha Sen</option>
+          <option>Sanjana</option>
+        </select>
+      </div>
+    </div>
 
-        <form class="space-y-2 bg-surface-raised2 rounded-md p-4">
-          <!-- Team Name -->
-          <div class="space-y-2">
-            <label for="teamName" class="form-label form-lable-required">
-              Team Name
-            </label>
-            <input
-              id="teamName"
-              type="text"
-              placeholder="Enter Team Name"
-              class="form-input"
-            />
-          </div>
+    <!-- Description -->
+    <div class="space-y-3">
+      <label for="description" class="form-label form-lable-required"> Description </label>
+      <textarea
+        id="description"
+        rows="6"
+        placeholder="Enter Description"
+        class="form-textarea"
+      ></textarea>
+    </div>
+  </form>
+</app-modal>
+} @if(isTeamCountViewing()){
+<app-modal
+  [isOpen]="isTeamCountViewing()"
+  [isButtonsShowing]="false"
+  [modalBodyClass]="'bg-white'"
+  [modelContainerClass]="'max-w-[717px]'"
+  (closed)="isTeamCountViewing.set(false)"
+  [title]="'Team Count'"
+>
+  <div class="flex items-center justify-center">
+    <div class="bg-surface-raised2 rounded-xl p-4 w-full max-w-4xl">
+      <h2 class="text-2xl font-semibold mb-6">Team Members List</h2>
 
-          <!-- Team Lead -->
-          <div class="space-y-3">
-            <label for="teamLead" class="form-label">
-              Team Lead
-            </label>
-            <div class="relative">
-              <select
-                id="teamLead"
-                class="form-select"
-              >
-                <option selected disabled>Select</option>
-                <option>Pramod</option>
-                <option>Sumanth</option>
-                <option>Anvitha Sen</option>
-                <option>Sanjana</option>
-              </select>
+      <div class="overflow-x-auto rounded-lg bg-white p-2 border border-gray-200">
+        <table class="w-full text-left border">
+          <thead class="bg-surface-raised2">
+            <tr>
+              <th class="px-6 py-3 text-sm font-medium text-gray-500">User Name</th>
+              <th class="px-6 py-3 text-sm font-medium text-gray-500">Role</th>
+              <th class="px-6 py-3 text-sm font-medium text-gray-500">E-Mail</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            <!-- Row 1 -->
+            <tr>
+              <td class="px-6 py-4 flex items-center space-x-3">
+                <img
+                  src="https://i.pravatar.cc/40?img=1"
+                  class="w-10 h-10 rounded-full"
+                  alt="Aadved pal"
+                />
+                <span class="font-medium text-gray-900">Aadved pal</span>
+                <span class="ml-2 px-3 py-1 text-sm bg-sky-400 text-white rounded-md">
+                  Team Lead
+                </span>
+              </td>
+              <td class="px-6 py-4 text-gray-900">Admin</td>
+              <td class="px-6 py-4 text-gray-900">advadpal@comp.in</td>
+            </tr>
 
-            </div>
-          </div>
+            <!-- Row 2 -->
+            <tr>
+              <td class="px-6 py-4 flex items-center space-x-3">
+                <img
+                  src="https://i.pravatar.cc/40?img=2"
+                  class="w-10 h-10 rounded-full"
+                  alt="Rishi Sunkara"
+                />
+                <span class="font-medium text-gray-900">Rishi Sunkara</span>
+              </td>
+              <td class="px-6 py-4 text-gray-900">Business User</td>
+              <td class="px-6 py-4 text-gray-900">rishisunkara@comp.in</td>
+            </tr>
 
-          <!-- Description -->
-          <div class="space-y-3">
-            <label for="description" class="form-label form-lable-required">
-              Description
-            </label>
-            <textarea
-              id="description"
-              rows="6"
-              placeholder="Enter Description"
-              class="form-textarea"
-            ></textarea>
-          </div>
-        </form>
-  
+            <!-- Row 3 -->
+            <tr>
+              <td class="px-6 py-4 flex items-center space-x-3">
+                <img
+                  src="https://i.pravatar.cc/40?img=3"
+                  class="w-10 h-10 rounded-full"
+                  alt="Anvitha Sen"
+                />
+                <span class="font-medium text-gray-900">Anvitha Sen</span>
+              </td>
+              <td class="px-6 py-4 text-gray-900">Legal</td>
+              <td class="px-6 py-4 text-gray-900">anvithasen@comp.in</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </app-modal>
 }
 
-@if(isTeamCountViewing()){
-<app-modal [isOpen]="isTeamCountViewing()" [isButtonsShowing]="false" [modalBodyClass]="'bg-white'" [modelContainerClass]="'max-w-[717px]'" 
- (closed)="isTeamCountViewing.set(false)" [title]="'Team Count'">
-  <div class=" flex items-center justify-center">
-  <div class="bg-surface-raised2 rounded-xl  p-4 w-full max-w-4xl">
-    <h2 class="text-2xl font-semibold mb-6">Team Members List</h2>
-
-    <div class="overflow-x-auto rounded-lg bg-white p-2 border border-gray-200">
-      <table class="w-full text-left border">
-        <thead class="bg-surface-raised2">
-          <tr>
-            <th class="px-6 py-3 text-sm font-medium text-gray-500">User Name</th>
-            <th class="px-6 py-3 text-sm font-medium text-gray-500">Role</th>
-            <th class="px-6 py-3 text-sm font-medium text-gray-500">E-Mail</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200 bg-white">
-          <!-- Row 1 -->
-          <tr>
-            <td class="px-6 py-4 flex items-center space-x-3">
-              <img src="https://i.pravatar.cc/40?img=1" class="w-10 h-10 rounded-full" alt="Aadved pal">
-              <span class="font-medium text-gray-900">Aadved pal</span>
-              <span class="ml-2 px-3 py-1 text-sm bg-sky-400 text-white rounded-md">
-                Team Lead
-              </span>
-            </td>
-            <td class="px-6 py-4 text-gray-900">Admin</td>
-            <td class="px-6 py-4 text-gray-900">advadpal@comp.in</td>
-          </tr>
-
-          <!-- Row 2 -->
-          <tr>
-            <td class="px-6 py-4 flex items-center space-x-3">
-              <img src="https://i.pravatar.cc/40?img=2" class="w-10 h-10 rounded-full" alt="Rishi Sunkara">
-              <span class="font-medium text-gray-900">Rishi Sunkara</span>
-            </td>
-            <td class="px-6 py-4 text-gray-900">Business User</td>
-            <td class="px-6 py-4 text-gray-900">rishisunkara@comp.in</td>
-          </tr>
-
-          <!-- Row 3 -->
-          <tr>
-            <td class="px-6 py-4 flex items-center space-x-3">
-              <img src="https://i.pravatar.cc/40?img=3" class="w-10 h-10 rounded-full" alt="Anvitha Sen">
-              <span class="font-medium text-gray-900">Anvitha Sen</span>
-            </td>
-            <td class="px-6 py-4 text-gray-900">Legal</td>
-            <td class="px-6 py-4 text-gray-900">anvithasen@comp.in</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-</app-modal>
+@if(isTeamActiveOrInactive()){
+<app-confirm-dialog
+  [variant]="'danger'"
+  [text]="'Are you sure you want to deactivate this team?'"
+  [open]="isTeamActiveOrInactive()"
+  (closed)="isTeamActiveOrInactive.set(false)"
+>
+</app-confirm-dialog>
 }

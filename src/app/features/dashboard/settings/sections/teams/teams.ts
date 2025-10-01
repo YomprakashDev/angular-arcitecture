@@ -6,6 +6,7 @@ import { LucideAngularModule } from "lucide-angular";
 import { AppIcons } from '../../../../../../assets/icons/icons';
 import { Tab, Tabs } from '../../../../../shared/components/tabs/tabs';
 import { Modal } from "../../../../../shared/components/ui/modal/modal";
+import { ConfirmDialog } from "../../../../../shared/components/ui/confirm-dialog/confirm-dialog";
 
 interface Team {
   id: number;
@@ -19,7 +20,7 @@ interface Team {
 @Component({
   standalone: true,
   selector: 'app-teams',
-  imports: [Card, MatTable, MatTableModule, Button, LucideAngularModule, Tabs, Modal],
+  imports: [Card, MatTable, MatTableModule, Button, LucideAngularModule, Tabs, Modal, ConfirmDialog],
   templateUrl: './teams.html',
   styleUrls: ['./teams.css'],
 })
@@ -43,7 +44,7 @@ export class Teams {
 
   isTeamAdding = signal(false);
   isTeamEditing = signal(false);
-  isTeamDeleting = signal(false);
+  isTeamActiveOrInactive = signal(false);
   isTeamCountViewing = signal(false);
 
   displayedColumns = ['actions', 'teamName', 'description', 'teamLead', 'count', 'lastAction'];
@@ -57,8 +58,8 @@ export class Teams {
     this.isTeamEditing.set(true);
   }
 
-  deleteTeam(){
-    this.isTeamDeleting.set(true);
+  statusChange(){
+    this.isTeamActiveOrInactive.set(true);
   }
 
   viewTeamCount(){
