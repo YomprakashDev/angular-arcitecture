@@ -18,7 +18,8 @@ import {
     X,
     CircleUserRound ,
     LockKeyhole ,
-    Settings 
+    Settings ,
+    Mail 
 } from 'lucide-angular';
 
 /**
@@ -43,6 +44,7 @@ export const AppIcons = {
     notification: Bell,
     user: CircleUserRound,
     lock: LockKeyhole,
-    settingsIcon: Settings
+    settingsIcon: Settings,
+    mail: Mail
 
 };

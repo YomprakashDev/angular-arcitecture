@@ -1,1 +1,77 @@
-<p>users works!</p>
+<app-card>
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <h1 class="heading-page">Teams</h1>
+    <app-button [text]="'Add Users'" (clicked)="addUser()">
+      <lucide-angular [img]="icons.plus"></lucide-angular
+    ></app-button>
+  </div>
+
+   <div class="flex w-full items-center justify-between gap-3">
+    <app-tabs [tabs]="tabs()" (tabChanged)="setActiveTab($event.id)" [activeTabInput]="activeTab()">
+    </app-tabs>
+
+    <div class="relative w-72">
+      <label class="sr-only" for="org-search">Search organizations</label>
+      <lucide-angular
+        [img]="icons.search"
+        class="absolute left-1 top-1/2 -translate-y-1/2 text-[#787A7F] text-xs"
+      ></lucide-angular>
+      <input
+        type="text"
+        id="org-search"
+        placeholder="Search organizations"
+        class="block w-full py-2 pl-10 pr-4 text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+      />
+    </div>
+  </div>
+
+<div class="overflow-x-auto rounded-lg border border-gray-200">
+      <table class="min-w-full text-left">
+        <thead class="bg-gray-100 text-gray-600">
+          <tr>
+            <th class="px-4 py-3 text-sm font-medium">Actions</th>
+            <th class="px-4 py-3 text-sm font-medium">Full Name</th>
+            <th class="px-4 py-3 text-sm font-medium">Email</th>
+            <th class="px-4 py-3 text-sm font-medium">Role</th>
+            <th class="px-4 py-3 text-sm font-medium">Job Title</th>
+            <th class="px-4 py-3 text-sm font-medium">Team</th>
+            <th class="px-4 py-3 text-sm font-medium">Last Action Taken On</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 bg-white">
+          <tr *ngFor="let user of users">
+            <!-- Actions -->
+            <td class="px-4 py-3 flex space-x-3 text-gray-500">
+              <!-- Edit -->
+              <button class="hover:text-blue-600">
+                <lucide-angular [img]="icons.edit"></lucide-angular>
+              </button>
+              <!-- Mail -->
+              <button class="hover:text-green-600">
+                <lucide-angular [img]="icons.mail"></lucide-angular>
+              </button>
+              <!-- Lock -->
+              <button class="hover:text-yellow-600">
+                <lucide-angular [img]="icons.lock"></lucide-angular>
+              </button>
+              <!-- Delete -->
+              <button class="hover:text-red-600">
+                <lucide-angular [img]="icons.close"></lucide-angular>
+              </button>
+            </td>
+
+            <!-- Data -->
+            <td class="px-4 py-3 text-gray-900">{{ user.name }}</td>
+            <td class="px-4 py-3 text-gray-900">{{ user.email }}</td>
+            <td class="px-4 py-3 text-gray-900">{{ user.role }}</td>
+            <td class="px-4 py-3 text-gray-900">{{ user.jobTitle }}</td>
+            <td class="px-4 py-3 text-gray-900">{{ user.team }}</td>
+            <td class="px-4 py-3 text-gray-900">{{ user.lastAction }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+  </app-card>
