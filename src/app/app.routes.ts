@@ -29,7 +29,7 @@ export const routes: Routes = [
 
       {
         path: 'settings',
-        loadComponent: () => import('./features/dashboard/settings/settings-page/settings').then(m => m.Settings),
+        loadComponent: () => import('./features/dashboard/settings/page/settings').then(m => m.Settings),
 
       },
       {

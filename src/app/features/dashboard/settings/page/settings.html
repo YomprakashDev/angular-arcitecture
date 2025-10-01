@@ -1,4 +1,6 @@
-<app-tabs [tabs]="tabs()" [defaultActiveTab]="'teams'" (tabChanged)="setActiveTab($event.id)"
+<app-tabs [tabs]="tabs()" 
+[activeTabInput]="currentTab()"
+(tabChanged)="setActiveTab($event.id)"
 ></app-tabs>
 
 

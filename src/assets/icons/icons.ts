@@ -15,6 +15,7 @@ import {
     Search,
     BellDot ,
     Bell,
+    X,
     CircleUserRound ,
     LockKeyhole ,
     Settings 
@@ -31,6 +32,7 @@ export const AppIcons = {
     settings: MonitorCog,
     logout: LogOut,
     close: CircleX,
+    cross: X,
     check: Check,
     chevronRight: ChevronRight,
     chevronUp: ChevronUp,

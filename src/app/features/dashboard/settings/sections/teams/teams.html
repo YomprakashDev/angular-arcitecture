@@ -1,7 +1,255 @@
-<div class="flex bg-white w-full h-full">
+<app-card>
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <h1 class="heading-page">Teams</h1>
+    <app-button [text]="'Add Team'" (clicked)="addTeam()">
+      <lucide-angular [img]="icons.plus"></lucide-angular
+    ></app-button>
+  </div>
 
- <div class="flex-1 p-6">
-   <h1 class="text-2xl font-bold text-[#1D1D21]"> Teams</h1>
+  <!-- Tabs + Search -->
+  <div class="flex w-full items-center justify-between gap-3">
+    <app-tabs [tabs]="tabs()" (tabChanged)="setActiveTab($event.id)" [activeTabInput]="activeTab()">
+    </app-tabs>
 
- </div>
+    <div class="relative w-72">
+      <label class="sr-only" for="org-search">Search organizations</label>
+      <lucide-angular
+        [img]="icons.search"
+        class="absolute left-1 top-1/2 -translate-y-1/2 text-[#787A7F] text-xs"
+      ></lucide-angular>
+      <input
+        type="text"
+        id="org-search"
+        placeholder="Search organizations"
+        class="block w-full py-2 pl-10 pr-4 text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+      />
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="mt-4 overflow-hidden rounded-xl border border-gray-200 bg-white">
+    <table mat-table [dataSource]="dataSource" class="w-full">
+      <!-- Actions -->
+      <ng-container matColumnDef="actions">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="px-4 py-3 text-left text-sm font-semibold text-gray-600"
+        >
+          Actions
+        </th>
+        <td mat-cell *matCellDef="let row" class="px-4 py-3">
+          <div class="flex items-center gap-3 text-gray-500">
+            <button type="button" aria-label="Edit" disabled>
+              <lucide-angular [img]="icons.edit"></lucide-angular>
+            </button>
+            <button type="button" aria-label="Deactivate" disabled>
+              <lucide-angular [img]="icons.close"></lucide-angular>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Team Name -->
+      <ng-container matColumnDef="teamName">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="px-4 py-3 text-left text-sm font-semibold text-gray-600"
+        >
+          Team Name
+        </th>
+        <td mat-cell *matCellDef="let row" class="px-4 py-3 text-gray-900">{{ row.name }}</td>
+      </ng-container>
+
+      <!-- Description -->
+      <ng-container matColumnDef="description">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="px-4 py-3 text-left text-sm font-semibold text-gray-600"
+        >
+          Description
+        </th>
+        <td mat-cell *matCellDef="let row" class="px-4 py-3 text-gray-700">
+          {{ row.description }}
+        </td>
+      </ng-container>
+
+      <!-- Team Lead -->
+      <ng-container matColumnDef="teamLead">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="px-4 py-3 text-left text-sm font-semibold text-gray-600"
+        >
+          Team Lead
+        </th>
+        <td mat-cell *matCellDef="let row" class="px-4 py-3">
+          <div class="flex items-center gap-3">
+            <div
+              class="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-100 text-xs font-semibold text-indigo-700 ring-2 ring-white"
+            >
+              {{ row.lead.name.charAt(0) }}
+            </div>
+            <span class="text-gray-900">{{ row.lead.name }}</span>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Count -->
+      <ng-container matColumnDef="count">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="px-4 py-3 text-left text-sm font-semibold text-gray-600"
+        >
+          Count
+        </th>
+        <td mat-cell *matCellDef="let row" class="px-4 py-3">
+          <span
+          (click)="viewTeamCount()"
+            class="cursor-default underline decoration-indigo-600 underline-offset-4 text-indigo-700"
+            >{{ row.count }}</span
+          >
+        </td>
+      </ng-container>
+
+      <!-- Last Action Taken On -->
+      <ng-container matColumnDef="lastAction">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="px-4 py-3 text-left text-sm font-semibold text-gray-600"
+        >
+          Last Action Taken On
+        </th>
+        <td mat-cell *matCellDef="let row" class="px-4 py-3 text-gray-700">{{ row.lastAction }}</td>
+      </ng-container>
+
+      <!-- Rows -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-gray-50"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        class="border-t border-gray-100"
+      ></tr>
+    </table>
+  </div>
+</app-card>
+
+@if(isTeamAdding()){
+<app-modal [isOpen]="isTeamAdding()" [modalBodyClass]="'bg-white'" [modelContainerClass]="'max-w-[717px]'" 
+ (closed)="isTeamAdding.set(false)" [title]="'Add New Team'">
+  
+
+
+        <form class="space-y-2 bg-surface-raised2 rounded-md p-4">
+          <!-- Team Name -->
+          <div class="space-y-2">
+            <label for="teamName" class="form-label form-lable-required">
+              Team Name
+            </label>
+            <input
+              id="teamName"
+              type="text"
+              placeholder="Enter Team Name"
+              class="form-input"
+            />
+          </div>
+
+          <!-- Team Lead -->
+          <div class="space-y-3">
+            <label for="teamLead" class="form-label">
+              Team Lead
+            </label>
+            <div class="relative">
+              <select
+                id="teamLead"
+                class="form-select"
+              >
+                <option selected disabled>Select</option>
+                <option>Pramod</option>
+                <option>Sumanth</option>
+                <option>Anvitha Sen</option>
+                <option>Sanjana</option>
+              </select>
+
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="space-y-3">
+            <label for="description" class="form-label form-lable-required">
+              Description
+            </label>
+            <textarea
+              id="description"
+              rows="6"
+              placeholder="Enter Description"
+              class="form-textarea"
+            ></textarea>
+          </div>
+        </form>
+  
+</app-modal>
+}
+
+@if(isTeamCountViewing()){
+<app-modal [isOpen]="isTeamCountViewing()" [isButtonsShowing]="false" [modalBodyClass]="'bg-white'" [modelContainerClass]="'max-w-[717px]'" 
+ (closed)="isTeamCountViewing.set(false)" [title]="'Team Count'">
+  <div class=" flex items-center justify-center">
+  <div class="bg-surface-raised2 rounded-xl  p-4 w-full max-w-4xl">
+    <h2 class="text-2xl font-semibold mb-6">Team Members List</h2>
+
+    <div class="overflow-x-auto rounded-lg bg-white p-2 border border-gray-200">
+      <table class="w-full text-left border">
+        <thead class="bg-surface-raised2">
+          <tr>
+            <th class="px-6 py-3 text-sm font-medium text-gray-500">User Name</th>
+            <th class="px-6 py-3 text-sm font-medium text-gray-500">Role</th>
+            <th class="px-6 py-3 text-sm font-medium text-gray-500">E-Mail</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 bg-white">
+          <!-- Row 1 -->
+          <tr>
+            <td class="px-6 py-4 flex items-center space-x-3">
+              <img src="https://i.pravatar.cc/40?img=1" class="w-10 h-10 rounded-full" alt="Aadved pal">
+              <span class="font-medium text-gray-900">Aadved pal</span>
+              <span class="ml-2 px-3 py-1 text-sm bg-sky-400 text-white rounded-md">
+                Team Lead
+              </span>
+            </td>
+            <td class="px-6 py-4 text-gray-900">Admin</td>
+            <td class="px-6 py-4 text-gray-900">advadpal@comp.in</td>
+          </tr>
+
+          <!-- Row 2 -->
+          <tr>
+            <td class="px-6 py-4 flex items-center space-x-3">
+              <img src="https://i.pravatar.cc/40?img=2" class="w-10 h-10 rounded-full" alt="Rishi Sunkara">
+              <span class="font-medium text-gray-900">Rishi Sunkara</span>
+            </td>
+            <td class="px-6 py-4 text-gray-900">Business User</td>
+            <td class="px-6 py-4 text-gray-900">rishisunkara@comp.in</td>
+          </tr>
+
+          <!-- Row 3 -->
+          <tr>
+            <td class="px-6 py-4 flex items-center space-x-3">
+              <img src="https://i.pravatar.cc/40?img=3" class="w-10 h-10 rounded-full" alt="Anvitha Sen">
+              <span class="font-medium text-gray-900">Anvitha Sen</span>
+            </td>
+            <td class="px-6 py-4 text-gray-900">Legal</td>
+            <td class="px-6 py-4 text-gray-900">anvithasen@comp.in</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
+
+</app-modal>
+}

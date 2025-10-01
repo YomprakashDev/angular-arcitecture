@@ -24,7 +24,7 @@ body {
   /* Brand (named shades) */
   --color-primary-blue: #6d7bfa;
   --color-primary-black: #1d1d21;
-  --color-primary-hover: #5363f9;
+  --color-secondary-blue: #5363f9;
   --color-primary-tint: #acb4ff;
   --color-primary-surface: #e9ecff;
   --color-primary-wash: #ecf4ff;
@@ -43,6 +43,7 @@ body {
   --color-danger: #dc3545;
   --color-danger-bright: #ff3333;
   --color-info: #0dcaf0;
+  --color-error: #DA1414;
 
   /* Optional teals */
   --color-teal-base: #79bbd0;
@@ -50,6 +51,8 @@ body {
 
   /* Neutrals (named) */
   --color-gray-ink: #1d1d21;
+  --color-gray-dark:#262626
+  --color-gray-surfaceAlt: #f1f3f6;
   --color-gray-deep: #182330;
   --color-gray-subtle: #7e7a88;
   --color-gray-subtleAlt: #787a7f;
@@ -87,9 +90,34 @@ body {
   .tab-inactive {
     @apply cursor-pointer text-gray-subtle font-medium border-surface-soft2 hover:bg-gray-100;
   }
+
+  .form-label {
+    @apply block text-sm font-semibold text-gray-dark mb-1;
+  }
+  .form-lable-required {
+    @apply after:content-['*']  after:text-error;
+  }
+
+  .form-input {
+    @apply w-full py-3 px-3 rounded-md bg-white
+     sm:text-sm placeholder:text-gray-subtle placeholder:font-medium placeholder:text-sm focus:outline-none;
+  }
+
+  .form-select {
+    @apply w-full rounded-md outline-none border-none bg-white py-3 pr-4 
+      focus:outline-none sm:text-sm;
+  }
+
+  .form-textarea {
+    @apply w-full rounded-md resize-none bg-white py-3 px-3
+     sm:text-sm;
+  }
+
+
 }
 
 
 @utility shadow-subtle {
   box-shadow: 0px 6px 2px 0px #00000003;
+
 }

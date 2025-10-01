@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { LucideAngularModule } from "lucide-angular";
+import { AppIcons } from '../../../../../assets/icons/icons';
 
 /**
  * A reusable modal dialog component.
@@ -12,7 +14,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
   templateUrl: './modal.html',
   styleUrls: ['./modal.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule],
+  imports: [CommonModule, LucideAngularModule],
 })
 export class Modal {
   /**
@@ -23,7 +25,7 @@ export class Modal {
    * The title of the modal.
    */
   title = input<string>('Modal');
-
+icons = AppIcons;
   modelContainerClass= input<string>('');
   modalBodyClass = input<string>('');
 
