@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Card } from "../../../../../shared/components/ui/card/card";
 import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Button } from "../../../../../shared/components/ui/button/button";
@@ -7,20 +7,18 @@ import { AppIcons } from '../../../../../../assets/icons/icons';
 import { Tab, Tabs } from '../../../../../shared/components/tabs/tabs';
 import { Modal } from "../../../../../shared/components/ui/modal/modal";
 import { ConfirmDialog } from "../../../../../shared/components/ui/confirm-dialog/confirm-dialog";
+import { TeamsService } from './services/teams.service';
+import { Team } from './model/teams.model';
+import { catchError, EMPTY, finalize } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormsModule } from '@angular/forms';
 
-interface Team {
-  id: number;
-  name: string;
-  description: string;
-  lead: { name: string; avatarUrl?: string };
-  count: number;
-  lastAction: string;
-}
+
 
 @Component({
   standalone: true,
   selector: 'app-teams',
-  imports: [Card, MatTable, MatTableModule, Button, LucideAngularModule, Tabs, Modal, ConfirmDialog],
+  imports: [Card,FormsModule, MatTable, MatTableModule, Button, LucideAngularModule, Tabs, Modal, ConfirmDialog],
   templateUrl: './teams.html',
   styleUrls: ['./teams.css'],
 })
@@ -38,6 +36,10 @@ export class Teams {
     this.activeTab.set(tab);
   }
 
+  temaName = signal<string>('');
+  teamLead = signal<string>('');
+  teamDescription = signal<string>('');
+
   // Tabs (static)
   activeCount = 12;
   inactiveCount = 8;
@@ -50,56 +52,51 @@ export class Teams {
   displayedColumns = ['actions', 'teamName', 'description', 'teamLead', 'count', 'lastAction'];
   icons = AppIcons;
 
-  addTeam(){
+  addTeam() {
     this.isTeamAdding.set(true);
   }
 
-  editTeam(){
+  editTeam() {
     this.isTeamEditing.set(true);
   }
 
-  statusChange(){
+  statusChange() {
     this.isTeamActiveOrInactive.set(true);
   }
 
-  viewTeamCount(){
+  viewTeamCount() {
     this.isTeamCountViewing.set(true);
   }
 
-  dataSource = new MatTableDataSource<Team>([
-    {
-      id: 1,
-      name: 'Legal',
-      description: 'Handles review and legal checks of contracts before approval',
-      lead: { name: 'Pramod' },
-      count: 4,
-      lastAction: '09-Aug-2025 at 01:00 pm',
-    },
-    {
-      id: 2,
-      name: 'Finance',
-      description: 'Ensures contracts meet regulatory and compliance requirements',
-      lead: { name: 'Sumanth' },
-      count: 12,
-      lastAction: '05-Aug-2025 at 11:00 am',
-    },
-    {
-      id: 3,
-      name: 'Sales',
-      description: 'Creates initial contract drafts based on business needs',
-      lead: { name: 'Anvitha Sen' },
-      count: 20,
-      lastAction: '06-Aug-2025 at 01:00 pm',
-    },
-    {
-      id: 4,
-      name: 'Ops',
-      description: 'Final authority for contract sign-off',
-      lead: { name: 'Sanjana' },
-      count: 24,
-      lastAction: '04-Aug-2025 at 11:00 am',
-    },
-  ]);
+  addNewTeam(){
+
+  }
 
 
+
+  isLoading = signal(true);
+  error = signal<string | null>(null);
+  teamsData = signal<Team[]>([]);
+
+  teamsService = inject(TeamsService);
+
+  constructor() {
+    this.loadTeams();
+  }
+
+
+  loadTeams() {
+    this.teamsService.getAllTeamsData()
+      .pipe(
+        catchError((err) => {
+          this.error.set(err.message);
+          return EMPTY;
+        }),
+        finalize(() => this.isLoading.set(false)),
+        takeUntilDestroyed()
+      )
+      .subscribe((res) => {
+        this.teamsData.set(res);
+      })
+  }
 }

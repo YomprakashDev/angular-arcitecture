@@ -29,7 +29,7 @@
 
   <!-- Table -->
   <div class="mt-4 overflow-hidden rounded-xl border border-gray-200 bg-white">
-    <table mat-table [dataSource]="dataSource" class="w-full">
+    <table mat-table [dataSource]="teamsData()" class="w-full">
       <!-- Actions -->
       <ng-container matColumnDef="actions">
         <th
@@ -41,11 +41,10 @@
         </th>
         <td mat-cell *matCellDef="let row" class="px-4 py-3">
           <div class="flex items-center gap-3 text-gray-500">
-            <button type="button" aria-label="Edit" >
+            <button type="button" aria-label="Edit">
               <lucide-angular [img]="icons.edit"></lucide-angular>
             </button>
-            <button (click)="statusChange()" type="button" 
-            aria-label="Deactivate" >
+            <button (click)="statusChange()" type="button" aria-label="Deactivate">
               <lucide-angular [img]="icons.close"></lucide-angular>
             </button>
           </div>
@@ -61,7 +60,9 @@
         >
           Team Name
         </th>
-        <td mat-cell *matCellDef="let row" class="px-4 py-3 text-gray-900">{{ row.name }}</td>
+        <td mat-cell
+        *matCellDef="let row"
+         class="px-4 py-3 text-gray-900">{{ row.teamName }}</td>
       </ng-container>
 
       <!-- Description -->
@@ -74,7 +75,7 @@
           Description
         </th>
         <td mat-cell *matCellDef="let row" class="px-4 py-3 text-gray-700">
-          {{ row.description }}
+          {{ row.teamName }}
         </td>
       </ng-container>
 
@@ -92,9 +93,9 @@
             <div
               class="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-100 text-xs font-semibold text-indigo-700 ring-2 ring-white"
             >
-              {{ row.lead.name.charAt(0) }}
+              
             </div>
-            <span class="text-gray-900">{{ row.lead.name }}</span>
+            <span class="text-gray-900">{{ row.teamName }}</span>
           </div>
         </td>
       </ng-container>
@@ -112,7 +113,7 @@
           <span
             (click)="viewTeamCount()"
             class="cursor-default underline decoration-indigo-600 underline-offset-4 text-indigo-700"
-            >{{ row.count }}</span
+            >{{ row.teamID }}</span
           >
         </td>
       </ng-container>
@@ -126,7 +127,9 @@
         >
           Last Action Taken On
         </th>
-        <td mat-cell *matCellDef="let row" class="px-4 py-3 text-gray-700">{{ row.lastAction }}</td>
+        <td mat-cell
+         *matCellDef="let row" 
+         class="px-4 py-3 text-gray-700">{{ row.modifiedDate }}</td>
       </ng-container>
 
       <!-- Rows -->
@@ -147,19 +150,20 @@
   [modelContainerClass]="'max-w-[717px]'"
   (closed)="isTeamAdding.set(false)"
   [title]="'Add New Team'"
+  (save)="addNewTeam()"
 >
   <form class="space-y-2 bg-surface-raised2 rounded-md p-4">
     <!-- Team Name -->
     <div class="space-y-2">
       <label for="teamName" class="form-label form-lable-required"> Team Name </label>
-      <input id="teamName" type="text" placeholder="Enter Team Name" class="form-input" />
+      <input id="teamName" [(ngModel)]="temaName" type="text" placeholder="Enter Team Name" class="form-input" />
     </div>
 
     <!-- Team Lead -->
     <div class="space-y-3">
       <label for="teamLead" class="form-label"> Team Lead </label>
       <div class="relative">
-        <select id="teamLead" class="form-select">
+        <select [(ngModel)]="teamLead" id="teamLead" class="form-select">
           <option selected disabled>Select</option>
           <option>Pramod</option>
           <option>Sumanth</option>
@@ -173,6 +177,7 @@
     <div class="space-y-3">
       <label for="description" class="form-label form-lable-required"> Description </label>
       <textarea
+        [(ngModel)]="teamDescription"
         id="description"
         rows="6"
         placeholder="Enter Description"
@@ -254,9 +259,7 @@
     </div>
   </div>
 </app-modal>
-}
-
-@if(isTeamActiveOrInactive()){
+} @if(isTeamActiveOrInactive()){
 <app-confirm-dialog
   [variant]="'danger'"
   [text]="'Are you sure you want to deactivate this team?'"
