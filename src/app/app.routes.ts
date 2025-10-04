@@ -34,7 +34,7 @@ export const routes: Routes = [
       },
       {
         path: 'admin',
-        loadComponent: () => import('./features/site-admin/page/site-admin-page/site-admin-page').then(m => m.SiteAdminPage),
+        loadComponent: () => import('./features/site-admin/page/site-admin-page').then(m => m.SiteAdminPage),
         children: [
           { path: '', pathMatch: 'full', redirectTo: 'modules' }, 
           {
