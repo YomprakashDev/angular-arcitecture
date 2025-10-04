@@ -1,6 +1,6 @@
 <div class="w-full mx-auto bg-white">
   @for ( item of subModules(); track item.subModuleId) {
-  <div class="border-b-4 border-[#F3F5F8]">
+  <div class="border-b-4 border-surface-soft3">
     <div
       (click)="toggleChildren(item.subModuleId)"
       class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50"
@@ -8,7 +8,7 @@
       <div class="flex items-center space-x-2">
         <!-- Expand/Collapse icon for parent items with children -->
 
-        <button><lucide-angular [img]="icons.drag" class="text-[#787A7F]"></lucide-angular></button>
+        <button><lucide-angular [img]="icons.drag" class="text-gray-subtleAlt"></lucide-angular></button>
         @if (editId() !== item.subModuleId){
         <span class="text-lg font-semibold text-black">{{ item.subModuleName }}</span>
         } @if(editId() === item.subModuleId){
@@ -67,9 +67,9 @@
     <!-- Children -->
     <div *ngIf="item.children && isExpanded(item.subModuleId)">
       @for ( child of item.children; track child.childID) {
-      <div class="border-b-4 border-[#F3F5F8] last:border-b-0">
+      <div class="border-b-4 border-surface-soft3 last:border-b-0">
         <div class="flex items-center justify-between p-3 hover:bg-gray-100">
-          <span class="text-[#787A7F] font-semibold text-[16px]">{{ child.childName }}</span>
+          <span class="text-gray-subtleAlt font-semibold text-[16px]">{{ child.childName }}</span>
           <div class="flex items-center space-x-3">
             <button
               (click)="saveChildSubModuleName(child)"
