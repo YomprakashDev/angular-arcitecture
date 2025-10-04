@@ -40,7 +40,7 @@
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-200 bg-white">
-          <tr *ngFor="let user of users">
+          <tr *ngFor="let user of users()">
             <!-- Actions -->
             <td class="px-4 py-3 flex space-x-3 text-gray-500">
               <!-- Edit -->
@@ -62,12 +62,12 @@
             </td>
 
             <!-- Data -->
-            <td class="px-4 py-3 text-gray-900">{{ user.name }}</td>
-            <td class="px-4 py-3 text-gray-900">{{ user.email }}</td>
-            <td class="px-4 py-3 text-gray-900">{{ user.role }}</td>
-            <td class="px-4 py-3 text-gray-900">{{ user.jobTitle }}</td>
-            <td class="px-4 py-3 text-gray-900">{{ user.team }}</td>
-            <td class="px-4 py-3 text-gray-900">{{ user.lastAction }}</td>
+            <td class="px-4 py-3 text-gray-900">{{ user.fullName }}</td>
+            <td class="px-4 py-3 text-gray-900">{{ user.emailID }}</td>
+            <td class="px-4 py-3 text-gray-900">{{ user.roleId }}</td>
+            <td class="px-4 py-3 text-gray-900">{{ user.userType }}</td>
+            <td class="px-4 py-3 text-gray-900">{{ user.teamID }}</td>
+            <td class="px-4 py-3 text-gray-900">{{ user.createdDate }}</td>
           </tr>
         </tbody>
       </table>
