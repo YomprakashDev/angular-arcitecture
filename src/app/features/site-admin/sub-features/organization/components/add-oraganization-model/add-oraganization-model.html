@@ -6,16 +6,16 @@
   <div class="bg-white relative rounded-lg shadow-lg w-full max-w-[90%] z-50">
     <!-- header -->
     <div class="flex items-center justify-between px-4 py-6 shadow">
-      <h2 class="text-xl font-bold text-[#182330]">Add Company Details</h2>
+      <h2 class="text-xl font-bold text-gray-deep">Add Company Details</h2>
       <div class="mx-auto"><app-stepper [currentStep]="currentStep()"></app-stepper></div>
       <button type="button" (click)="closeModal()" class="text-gray-500 hover:text-gray-700" aria-label="Close">
-        <lucide-angular [img]="closeIcon" class="w-6 h-6 cursor-pointer text-[#5363F9]"></lucide-angular>
+        <lucide-angular [img]="closeIcon" class="w-6 h-6 cursor-pointer text-secondary-blue"></lucide-angular>
       </button>
     </div>
 
     <!-- body -->
     <div class="p-4">
-      <div class="rounded-xl  bg-[#F0F2F5]">
+      <div class="rounded-xl  bg-surface-raised2">
         @if (currentStep() === 0) {
           <app-add-company-information [formGroup]="organizationForm"></app-add-company-information>
         } @if (currentStep() === 1) {
@@ -32,7 +32,7 @@
         <button
           type="button"
           (click)="prevStep()"
-          class="flex items-center justify-center gap-2 min-w-[98px] px-4 py-2 border border-[#CAC6D3] font-bold text-[#7E7A88] bg-transparent rounded">
+          class="flex items-center justify-center gap-2 min-w-[98px] px-4 py-2 border border-gray-soft-border font-bold text-gray-subtle bg-transparent rounded">
           Previous
         </button>
       } @else if(isFirstStep()) {
@@ -40,7 +40,7 @@
         <button
           type="button"
           (click)="closeModal()"
-          class="flex items-center justify-center min-w-[98px] gap-2 px-4 py-2 border border-[#7E7A88] text-[16px] font-bold text-[#7E7A88] bg-transparent rounded-lg">
+          class="flex items-center justify-center min-w-[98px] gap-2 px-4 py-2 border border-gray-subtle text-[16px] font-bold text-gray-subtle bg-transparent rounded-lg">
           Cancel
         </button>
       }
@@ -50,21 +50,21 @@
         <button
           type="button"
           (click)="nextStep()"
-          class="flex items-center justify-center min-w-[98px] text-[16px] gap-2 px-4 text-center py-2 font-bold text-white bg-[#6D7BFA] rounded-lg">
+          class="flex items-center justify-center min-w-[98px] text-[16px] gap-2 px-4 text-center py-2 font-bold text-white bg-ring rounded-lg">
           Next
         </button>
       } @else if(isSecondStep() && !isFirstStep()) {
         <button
           (click)="save()"
           type="button"
-          class="flex items-center justify-center gap-2 min-w-[98px] px-4 py-2 text-white bg-[#6D7BFA] rounded">
+          class="flex items-center justify-center gap-2 min-w-[98px] px-4 py-2 text-white bg-ring rounded">
           Save
         </button>
       }@else if(isLastStep()){
          <button
          (click)="closeModal()"
           type="button"
-          class="flex items-center justify-center gap-2 min-w-[98px] px-4 py-2 text-white bg-[#6D7BFA] rounded">
+          class="flex items-center justify-center gap-2 min-w-[98px] px-4 py-2 text-white bg-ring rounded">
           Close
         </button>
       }

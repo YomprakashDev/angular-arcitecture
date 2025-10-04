@@ -9,7 +9,7 @@
 <div class="flex w-full h-full bg-white rounded-lg">
   <div class="flex-1 p-6">
     <div class="flex items-center w-full justify-between">
-      <h1 class="text-2xl font-bold text-[#1D1D21]">Organizations List</h1>
+      <h1 class="text-2xl font-bold text-foreground">Organizations List</h1>
       <app-button (clicked)="addOrganization()" text="Add Organization" variant="primary">
         <lucide-angular [img]="icons.plus" class="text-white text-xs"></lucide-angular>
       </app-button>
@@ -30,7 +30,7 @@
             <label class="sr-only" for="org-search">Search organizations</label>
             <lucide-angular
               [img]="icons.search"
-              class="absolute left-1 top-1/2 -translate-y-1/2 text-[#787A7F] text-xs"
+              class="absolute left-1 top-1/2 -translate-y-1/2 text-gray-subtleAlt text-xs"
             ></lucide-angular>
             <input
               type="text"
@@ -52,27 +52,27 @@
           <td mat-cell *matCellDef="let org">
             <div class="flex items-center">
               <button (click)="viewOrganization(org)" mat-icon-button aria-label="View module">
-                <lucide-angular [img]="icons.view" class="text-[#787A7F] text-xs"></lucide-angular>
+                <lucide-angular [img]="icons.view" class="text-gray-subtleAlt text-xs"></lucide-angular>
               </button>
               <button mat-icon-button aria-label="Edit module">
-                <lucide-angular [img]="icons.edit" class="text-[#787A7F] text-xs"></lucide-angular>
+                <lucide-angular [img]="icons.edit" class="text-gray-subtleAlt text-xs"></lucide-angular>
               </button>
               <button mat-icon-button aria-label=" module">
-                <lucide-angular [img]="icons.file" class="text-[#787A7F] text-xs"></lucide-angular>
+                <lucide-angular [img]="icons.file" class="text-gray-subtleAlt text-xs"></lucide-angular>
               </button>
               <button mat-icon-button aria-label="View module">
                 <lucide-angular
                   [img]="icons.settings"
-                  class="text-[#787A7F] text-xs"
+                  class="text-gray-subtleAlt text-xs"
                 ></lucide-angular>
               </button>
               <button mat-icon-button aria-label="View module">
-                <img src="assets/icons/svgs/cloud-access.svg" class="text-[#787A7F] text-xs" />
+                <img src="assets/icons/svgs/cloud-access.svg" class="text-gray-subtleAlt text-xs" />
               </button>
               <button mat-icon-button aria-label="View module">
                 <lucide-angular
                   [img]="icons.logout"
-                  class="text-[#787A7F] text-xs"
+                  class="text-gray-subtleAlt text-xs"
                 ></lucide-angular>
               </button>
               <button
@@ -80,7 +80,7 @@
                 mat-icon-button
                 aria-label="inactive module"
               >
-                <lucide-angular [img]="icons.close" class="text-[#787A7F] text-xs"></lucide-angular>
+                <lucide-angular [img]="icons.close" class="text-gray-subtleAlt text-xs"></lucide-angular>
               </button>
             </div>
           </td>

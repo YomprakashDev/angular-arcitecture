@@ -6,8 +6,8 @@
           class="flex items-center justify-center w-8 h-8 text-lg font-semibold rounded-full"
           [ngClass]="
             i === currentStep()
-              ? 'border-[#6D7BFA] text-[#6D7BFA] border-2'
-              : 'border-[#DFDDE5] text-[#182330]  border'
+              ? 'border-ring text-ring border-2'
+              : 'border-light-purple text-gray-deep  border'
           "
           [attr.aria-current]="i === currentStep() ? 'step' : null"
         >
@@ -18,8 +18,8 @@
           class="ml-2 font-semibold text-[16px]"
           [ngClass]="
             i === currentStep()
-              ? 'text-[#6D7BFA] '
-              : 'text-[#182330]'
+              ? 'text-ring '
+              : 'text-gray-deep'
           "
         >
           {{ step.label }}

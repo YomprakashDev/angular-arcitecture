@@ -4,7 +4,7 @@
     <div class="flex flex-col gap-6 md:flex-row">
       <!-- Upload -->
       <div class="flex justify-center flex-shrink-0 md:justify-start">
-        <div class="min-w-[176px] h-[140px] flex items-center justify-center rounded-xl {{ logoPreview ? '' : 'border-2 border-dashed border-[#BFBFBF] bg-[#ECF4FF]' }}">
+        <div class="min-w-[176px] h-[140px] flex items-center justify-center rounded-xl {{ logoPreview ? '' : 'border-2 border-dashed border-gray-lineLight bg-surface-blue' }}">
           @if(logoPreview){
             <img [src]="logoPreview" alt="Logo Preview" class="object-cover w-full h-full rounded" />
           } @else{
@@ -12,10 +12,10 @@
               <div class="p-3 rounded-full">
                 <img src="/assets/images/common/uploadimg-placeholder.png" class="h-9 w-9" alt="Upload Logo" />
               </div>
-              <div class="text-sm font-semibold text-[#182330]">
-                <span class="text-[#1B79E7]">Upload</span> Your Logo
+              <div class="text-sm font-semibold text-gray-deep">
+                <span class="text-link">Upload</span> Your Logo
               </div>
-              <p class="text-xs text-[#7E7A88]">Supported JPG, JPEG, PNG</p>
+              <p class="text-xs text-gray-subtle">Supported JPG, JPEG, PNG</p>
               <input id="logo" type="file" accept="image/*" class="sr-only" (change)="onLogoSelected($event)" />
             </label>
           }
@@ -27,14 +27,14 @@
         <!-- Row 1: Org Name + Industry -->
         <div class="grid grid-cols-10 gap-6">
           <div class="col-span-7">
-            <label class="block mb-2 text-sm font-semibold text-[#262626]">
-              Organization Name <span class="text-[#DA1414]">*</span>
+            <label class="block mb-2 text-sm font-semibold text-gray-dark">
+              Organization Name <span class="text-error">*</span>
             </label>
             <input
               formControlName="organization"
               type="text"
               placeholder="Enter Organization Name"
-              class="w-full px-3 py-2 text-sm placeholder-[#7E7A7F] bg-white rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-indigo-100"
+              class="w-full px-3 py-2 text-sm placeholder-gray-subtleAlt bg-white rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-indigo-100"
               [class.border-red-300]="isInvalid('organization')"
             />
             @if (isInvalid('organization')) {
@@ -43,8 +43,8 @@
           </div>
 
           <div class="col-span-3">
-            <label class="block mb-2 text-sm font-semibold text-[#262626]">
-              Industry / Sector <span class="text-[#DA1414]">*</span>
+            <label class="block mb-2 text-sm font-semibold text-gray-dark">
+              Industry / Sector <span class="text-error">*</span>
             </label>
             <div class="relative">
               <select formControlName="industry" class="w-full px-3 py-2 text-sm bg-white rounded-lg appearance-none">
@@ -64,7 +64,7 @@
         <!-- Row 2: Org URL + GST + PAN (UI only) -->
         <div class="grid grid-cols-4 gap-6">
           <div class="col-span-2">
-            <label class="block mb-2 text-sm font-semibold text-[#262626]">Organization URL</label>
+            <label class="block mb-2 text-sm font-semibold text-gray-dark">Organization URL</label>
             <div class="flex w-full">
               <div class="inline-flex items-center text-sm text-gray-500">
                 https://contracts.yourdomain.com/
@@ -73,13 +73,13 @@
                 formControlName="webURL" 
                 type="text"
                 placeholder="organization-name"
-                class="flex-1 py-2 text-sm placeholder-[#7E7A7F] bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                class="flex-1 py-2 text-sm placeholder-gray-subtleAlt bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-100"
               />
             </div>
           </div>
 
           <div>
-            <label class="block mb-2 text-sm font-semibold text-[#262626]">GST Number</label>
+            <label class="block mb-2 text-sm font-semibold text-gray-dark">GST Number</label>
             <input
               formControlName="gstNumber"
               type="text"
@@ -90,7 +90,7 @@
 
           <!-- PAN: UI only (no formControlName) -->
           <div>
-            <label class="block mb-2 text-sm font-semibold text-[#262626]">PAN Number</label>
+            <label class="block mb-2 text-sm font-semibold text-gray-dark">PAN Number</label>
             <input
               type="text"
               placeholder="Enter PAN Number"
@@ -104,8 +104,8 @@
     <!-- Middle -->
     <div class="grid w-full grid-cols-1 gap-4 mt-2 md:grid-cols-2">
       <div>
-        <label class="block mb-2 text-sm font-semibold text-[#262626]">
-          Street Address <span class="text-[#DA1414]">*</span>
+        <label class="block mb-2 text-sm font-semibold text-gray-dark">
+          Street Address <span class="text-error">*</span>
         </label>
         <textarea
           formControlName="address"
@@ -121,8 +121,8 @@
 
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div>
-          <label class="block mb-2 text-sm font-semibold text-[#262626]">
-            Zip Code / Postal Code <span class="text-[#DA1414]">*</span>
+          <label class="block mb-2 text-sm font-semibold text-gray-dark">
+            Zip Code / Postal Code <span class="text-error">*</span>
           </label>
           <input
             formControlName="zipCode"
@@ -138,8 +138,8 @@
         </div>
 
         <div>
-          <label class="block mb-2 text-sm font-semibold text-[#262626]">
-            Country <span class="text-[#DA1414]">*</span>
+          <label class="block mb-2 text-sm font-semibold text-gray-dark">
+            Country <span class="text-error">*</span>
           </label>
           <select formControlName="countryID" class="w-full px-3 py-2 text-sm bg-white rounded-lg appearance-none">
             <option [ngValue]="null" selected>Select</option>
@@ -151,8 +151,8 @@
         </div>
 
         <div>
-          <label class="block mb-2 text-sm font-semibold text-[#262626]">
-            State <span class="text-[#DA1414]">*</span>
+          <label class="block mb-2 text-sm font-semibold text-gray-dark">
+            State <span class="text-error">*</span>
           </label>
           <select formControlName="stateID" class="w-full px-3 py-2 text-sm bg-white rounded-lg appearance-none">
             <option [ngValue]="null" selected>Select</option>
@@ -164,8 +164,8 @@
         </div>
 
         <div>
-          <label class="block mb-2 text-sm font-semibold text-[#262626]">
-            Currency <span class="text-[#DA1414]">*</span>
+          <label class="block mb-2 text-sm font-semibold text-gray-dark">
+            Currency <span class="text-error">*</span>
           </label>
           <select formControlName="currency" class="w-full px-3 py-2 text-sm bg-white rounded-lg appearance-none">
             <option [ngValue]="null" selected>Select</option>
@@ -177,8 +177,8 @@
         </div>
 
         <div>
-          <label class="block mb-2 text-sm font-semibold text-[#262626]">
-            Time Zone <span class="text-[#DA1414]">*</span>
+          <label class="block mb-2 text-sm font-semibold text-gray-dark">
+            Time Zone <span class="text-error">*</span>
           </label>
           <select formControlName="timeZone" class="w-full px-3 py-2 text-sm bg-white rounded-lg appearance-none">
             <option value="" selected>Select</option>
@@ -194,13 +194,13 @@
     <!-- Contact Details -->
     <div class="">
       <div class="pt-1">
-        <h3 class="text-lg font-bold text-[#182330]">Contact Details</h3>
+        <h3 class="text-lg font-bold text-gray-deep">Contact Details</h3>
       </div>
 
       <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div class="col-span-1">
-          <label class="block mb-2 text-sm font-semibold text-[#262626]">
-            Contact Person Name <span class="text-[#DA1414]">*</span>
+          <label class="block mb-2 text-sm font-semibold text-gray-dark">
+            Contact Person Name <span class="text-error">*</span>
           </label>
           <input
             formControlName="contactPersonName"
@@ -215,8 +215,8 @@
         </div>
 
         <div class="col-span-1">
-          <label class="block mb-2 text-sm font-semibold text-[#262626]">
-            Email <span class="text-[#DA1414]">*</span>
+          <label class="block mb-2 text-sm font-semibold text-gray-dark">
+            Email <span class="text-error">*</span>
           </label>
           <input
             formControlName="emailID"
@@ -232,8 +232,8 @@
         </div>
 
         <div class="col-span-1">
-          <label class="block mb-2 text-sm font-semibold text-[#262626]">
-            Contact Number <span class="text-[#DA1414]">*</span>
+          <label class="block mb-2 text-sm font-semibold text-gray-dark">
+            Contact Number <span class="text-error">*</span>
           </label>
           <input
             formControlName="contactNumber"
@@ -251,7 +251,7 @@
 
         <!-- Team Size: UI-only (no control) -->
         <div class="w-full max-w-2xs">
-          <label class="block mb-2 text-sm font-semibold text-[#262626]">Team Size</label>
+          <label class="block mb-2 text-sm font-semibold text-gray-dark">Team Size</label>
           <div class="relative">
             <select class="w-full px-3 py-2 text-sm bg-white rounded-lg appearance-none">
               <option value="" selected>Select</option>
@@ -266,7 +266,7 @@
         <!-- REMOVE this extra Website URL block or bind to webURL if you need it.
              Keeping it UI-only with no validation: -->
         <div class="flex-1">
-          <label class="block mb-2 text-sm font-semibold text-[#262626]">Website URL</label>
+          <label class="block mb-2 text-sm font-semibold text-gray-dark">Website URL</label>
           <input
             type="url"
             placeholder="Enter URL"
