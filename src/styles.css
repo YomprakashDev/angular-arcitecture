@@ -49,9 +49,10 @@ body {
   --color-teal-base: #79bbd0;
   --color-teal-wash: #cfeef8;
 
-  /* Neutrals (named) */
+  /* Neutrals */
   --color-gray-ink: #1d1d21;
-  --color-gray-dark:#262626
+  --color-gray-dark:#262626;
+  --color-backround:#F9FAFB;
   --color-gray-surfaceAlt: #f1f3f6;
   --color-gray-deep: #182330;
   --color-gray-subtle: #7e7a88;
