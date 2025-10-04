@@ -40,25 +40,25 @@ export const routes: Routes = [
           {
             path: 'modules',
             loadComponent: () =>
-              import('./features/site-admin/sub-features/modules/pages/module-page/module-page')
+              import('./features/site-admin/sub-features/modules/page/module-page')
                 .then(m => m.ModulePage),
           },
           {
             path: 'sub-modules',
             loadComponent: () =>
-              import('./features/site-admin/sub-features/sub-modules/pages/sub-module-page/sub-module-page')
+              import('./features/site-admin/sub-features/sub-modules/page/sub-module-page')
                 .then(m => m.SubModulePage),
           },
           {
             path: 'packages',
             loadComponent: () =>
-              import('./features/site-admin/sub-features/packages/pages/packages-page/packages-page')
+              import('./features/site-admin/sub-features/packages/page/packages-page')
                 .then(m => m.PackagesPage),
           },
           {
             path: 'organizations',
             loadComponent: () =>
-              import('./features/site-admin/sub-features/organization/pages/organization-page/organization-page')
+              import('./features/site-admin/sub-features/organization/page/organization-page')
                 .then(m => m.OrganizationPage),
           },
         ],

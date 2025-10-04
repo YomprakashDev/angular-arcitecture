@@ -7,17 +7,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LucideAngularModule} from 'lucide-angular';
-import { ModuleService } from '../../services/module.service';
-import { Module } from '../../model/module.model';
+import { ModuleService } from './../services/module.service';
+import { Module } from './../model/module.model';
 import { EMPTY } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { LoadingSpinner } from "../../../../../../shared/components/ui/loading-spinner/loading-spinner";
-import { ErrorBanner } from "../../../../../../shared/components/ui/error-banner/error-banner";
-import { ToggleSwitch } from "../../../../../../shared/components/ui/toggle-switch/toggle-switch";
-import { Card } from "../../../../../../shared/components/ui/card/card";
+import { LoadingSpinner } from "./../../../../../shared/components/ui/loading-spinner/loading-spinner";
+import { ErrorBanner } from "./../../../../../shared/components/ui/error-banner/error-banner";
+import { ToggleSwitch } from "./../../../../../shared/components/ui/toggle-switch/toggle-switch";
+import { Card } from "./../../../../../shared/components/ui/card/card";
 import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
-import { AppIcons } from '../../../../../../../assets/icons/icons';
+import { AppIcons } from './../../../../../../assets/icons/icons';
 
 /** Modules page */
 @Component({

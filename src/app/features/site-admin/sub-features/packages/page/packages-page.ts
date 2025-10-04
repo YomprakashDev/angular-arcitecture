@@ -12,14 +12,14 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import * as XLSX from 'xlsx';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { PackageService } from '../../services/package.service';
+import { PackageService } from './../services/package.service';
 import { catchError, EMPTY, finalize,} from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { PackagesResponse } from '../../models/package.model';
+import { PackagesResponse } from './../models/package.model';
 import { LucideAngularModule,  } from 'lucide-angular';
-import { AddViewPackages } from "../../components/add-view-packages/add-view-packages";
-import { AppIcons } from '../../../../../../../assets/icons/icons';
-import { Card } from "../../../../../../shared/components/ui/card/card";
+import { AddViewPackages } from "./../components/add-view-packages/add-view-packages";
+import { AppIcons } from './../../../../../../assets/icons/icons';
+import { Card } from "./../../../../../shared/components/ui/card/card";
 
 
 export interface PackageRow {

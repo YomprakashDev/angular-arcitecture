@@ -1,8 +1,8 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { MenuItemComponent } from '../../../../../../shared/components/ui/menu-item/menu-item';
-import { ContractsPage } from '../contracts-page/contracts-page';
-import { SubModulesService } from '../../services/sub-modules.service';
-import { Module as ModuleNode, Modules, SubModule } from '../../models/sub-module.model';
+import { MenuItemComponent } from './../../../../../shared/components/ui/menu-item/menu-item';
+import { ContractsPage } from '../components/contracts-page/contracts-page';
+import { SubModulesService } from './../services/sub-modules.service';
+import { Module as ModuleNode, Modules, SubModule } from './../models/sub-module.model';
 import { catchError, EMPTY, finalize } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';

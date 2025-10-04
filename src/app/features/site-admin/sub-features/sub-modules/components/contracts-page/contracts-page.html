@@ -1,0 +1,95 @@
+<div class="w-full mx-auto bg-white">
+  @for ( item of subModules(); track item.subModuleId) {
+  <div class="border-b-4 border-[#F3F5F8]">
+    <div
+      (click)="toggleChildren(item.subModuleId)"
+      class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50"
+    >
+      <div class="flex items-center space-x-2">
+        <!-- Expand/Collapse icon for parent items with children -->
+
+        <button><lucide-angular [img]="icons.drag" class="text-[#787A7F]"></lucide-angular></button>
+        @if (editId() !== item.subModuleId){
+        <span class="text-lg font-semibold text-black">{{ item.subModuleName }}</span>
+        } @if(editId() === item.subModuleId){
+        <input
+          type="text"
+          (ngModelChange)="editedSubModule.set($event)"
+          [ngModel]="editedSubModule()"
+          class="px-3 text-lg font-semibold text-gray-800 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+        />
+        } @if(item.children.length > 0) {
+
+        <button
+          (click)="$event.stopPropagation(); toggleChildren(item.subModuleId)"
+          class="text-gray-400 hover:text-gray-600"
+        >
+          item.expanded ? <lucide-angular [img]="icons.chevronDown"></lucide-angular> :
+          <lucide-angular [img]="icons.chevronUp"></lucide-angular>
+        </button>
+
+        }
+      </div>
+
+      <div class="flex items-center space-x-3">
+        @if(editId() !== item.subModuleId){
+        <button
+          (click)="startEdit(item)"
+          class="text-gray-400 hover:cursor-pointer hover:text-gray-600"
+        >
+          <lucide-angular [img]="icons.edit"></lucide-angular>
+        </button>
+        } @if(editId() === item.subModuleId){
+        <button
+          (click)="saveModule(item)"
+          class="px-4 py-1 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 cursor-pointer focus:ring-indigo-500"
+        >
+          Save
+        </button>
+        <button
+          (click)="cancelEdit()"
+          class="px-4 py-1 text-sm font-medium text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 cursor-pointer focus:ring-gray-300"
+        >
+          Cancel
+        </button>
+        } @if(editId() !== item.subModuleId){
+        <button>
+          <app-toggle-switch
+            [isChecked]="item.subModuleStatus"
+            (stateChange)="updateStatusSubModule(item, $event)"
+          ></app-toggle-switch>
+        </button>
+
+        }
+      </div>
+    </div>
+
+    <!-- Children -->
+    <div *ngIf="item.children && isExpanded(item.subModuleId)">
+      @for ( child of item.children; track child.childID) {
+      <div class="border-b-4 border-[#F3F5F8] last:border-b-0">
+        <div class="flex items-center justify-between p-3 hover:bg-gray-100">
+          <span class="text-[#787A7F] font-semibold text-[16px]">{{ child.childName }}</span>
+          <div class="flex items-center space-x-3">
+            <button
+              (click)="saveChildSubModuleName(child)"
+              class="text-gray-400 hover:text-gray-600"
+            >
+              <lucide-angular [img]="icons.check"></lucide-angular>
+            </button>
+            <label class="switch">
+              <input
+                (change)="updateStatusChild(child, $event.target.checked)"
+                type="checkbox"
+                [checked]="child.subChildStatus"
+              />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  }
+</div>

@@ -1,24 +1,29 @@
 import { ChangeDetectionStrategy, Component, inject, signal, ViewChild } from '@angular/core';
-import { Button } from '../../../../../../shared/components/ui/button/button';
-import { Tabs, Tab } from '../../../../../../shared/components/tabs/tabs';
+
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { OrganizationService } from '../../services/organization.service';
+
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import * as XLSX from 'xlsx';
-import { OrganizationData } from '../../models/organization.model';
-import { OrganizationDetails } from "../../components/organization-details/organization-details";
+
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { catchError, EMPTY, finalize } from 'rxjs';
-import { AddOraganizationModel } from '../../components/add-oraganization-model/add-oraganization-model';
+
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LucideAngularModule, } from 'lucide-angular';
-import { AppIcons } from '../../../../../../../assets/icons/icons';
-import { LoadingSpinner } from "../../../../../../shared/components/ui/loading-spinner/loading-spinner";
-import { ErrorBanner } from "../../../../../../shared/components/ui/error-banner/error-banner";
+import { Button } from '../../../../../shared/components/ui/button/button';
+import { Tab, Tabs } from '../../../../../shared/components/tabs/tabs';
+import { AddOraganizationModel } from '../components/add-oraganization-model/add-oraganization-model';
+import { OrganizationDetails } from '../components/organization-details/organization-details';
+import { LoadingSpinner } from '../../../../../shared/components/ui/loading-spinner/loading-spinner';
+import { ErrorBanner } from '../../../../../shared/components/ui/error-banner/error-banner';
+import { AppIcons } from '../../../../../../assets/icons/icons';
+import { OrganizationData } from '../models/organization.model';
+import { OrganizationService } from '../services/organization.service';
+
 @Component({
   selector: 'app-organization-page',
   standalone: true,
