@@ -30,45 +30,45 @@ export const routes: Routes = [
       {
         path: 'settings',
         loadComponent: () => import('./features/settings/page/settings').then(m => m.Settings),
-        children: [
-          { path: '', pathMatch: 'full', redirectTo: 'teams' },
-          {
-            path: 'teams',
-            loadComponent: () =>
-              import('./features/settings/sub-modules/teams/page/teams').then(m => m.Teams)
-          },
-          {
-            path: 'users',
-            loadComponent: () =>
-              import('./features/settings/sub-modules/users/page/users').then(m => m.Users)
-          },
-          {
-            path: 'access-control',
-            loadComponent: () =>
-              import('./features/settings/sub-modules/access-control/access-control').then(m => m.AccessControl)
-          },
-          {
-            path: 'firm',
-            loadComponent: () =>
-              import('./features/settings/sub-modules/firm/firm').then(m => m.Firm)
-          },
-          {
-            path: 'organization-profile',
-            loadComponent: () =>
-              import('./features/settings/sub-modules/organization-profile/organization-profile').then(m => m.OrganizationProfile)
-          },
-          {
-            path: 'integration',
-            loadComponent: () =>
-              import('./features/settings/sub-modules/integration/integration').then(m => m.Integration)
-          },
-          {
-            path: 'security',
-            loadComponent: () =>
-              import('./features/settings/sub-modules/security/security').then(m => m.Security)
-          },
+        // children: [
+        //   { path: '', pathMatch: 'full', redirectTo: 'teams' },
+        //   {
+        //     path: 'teams',
+        //     loadComponent: () =>
+        //       import('./features/settings/sub-modules/teams/page/teams').then(m => m.Teams)
+        //   },
+        //   {
+        //     path: 'users',
+        //     loadComponent: () =>
+        //       import('./features/settings/sub-modules/users/page/users').then(m => m.Users)
+        //   },
+        //   {
+        //     path: 'access-control',
+        //     loadComponent: () =>
+        //       import('./features/settings/sub-modules/access-control/access-control').then(m => m.AccessControl)
+        //   },
+        //   {
+        //     path: 'firm',
+        //     loadComponent: () =>
+        //       import('./features/settings/sub-modules/firm/firm').then(m => m.Firm)
+        //   },
+        //   {
+        //     path: 'organization-profile',
+        //     loadComponent: () =>
+        //       import('./features/settings/sub-modules/organization-profile/organization-profile').then(m => m.OrganizationProfile)
+        //   },
+        //   {
+        //     path: 'integration',
+        //     loadComponent: () =>
+        //       import('./features/settings/sub-modules/integration/integration').then(m => m.Integration)
+        //   },
+        //   {
+        //     path: 'security',
+        //     loadComponent: () =>
+        //       import('./features/settings/sub-modules/security/security').then(m => m.Security)
+        //   },
 
-        ]
+        // ]
       },
       {
         path: 'admin',
