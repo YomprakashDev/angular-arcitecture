@@ -59,7 +59,8 @@ export class SiteAdminPage {
    * @param tabId The ID of the selected tab.
    */
   setActiveTab(tabId: string) {
-    this.router.navigate([tabId], { relativeTo: this.route });
+    this.router.navigate([tabId],
+       { relativeTo: this.route });
   }
 
 }
