@@ -12,29 +12,29 @@ export const routes: Routes = [
     children: [
       {
         path: 'repository',
-        loadComponent: () => import('./features/dashboard/repository/repository').then(m => m.Repository)
+        loadComponent: () => import('./features/repository/repository').then(m => m.Repository)
       },
       {
         path: 'reports',
-        loadComponent: () => import('./features/dashboard/reports/reports').then(m => m.Reports)
+        loadComponent: () => import('./features/reports/reports').then(m => m.Reports)
       },
       {
         path: 'library',
-        loadComponent: () => import('./features/dashboard/library/library').then(m => m.Library)
+        loadComponent: () => import('./features/library/library').then(m => m.Library)
       },
       {
         path: 'configuration',
-        loadComponent: () => import('./features/dashboard/configuration/page/configuration').then(m => m.Configuration)
+        loadComponent: () => import('./features/configuration/page/configuration').then(m => m.Configuration)
       },
 
       {
         path: 'settings',
-        loadComponent: () => import('./features/dashboard/settings/page/settings').then(m => m.Settings),
+        loadComponent: () => import('./features/settings/page/settings').then(m => m.Settings),
 
       },
       {
         path: 'admin',
-        loadComponent: () => import('./features/site-admin/pages/site-admin-page/site-admin-page').then(m => m.SiteAdminPage),
+        loadComponent: () => import('./features/site-admin/page/site-admin-page/site-admin-page').then(m => m.SiteAdminPage),
         children: [
           { path: '', pathMatch: 'full', redirectTo: 'modules' }, 
           {
