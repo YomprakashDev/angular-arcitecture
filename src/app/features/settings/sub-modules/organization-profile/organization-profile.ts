@@ -11,5 +11,5 @@ import { AppIcons } from '../../../../../assets/icons/icons';
   styleUrl: './organization-profile.css'
 })
 export class OrganizationProfile {
-icons = AppIcons;
+  icons = AppIcons;
 }

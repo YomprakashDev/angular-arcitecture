@@ -1,7 +1,13 @@
-<div class="flex bg-white w-full h-full">
+<app-tabs
+  [tabs]="tabs()"
+  (tabChanged)="setActiveTab($event.id)"
+  [activeTabInput]="currentActiveTab()"
+></app-tabs>
 
- <div class="flex-1 p-6">
-   <h1 class="text-2xl font-bold text-[#1D1D21]"> integration</h1>
-
- </div>
+<div>
+  @switch (currentActiveTab()) { @case('my-integrations'){
+  <app-my-integrations></app-my-integrations>
+  } @case('all'){
+  <app-all-integrations></app-all-integrations>
+  } }
 </div>
