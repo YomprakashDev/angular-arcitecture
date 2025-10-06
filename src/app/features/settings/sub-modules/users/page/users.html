@@ -7,7 +7,7 @@
     ></app-button>
   </div>
 
-   <div class="flex w-full items-center justify-between gap-3">
+  <div class="flex w-full items-center justify-between gap-3">
     <app-tabs [tabs]="tabs()" (tabChanged)="setActiveTab($event.id)" [activeTabInput]="activeTab()">
     </app-tabs>
 
@@ -26,52 +26,121 @@
     </div>
   </div>
 
-<div class="overflow-x-auto rounded-lg border border-gray-200">
-      <table class="min-w-full text-left">
-        <thead class="bg-gray-100 text-gray-600">
-          <tr>
-            <th class="px-4 py-3 text-sm font-medium">Actions</th>
-            <th class="px-4 py-3 text-sm font-medium">Full Name</th>
-            <th class="px-4 py-3 text-sm font-medium">Email</th>
-            <th class="px-4 py-3 text-sm font-medium">Role</th>
-            <th class="px-4 py-3 text-sm font-medium">Job Title</th>
-            <th class="px-4 py-3 text-sm font-medium">Team</th>
-            <th class="px-4 py-3 text-sm font-medium">Last Action Taken On</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200 bg-white">
-          <tr *ngFor="let user of users()">
-            <!-- Actions -->
-            <td class="px-4 py-3 flex space-x-3 text-gray-500">
-              <!-- Edit -->
-              <button class="hover:text-blue-600">
-                <lucide-angular [img]="icons.edit"></lucide-angular>
-              </button>
-              <!-- Mail -->
-              <button class="hover:text-green-600">
-                <lucide-angular [img]="icons.mail"></lucide-angular>
-              </button>
-              <!-- Lock -->
-              <button class="hover:text-yellow-600">
-                <lucide-angular [img]="icons.lock"></lucide-angular>
-              </button>
-              <!-- Delete -->
-              <button class="hover:text-red-600">
-                <lucide-angular [img]="icons.close"></lucide-angular>
-              </button>
-            </td>
+  <div class="overflow-x-auto rounded-lg border border-gray-200">
+    <table class="min-w-full text-left">
+      <thead class="bg-gray-100 text-gray-600">
+        <tr>
+          <th class="px-4 py-3 text-sm font-medium">Actions</th>
+          <th class="px-4 py-3 text-sm font-medium">Full Name</th>
+          <th class="px-4 py-3 text-sm font-medium">Email</th>
+          <th class="px-4 py-3 text-sm font-medium">Role</th>
+          <th class="px-4 py-3 text-sm font-medium">Job Title</th>
+          <th class="px-4 py-3 text-sm font-medium">Team</th>
+          <th class="px-4 py-3 text-sm font-medium">Last Action Taken On</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 bg-white">
+        <tr *ngFor="let user of users()">
+          <!-- Actions -->
+          <td class="px-4 py-3 flex space-x-3 text-gray-500">
+            <!-- Edit -->
+            <button class="hover:text-blue-600">
+              <lucide-angular [img]="icons.edit"></lucide-angular>
+            </button>
+            <!-- Mail -->
+            <button class="hover:text-green-600">
+              <lucide-angular [img]="icons.mail"></lucide-angular>
+            </button>
+            <!-- Lock -->
+            <button class="hover:text-yellow-600">
+              <lucide-angular [img]="icons.lock"></lucide-angular>
+            </button>
+            <!-- Delete -->
+            <button class="hover:text-red-600">
+              <lucide-angular [img]="icons.close"></lucide-angular>
+            </button>
+          </td>
 
-            <!-- Data -->
-            <td class="px-4 py-3 text-gray-900">{{ user.fullName }}</td>
-            <td class="px-4 py-3 text-gray-900">{{ user.emailID }}</td>
-            <td class="px-4 py-3 text-gray-900">{{ user.roleId }}</td>
-            <td class="px-4 py-3 text-gray-900">{{ user.userType }}</td>
-            <td class="px-4 py-3 text-gray-900">{{ user.teamID }}</td>
-            <td class="px-4 py-3 text-gray-900">{{ user.createdDate }}</td>
-          </tr>
-        </tbody>
-      </table>
+          <!-- Data -->
+          <td class="px-4 py-3 text-gray-900">{{ user.fullName }}</td>
+          <td class="px-4 py-3 text-gray-900">{{ user.emailID }}</td>
+          <td class="px-4 py-3 text-gray-900">{{ user.roleId }}</td>
+          <td class="px-4 py-3 text-gray-900">{{ user.userType }}</td>
+          <td class="px-4 py-3 text-gray-900">{{ user.teamID }}</td>
+          <td class="px-4 py-3 text-gray-900">{{ user.createdDate }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</app-card>
+
+@if(isNewUserAdding()){
+<app-modal [isOpen]="isNewUserAdding()" (closed)="isNewUserAdding()">
+  <div class=" mx-auto bg-gray-100 rounded-lg p-6 shadow-sm">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Full Name -->
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">Full Name</label>
+        <input
+          type="text"
+          placeholder="Enter here"
+          class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+      </div>
+
+      <!-- Job Title -->
+      <div>
+        <label class="block text-gray-700 font-medium mb-1"
+          >Job Title<span class="text-red-500">*</span></label
+        >
+        <input
+          type="text"
+          placeholder="Enter here"
+          class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+      </div>
+
+      <!-- Email ID -->
+      <div>
+        <label class="block text-gray-700 font-medium mb-1"
+          >Email ID<span class="text-red-500">*</span></label
+        >
+        <input
+          type="email"
+          placeholder="Enter here"
+          class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+      </div>
+
+      <!-- Select Role -->
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">Select Role</label>
+        <select
+          class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          <option>Select</option>
+        </select>
+      </div>
+
+      <!-- Select Team -->
+      <div class="md:col-span-1">
+        <label class="block text-gray-700 font-medium mb-1">Select Team</label>
+        <select
+          class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          <option>Select</option>
+        </select>
+      </div>
     </div>
 
-
-  </app-card>
+    <!-- Add More Button -->
+    <div class="mt-6">
+      <button
+        class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center gap-2"
+      >
+        <span class="text-lg">+</span> Add More
+      </button>
+    </div>
+  </div>
+</app-modal>
+}

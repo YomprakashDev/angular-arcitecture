@@ -156,14 +156,14 @@
     <!-- Team Name -->
     <div class="space-y-2">
       <label for="teamName" class="form-label form-lable-required"> Team Name </label>
-      <input id="teamName" [(ngModel)]="temaName" type="text" placeholder="Enter Team Name" class="form-input" />
+      <input name="teamName" id="teamName" [(ngModel)]="temaName" type="text" placeholder="Enter Team Name" class="form-input" />
     </div>
 
     <!-- Team Lead -->
     <div class="space-y-3">
       <label for="teamLead" class="form-label"> Team Lead </label>
       <div class="relative">
-        <select [(ngModel)]="teamLead" id="teamLead" class="form-select">
+        <select name="teamLead" [(ngModel)]="teamLead" id="teamLead" class="form-select">
           <option selected disabled>Select</option>
           <option>Pramod</option>
           <option>Sumanth</option>
@@ -177,6 +177,7 @@
     <div class="space-y-3">
       <label for="description" class="form-label form-lable-required"> Description </label>
       <textarea
+      name="description"
         [(ngModel)]="teamDescription"
         id="description"
         rows="6"

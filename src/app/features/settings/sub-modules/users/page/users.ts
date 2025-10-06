@@ -9,37 +9,41 @@ import { UserService } from '../services/user.service';
 import { catchError, EMPTY, finalize } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { User } from '../model/user.model';
+import { Modal } from "../../../../../shared/components/ui/modal/modal";
 
 
 
 @Component({
   selector: 'app-users',
-  imports: [Card,CommonModule, Button, LucideAngularModule, Tabs],
+  imports: [Card, CommonModule, Button, LucideAngularModule, Tabs, Modal],
   templateUrl: './users.html',
   styleUrl: './users.css'
 })
 export class Users {
-icons = AppIcons;
+  icons = AppIcons;
 
-activeTab = signal('active');
+  activeTab = signal('active');
 
-setActiveTab(tabId: string) {
-  this.activeTab.set(tabId);
-}
+  setActiveTab(tabId: string) {
+    this.activeTab.set(tabId);
+  }
 
-userService = inject(UserService);
-isLoading = signal(true);
-error = signal<string | null>(null);
+  userService = inject(UserService);
+  isLoading = signal(true);
+  error = signal<string | null>(null);
 
-addUser() {}
+  addUser() {
+    this.isNewUserAdding.set(true);
+  }
   // tabs + UI flags
   readonly tabs = signal<Tab[]>([
     { id: 'active', label: 'Active' },
     { id: 'inactive', label: 'Inactive' },
   ]);
 
+  isNewUserAdding = signal(false);
 
- users = signal<User[]>([]);
+  users = signal<User[]>([]);
 
   constructor() {
     this.loadUsers();
@@ -55,10 +59,10 @@ addUser() {}
       takeUntilDestroyed()
     ).subscribe((res) => {
       this.users.set(res);
-      
+
       console.log(this.users);
-      })
-    
+    })
+
   }
 
 }

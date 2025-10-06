@@ -1,23 +1,23 @@
-<app-tabs [tabs]="tabs()" 
-[activeTabInput]="currentTab()"
-(tabChanged)="setActiveTab($event.id)"
+<app-tabs
+  [tabs]="tabs()"
+  [activeTabInput]="currentTab()"
+  (tabChanged)="setActiveTab($event.id)"
 ></app-tabs>
 
-
 <div class="p-6">
-    @switch (currentTab()) { @case ('teams') {
-    <app-teams></app-teams>
-    } @case ('users') {
-    <app-users></app-users>
-    } @case ('access-control') {
-    <app-access-control></app-access-control>
-    } @case ('firm') {
-    <app-firm></app-firm>
-    } @case ('organization-profile') {
-    <app-organization-profile></app-organization-profile>
-    } @case ('integration') {
-    <app-integration></app-integration>
-    } @case ('security') {
-    <app-security></app-security>
-    } }
+  @switch (currentTab()) { @case ('teams') {
+  <app-teams></app-teams>
+  } @case ('users') {
+  <app-users></app-users>
+  } @case ('access-control') {
+  <app-access-control></app-access-control>
+  } @case ('firm') {
+  <app-firm></app-firm>
+  } @case ('organization-profile') {
+  <app-organization-profile></app-organization-profile>
+  } @case ('integration') {
+  <app-integration></app-integration>
+  } @case ('security') {
+  <app-security></app-security>
+  } }
 </div>
