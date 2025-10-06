@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { Card } from "../../../../../shared/components/ui/card/card";
-import { MatTable,MatTableModule } from '@angular/material/table';
+import { MatTable, MatTableModule } from '@angular/material/table';
 import { Button } from "../../../../../shared/components/ui/button/button";
 import { LucideAngularModule } from "lucide-angular";
 import { AppIcons } from '../../../../../../assets/icons/icons';
@@ -18,7 +18,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   standalone: true,
   selector: 'app-teams',
-  imports: [Card,FormsModule, MatTable, MatTableModule, Button, LucideAngularModule, Tabs, Modal, ConfirmDialog],
+  imports: [Card, FormsModule, MatTable, MatTableModule, Button, LucideAngularModule, Tabs, Modal, ConfirmDialog],
   templateUrl: './teams.html',
   styleUrls: ['./teams.css'],
 })
@@ -68,8 +68,16 @@ export class Teams {
     this.isTeamCountViewing.set(true);
   }
 
-  addNewTeam(){
+  saveAddNewTeam() {
 
+    const payload = {
+      "teamName": "Product Development",
+      "teamCode": "Product",
+      "createdDate": "2025-10-06T05:02:54.872Z",
+      "modifiedDate": "2025-10-06T05:45:30.120Z"
+    }
+    this.teamsService.addNewTeam(payload)
+    .pipe().subscribe(res => console.log(res))
   }
 
 

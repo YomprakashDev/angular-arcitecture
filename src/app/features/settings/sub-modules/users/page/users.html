@@ -75,58 +75,71 @@
 </app-card>
 
 @if(isNewUserAdding()){
-<app-modal [isOpen]="isNewUserAdding()" (closed)="isNewUserAdding()">
-  <div class=" mx-auto bg-gray-100 rounded-lg p-6 shadow-sm">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<app-modal [modelContainerClass]="'w-full max-w-[850px]'" [modalBodyClass]="'bg-white'" (save)="saveNewUser()" [isOpen]="isNewUserAdding()" (closed)="isNewUserAdding()">
+  <div class=" bg-surface-raised rounded-md p-6 ">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <!-- Full Name -->
-      <div>
-        <label class="block text-gray-700 font-medium mb-1">Full Name</label>
+      <div class="col-span-1">
+        <label class="form-label">Full Name</label>
         <input
+        name="fullname"
+        [(ngModel)]="fullName"
           type="text"
           placeholder="Enter here"
-          class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          class="form-input"
         />
       </div>
 
       <!-- Job Title -->
-      <div>
-        <label class="block text-gray-700 font-medium mb-1"
-          >Job Title<span class="text-red-500">*</span></label
+      <div class="col-span-2">
+        <label class="form-label form-lable-required"
+          >Job Title</label
         >
         <input
+         name="title"
+        [(ngModel)] = 'jobTitle'
           type="text"
           placeholder="Enter here"
-          class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          class="form-input"
         />
       </div>
 
       <!-- Email ID -->
       <div>
-        <label class="block text-gray-700 font-medium mb-1"
-          >Email ID<span class="text-red-500">*</span></label
+        <label class="form-label form-lable-required"
+          >Email ID</label
         >
         <input
+         name="email"
+        [(ngModel)] = 'email'
           type="email"
           placeholder="Enter here"
-          class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          class="form-input"
         />
       </div>
 
       <!-- Select Role -->
       <div>
-        <label class="block text-gray-700 font-medium mb-1">Select Role</label>
+        <label class="form-label">Select Role</label>
         <select
-          class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+         name="role"
+        [(ngModel)] = 'role'
+          class="form-select"
         >
-          <option>Select</option>
+          <option>Bussiness</option>
+          <option>Admin</option>
+          <option>Leagal</option>
+       
         </select>
       </div>
 
       <!-- Select Team -->
       <div class="md:col-span-1">
-        <label class="block text-gray-700 font-medium mb-1">Select Team</label>
+        <label class="form-lable">Select Team</label>
         <select
-          class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        name="team"
+        [(ngModel)] = 'team'
+         class="form-select"
         >
           <option>Select</option>
         </select>

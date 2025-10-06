@@ -4,6 +4,14 @@ import { environment } from '../../../../../../environments/environment';
 import { Observable } from 'rxjs';
 import { User } from '../model/user.model';
 
+interface addUserPayload {
+  fullName: string;
+  emailID: string;
+  phoneNumber: string;
+  roleId: number;
+  teamID: number;
+  modifiedDate: string;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -15,5 +23,9 @@ export class UserService {
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.apiUrl}/User/GetUser?OrgID=1`);
   }
-  
+
+  addNewUser(user: addUserPayload): Observable<addUserPayload[]> {
+    return this.http.post<addUserPayload[]>(`${this.apiUrl}/User/AddUser`, user)
+  }
+
 }

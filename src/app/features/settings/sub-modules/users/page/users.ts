@@ -10,17 +10,24 @@ import { catchError, EMPTY, finalize } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { User } from '../model/user.model';
 import { Modal } from "../../../../../shared/components/ui/modal/modal";
+import { FormsModule } from '@angular/forms';
 
 
 
 @Component({
   selector: 'app-users',
-  imports: [Card, CommonModule, Button, LucideAngularModule, Tabs, Modal],
+  imports: [Card, FormsModule, CommonModule, Button, LucideAngularModule, Tabs, Modal],
   templateUrl: './users.html',
   styleUrl: './users.css'
 })
 export class Users {
   icons = AppIcons;
+
+  fullName = signal('');
+  jobTitle = signal('');
+  email = signal('');
+  role = signal('');
+  team = signal('')
 
   activeTab = signal('active');
 
@@ -59,10 +66,20 @@ export class Users {
       takeUntilDestroyed()
     ).subscribe((res) => {
       this.users.set(res);
-
-      console.log(this.users);
     })
 
+  }
+
+  saveNewUser() {
+    const payload = {
+      "fullName": "John Doe",
+      "emailID": "john.doe@example.com",
+      "phoneNumber": "+91-9876543210",
+      "roleId": 3,
+      "teamID": 13,
+      "modifiedDate": "2025-10-06T05:42:39.373Z"
+    }
+    this.userService.addNewUser(payload).pipe().subscribe(res => console.log(res))
   }
 
 }
