@@ -35,6 +35,20 @@ icons = AppIcons;
   closed = output<void>();
   save = output<void>();
 
+ /** ✅ Customizable button text */
+  saveButtonText = input<string>('Save');
+  cancelButtonText = input<string>('Cancel');
+
+   saveButtonClass = input<string>(
+    'flex items-center justify-center gap-2 min-w-[98px] px-4 py-2 text-white bg-[#6D7BFA] rounded'
+  );
+
+  cancelButtonClass = input<string>(
+    'flex items-center justify-center min-w-[98px] gap-2 px-4 py-2 border border-[#7E7A88] text-[16px] font-bold text-[#7E7A88] bg-transparent rounded-lg'
+  );
+
+  footerClases = input<string>('')
+
   /**
    * Emits the `closed` event.
    */

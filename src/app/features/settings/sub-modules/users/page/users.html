@@ -75,7 +75,7 @@
 </app-card>
 
 @if(isNewUserAdding()){
-<app-modal [modelContainerClass]="'w-full max-w-[850px]'" [modalBodyClass]="'bg-white'" (save)="saveNewUser()" [isOpen]="isNewUserAdding()" (closed)="isNewUserAdding()">
+<app-modal [footerClases]="'flex justify-between items-center'" [saveButtonText]="'Send Invite'" (closed)="isNewUserAdding.set(false)" [modelContainerClass]="'w-full max-w-[850px]'" [modalBodyClass]="'bg-white'" (save)="saveNewUser()" [isOpen]="isNewUserAdding()" (closed)="isNewUserAdding()">
   <div class=" bg-surface-raised rounded-md p-6 ">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <!-- Full Name -->
@@ -140,6 +140,7 @@
         name="team"
         [(ngModel)] = 'team'
          class="form-select"
+         
         >
           <option>Select</option>
         </select>
@@ -148,12 +149,12 @@
 
     <!-- Add More Button -->
     <div class="mt-6">
-      <button
-        class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center gap-2"
-      >
-        <span class="text-lg">+</span> Add More
-      </button>
+     <app-button [variant]="'primary'" [text]="'Add More'"><lucide-angular [img]='icons.plus'></lucide-angular></app-button>
     </div>
   </div>
+
+   <div modal-footer>
+    <p><span>Note:</span> will be sent to the entered email IDs</p>
+   </div>
 </app-modal>
 }

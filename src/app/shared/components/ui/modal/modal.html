@@ -16,22 +16,30 @@
       <ng-content></ng-content>
     </div>
 
+
     @if(isButtonsShowing()){
-    <div class="flex items-center gap-4 justify-center p-4">
-      <button
+    <div [class]="footerClases()" class="flex items-center gap-4 justify-center p-4">
+      
+       <ng-content select="[modal-footer]"></ng-content>
+      
+       <div class="flex items-center gap-4">
+<button
         type="button"
         (click)="closeModal()"
-        class="flex items-center justify-center min-w-[98px] gap-2 px-4 py-2 border border-[#7E7A88] text-[16px] font-bold text-[#7E7A88] bg-transparent rounded-lg"
+        [class]="cancelButtonClass()"
+       
       >
-        Cancel
+      {{cancelButtonText()}}
       </button>
       <button
         (click)="onSave()"
         type="button"
-        class="flex items-center justify-center gap-2 min-w-[98px] px-4 py-2 text-white bg-[#6D7BFA] rounded"
+        [class]='saveButtonClass()'
       >
-        Save
+       {{saveButtonText()}}
       </button>
+       </div>
+      
     </div>
     }
   </div>
