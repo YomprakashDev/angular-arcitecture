@@ -1,0 +1,90 @@
+<app-card>
+  <div class="flex items-center justify-between w-full mb-4">
+    <h1 class="text-2xl font-bold primary-black">Access Control</h1>
+
+    <app-button [text]="'Access Setup'">
+      <lucide-angular [img]="icons.plus"></lucide-angular
+    ></app-button>
+  </div>
+
+  <div class="flex justify-end mb-4">
+    <div class="relative w-full max-w-96">
+      <label class="sr-only" for="org-search">Search organizations</label>
+      <lucide-angular
+        [img]="icons.search"
+        class="absolute left-1 top-1/2 -translate-y-1/2 text-[#787A7F] text-xs"
+      ></lucide-angular>
+      <input
+        type="text"
+        id="org-search"
+        placeholder="Search organizations"
+        class="block w-full py-2 pl-10 pr-4 text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+      />
+    </div>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Actions
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Team
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Contract Type
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Last Updated On
+          </th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <tr *ngFor="let item of accessData" class="hover:bg-gray-50 transition-colors">
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="flex items-center space-x-2">
+              <button
+                class="p-1 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                <lucide-angular [img]="icons.settings"></lucide-angular>
+              </button>
+              <button
+                class="p-1 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                <lucide-angular [img]="icons.close"></lucide-angular>
+              </button>
+            </div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+            {{ item.team }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="flex flex-wrap gap-2">
+              <span
+                *ngFor="let type of item.contractTypes"
+                class="px-3 py-1 text-xs font-medium rounded-md bg-gray-100 text-gray-800"
+              >
+                {{ type }}
+              </span>
+            </div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ item.lastUpdated }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</app-card>

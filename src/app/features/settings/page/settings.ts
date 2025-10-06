@@ -2,7 +2,7 @@ import { Component, signal } from '@angular/core';
 import { Tabs } from '../../../shared/components/tabs/tabs';
 import { Teams } from '../sub-modules/teams/page/teams';
 import { Users } from '../sub-modules/users/page/users';
-import { AccessControl } from '../sub-modules/access-control/access-control';
+import { AccessControl } from '../sub-modules/access-control/page/access-control';
 import { Firm } from '../sub-modules/firm/firm';
 import { OrganizationProfile } from '../sub-modules/organization-profile/organization-profile';
 import { Integration } from '../sub-modules/integration/integration';
