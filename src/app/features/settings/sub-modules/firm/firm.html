@@ -1,151 +1,80 @@
 <div class="flex flex-col gap-4">
 
-
-<div class="bg-white border border-gray-200 rounded-lg  p-5 w-full ">
+  @for(company of companies; track $index){
+<div class="bg-white border border-Gray86 rounded-lg font-[mulish]  p-5 w-full ">
   <div class="flex items-start justify-between mb-4 gap-4">
     <div>
       <div class="flex items-center">
-        <h3 class="text-lg font-semibold text-gray-800">IGuru Portal Services Pvt Ltd</h3>
-        <span class="ml-3 text-xs font-medium bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full">
-          Primary
+        <h3 class="text-xl font-bold text-gray-deep">{{company.companyName}}</h3>
+        
+        <span *ngIf="company.tag"  class="ml-3 text-xs 
+        font-bold bg-pale-blue text-primary-blue px-2 py-0.5 rounded-full">
+         {{company.tag}}
         </span>
       </div>
     </div>
 
     <div class="flex items-center">
-      <button
-        class="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 focus:outline-none"
-        aria-label="Edit company">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652l-9.193 9.193a4.5 4.5 0 01-1.897 1.13l-3.423.974.974-3.423a4.5 4.5 0 011.13-1.897l9.07-9.07z"/>
-        </svg>
-        Edit
-      </button>
+      <app-button [variant]="'primary'" [text]="'Edit'">
+        <lucide-angular [img]="icons.edit"></lucide-angular>
+      </app-button>
     </div>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-8 text-sm text-gray-700">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-8 text-sm ">
     <div>
-      <p class="text-gray-500 text-xs">Firm Name</p>
-      <div class="font-medium">Beta Pvt Ltd</div>
+      <p class="text-gray-subtle font-semibold text-sm">Firm Name</p>
+      <div class="font-semibold text-sm text-black">{{company.firmName}}</div>
     </div>
 
     <div>
-      <p class="text-gray-500 text-xs">Jurisdiction of incorporation</p>
-      <div class="font-medium">India</div>
+      <p class="text-gray-subtle font-semibold text-sm">Jurisdiction of incorporation</p>
+      <div class="font-semibold text-sm text-black">{{company.jurisdiction}}</div>
     </div>
 
     <div>
-      <p class="text-gray-500 text-xs">Company Type</p>
-      <div class="font-medium">Private Limited Company</div>
+      <p class="text-gray-subtle font-semibold text-sm">Company Type</p>
+      <div class="font-semibold text-sm text-black">{{company.companyType}}</div>
     </div>
 
     <div class="md:col-span-3">
-      <p class="text-gray-500 text-xs">Street Address</p>
-      <div class="font-medium break-words">
-        #24, 5th Main Road, Indiranagar, Bengaluru, Karnataka, near CMH Road Metro Station, opposite XYZ Plaza,
+      <p class="text-gray-subtle font-semibold text-sm">Street Address</p>
+      <div class="font-medium text-sm text-gray-deep break-words">
+{{company.address}}
       </div>
     </div>
 
     <div>
-      <p class="text-gray-500 text-xs">Postal Code</p>
-      <div class="font-medium">345678</div>
+      <p class="text-gray-subtle font-semibold text-sm">Postal Code</p>
+      <div class="font-semibold text-sm text-black">{{company.postalCode}}</div>
     </div>
 
     <div>
-      <p class="text-gray-500 text-xs">Country</p>
-      <div class="font-medium">India</div>
+      <p class="text-gray-subtle font-semibold text-sm">Country</p>
+      <div class="font-semibold text-sm text-black">{{company.country}}</div>
     </div>
 
     <div>
-      <p class="text-gray-500 text-xs">Time and date format</p>
-      <div class="font-medium">DD:MM:YYYY, HH:mm:ss, UTC +5:30</div>
+      <p class="text-gray-subtle font-semibold text-sm">Time and date format</p>
+      <div class="font-semibold text-sm text-black">{{company.timeFormat}}</div>
     </div>
 
     <div>
-      <p class="text-gray-500 text-xs">Date format</p>
-      <div class="font-medium">DD/MM/YYYY</div>
+      <p class="text-gray-subtle font-semibold text-sm">Date format</p>
+      <div class="font-semibold text-sm text-black">{{company.dateFormat}}</div>
     </div>
 
     <div>
-      <p class="text-gray-500 text-xs">Email/Logo</p>
-      <div class="font-medium">Custom</div>
+      <p class="text-gray-subtle font-semibold text-sm">Email/Logo</p>
+      <div class="font-semibold text-sm text-black">{{company.emailLogo}}</div>
     </div>
   </div>
 </div>
+  }
 
 
-<div class="bg-white border border-gray-200 rounded-lg  p-5 w-full ">
-  <div class="flex items-start justify-between mb-4 gap-4">
-    <div>
-      <div class="flex items-center">
-        <h3 class="text-lg font-semibold text-gray-800">IGuru Portal Services Pvt Ltd</h3>
-      
-      </div>
-    </div>
 
-    <div class="flex items-center">
-      <button
-        class="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 focus:outline-none"
-        aria-label="Edit company">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652l-9.193 9.193a4.5 4.5 0 01-1.897 1.13l-3.423.974.974-3.423a4.5 4.5 0 011.13-1.897l9.07-9.07z"/>
-        </svg>
-        Edit
-      </button>
-    </div>
-  </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-8 text-sm text-gray-700">
-    <div>
-      <p class="text-gray-500 text-xs">Firm Name</p>
-      <div class="font-medium">Beta Pvt Ltd</div>
-    </div>
 
-    <div>
-      <p class="text-gray-500 text-xs">Jurisdiction of incorporation</p>
-      <div class="font-medium">India</div>
-    </div>
-
-    <div>
-      <p class="text-gray-500 text-xs">Company Type</p>
-      <div class="font-medium">Private Limited Company</div>
-    </div>
-
-    <div class="md:col-span-3">
-      <p class="text-gray-500 text-xs">Street Address</p>
-      <div class="font-medium break-words">
-        #24, 5th Main Road, Indiranagar, Bengaluru, Karnataka, near CMH Road Metro Station, opposite XYZ Plaza,
-      </div>
-    </div>
-
-    <div>
-      <p class="text-gray-500 text-xs">Postal Code</p>
-      <div class="font-medium">345678</div>
-    </div>
-
-    <div>
-      <p class="text-gray-500 text-xs">Country</p>
-      <div class="font-medium">India</div>
-    </div>
-
-    <div>
-      <p class="text-gray-500 text-xs">Time and date format</p>
-      <div class="font-medium">DD:MM:YYYY, HH:mm:ss, UTC +5:30</div>
-    </div>
-
-    <div>
-      <p class="text-gray-500 text-xs">Date format</p>
-      <div class="font-medium">DD/MM/YYYY</div>
-    </div>
-
-    <div>
-      <p class="text-gray-500 text-xs">Email/Logo</p>
-      <div class="font-medium">Custom</div>
-    </div>
-  </div>
-</div>
 
 </div>

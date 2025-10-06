@@ -64,6 +64,9 @@ body {
   --color-gray-light: #eaeaea;
   --color-gray-soft-border:#CAC6D3;
   --color-lucky-grey:#787878;
+  --color-Gray86:#DBDBDB;
+
+
 
   /* Extra light surfaces */
   --color-surface-base: #f7f8fa;
@@ -74,6 +77,7 @@ body {
   --color-surface-soft3: #f3f5f8;
   --color-surface-blue: #ecf4ff;
   --color-light-purple:#DFDDE5;
+  --color-pale-blue:#F2F3FF 
 }
 
 @layer components {
