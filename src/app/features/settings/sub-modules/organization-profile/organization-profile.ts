@@ -6,7 +6,7 @@ import { AppIcons } from '../../../../../assets/icons/icons';
 
 @Component({
   selector: 'app-organization-profile',
-  imports: [Card, Button, LucideAngularModule],
+  imports: [ Button, LucideAngularModule],
   templateUrl: './organization-profile.html',
   styleUrl: './organization-profile.css'
 })

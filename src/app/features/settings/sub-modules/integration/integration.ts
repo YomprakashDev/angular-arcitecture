@@ -6,7 +6,7 @@ import { AllIntegrations } from "./components/all-integrations/all-integrations"
 
 @Component({
   selector: 'app-integration',
-  imports: [Card, Tabs, MyIntegrations, AllIntegrations],
+  imports: [ Tabs, MyIntegrations, AllIntegrations],
   templateUrl: './integration.html',
   styleUrl: './integration.css'
 })
