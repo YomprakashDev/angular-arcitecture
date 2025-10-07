@@ -71,6 +71,7 @@ export class ModulePage implements AfterViewInit  {
   @ViewChild(MatPaginator)
   private paginator!: MatPaginator;
 
+  
   ngAfterViewInit() {
     if (this.paginator) this.dataSource.paginator = this.paginator;
   }
@@ -138,8 +139,9 @@ export class ModulePage implements AfterViewInit  {
       .saveModule(payload)
       .subscribe({
         next: () => {
-          this.loadModules();
           this.editingModuleId.set(null);
+          this.loadModules();
+          
         },
         error: (err) => {
           console.error('[ModulePage] save error:', err);

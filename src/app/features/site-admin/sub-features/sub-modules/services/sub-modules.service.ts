@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../../../environments/environment';
 import { Observable } from 'rxjs';
-import { Child, Module, Modules, SubModule } from '../models/sub-module.model';
+import {  Module, Modules, SubModule } from '../models/sub-module.model';
 
 /**
  * A service for managing sub-module-related data and operations.
@@ -20,7 +20,7 @@ export class SubModulesService {
     return this.http.get<Modules>(`${this.apiUrl}/SubModules`);
   }
 
-  saveSubModule(title: string, id: number): Observable<Module> {
+  saveSubModuleName(title: string, id: number): Observable<Module> {
       const safe = encodeURIComponent(title.trim());     
     return this.http.patch<Module>(
       `${this.apiUrl}/SubModules/${id}/title?subModuleName=${safe}`,
@@ -41,7 +41,7 @@ export class SubModulesService {
 
   }
 
-  // saveChildSubModule(title:string,id:number):Observable<Child>{
+  // saveChildSubModuleName(title:string,id:number):Observable<Child>{
   //   return this.http.patch<Child>(`${this.apiUrl}`)
 
 }

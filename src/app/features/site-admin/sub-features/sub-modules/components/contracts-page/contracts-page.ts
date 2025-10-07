@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component,inject, input, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { LucideAngularModule } from 'lucide-angular';
 
-import { Child,  SubModule } from '../../models/sub-module.model';
+import { Child, SubModule } from '../../models/sub-module.model';
 import { SubModulesService } from '../../services/sub-modules.service';
 import { FormsModule } from '@angular/forms';
 import { AppIcons } from '../../../../../../../assets/icons/icons';
@@ -26,14 +26,14 @@ export class ContractsPage {
   editedSubModule = signal<string>('');
 
   // NEW: keep expansion locally (don’t mutate input objects)
-  private expandedIds = signal<Set<number>>(new Set());       
+  private expandedIds = signal<Set<number>>(new Set());
 
   // NEW: derive expansion state for an id
-  isExpanded(id: number): boolean {                            
+  isExpanded(id: number): boolean {
     return this.expandedIds().has(id);
   }
 
-  toggleChildren(id : number) {
+  toggleChildren(id: number) {
     const next = new Set(this.expandedIds());
     next.has(id) ? next.delete(id) : next.add(id);
     this.expandedIds.set(next);
@@ -50,7 +50,9 @@ export class ContractsPage {
 
   saveModule(item: SubModule) {
 
-    this.subModuleService.saveSubModule(this.editedSubModule(), item.subModuleId).subscribe({
+    this.subModuleService.
+    saveSubModuleName(this.editedSubModule(),
+     item.subModuleId).subscribe({
       next: () => {
         item.subModuleName = this.editedSubModule();
         this.editId.set(null);
