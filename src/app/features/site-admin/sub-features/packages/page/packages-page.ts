@@ -10,13 +10,12 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import * as XLSX from 'xlsx';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PackageService } from './../services/package.service';
-import { catchError, EMPTY, finalize,} from 'rxjs';
+import { catchError, EMPTY, finalize, } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PackagesResponse } from './../models/package.model';
-import { LucideAngularModule,  } from 'lucide-angular';
+import { LucideAngularModule, } from 'lucide-angular';
 import { AddViewPackages } from "./../components/add-view-packages/add-view-packages";
 import { AppIcons } from './../../../../../../assets/icons/icons';
 import { Card } from "./../../../../../shared/components/ui/card/card";
@@ -50,7 +49,7 @@ export interface PackageRow {
 export class PackagesPage {
   // Configuration for the table columns.
   displayedColumns: string[] = ['actions', 'status', 'packageName', 'modules'];
- // source-of-truth (matches your org approach)
+  // source-of-truth (matches your org approach)
   packages = signal<PackagesResponse>([]);
   // State for inline editing.
   editingModuleId = signal<number | null>(null);
@@ -65,7 +64,7 @@ export class PackagesPage {
   isAddView = signal(false)
 
 
-  toggleAddView(){
+  toggleAddView() {
     this.isAddView.set(true)
   }
   private packageService = inject(PackageService);
@@ -78,11 +77,11 @@ export class PackagesPage {
   // material data source
   dataSource = new MatTableDataSource<PackageRow>([]);
 
-   constructor() {
+  constructor() {
     this.loadPackages();
   }
   // Keep packages in a signal
-loadPackages(): void {
+  loadPackages(): void {
     this.isLoading.set(true);
     this.error.set(null);
 

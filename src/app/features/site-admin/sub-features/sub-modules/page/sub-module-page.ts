@@ -6,12 +6,13 @@ import { Module as ModuleNode, Modules, SubModule } from './../models/sub-module
 import { catchError, EMPTY, finalize } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Card } from "../../../../../shared/components/ui/card/card";
 type ModuleMin = { id: number; name: string };
 
 @Component({
   selector: 'app-sub-module-page',
   standalone: true,
-  imports: [MenuItemComponent, ContractsPage, MatProgressSpinnerModule],
+  imports: [MenuItemComponent, ContractsPage, MatProgressSpinnerModule, Card],
   templateUrl: './sub-module-page.html',
   styleUrls: ['./sub-module-page.css']
 })
@@ -31,7 +32,7 @@ export class SubModulePage {
   // Submodules of the selected module (kept as a plain array to match your current template binding)
   selectedSubModules: SubModule[] = [];
 
-  // [{ id, name }] projection for menus, etc.
+  // [{ id, name }] projection for menus.
   moduleNameList = computed<ModuleMin[]>(
     () => this.items()?.map(m => ({ id: m.moduleID, name: m.moduleName })) ?? []
   );

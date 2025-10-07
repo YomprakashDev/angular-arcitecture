@@ -6,26 +6,18 @@
     aria-label="Loading"
   ></mat-progress-spinner>
 </div>
-} 
-
-
-
-    @if (error()) {
-      <div class="mt-4 p-3 rounded border border-red-200 bg-red-50 text-red-800 text-sm">
-        {{ error() }}
-      </div>
-    }
-
-
-
-
-@if(!isLoading() && !isAddView() && !error() ) {
+} @if (error()) {
+<div class="mt-4 p-3 rounded border border-red-200 bg-red-50 text-red-800 text-sm">
+  {{ error() }}
+</div>
+} @if(!isLoading() && !isAddView() && !error() ) {
 <app-card>
   <div class="page-header">
     <h1>Packages</h1>
     <button (click)="toggleAddView()" class="primary-btn flex items-center">
       <lucide-angular [img]="icons.plus" class="mr-2 text-white"></lucide-angular>
-      Create New Package</button>
+      Create New Package
+    </button>
   </div>
 
   <div class="table-wrap">
@@ -76,8 +68,6 @@
     </table>
   </div>
 </app-card>
-
-
 
 } @if(isAddView()){
 <app-add-view-packages></app-add-view-packages>
