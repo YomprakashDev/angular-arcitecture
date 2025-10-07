@@ -4,14 +4,14 @@ export interface User {
     aliasName: string;
     emailID: string;
     phoneNumber: string;
-    status: number;        // consider making this an enum
-    userType: number;      // consider making this an enum
+    status: number;        
+    userType: number;     
     roleId: number;
     teamID: number;
     orgID: number;
     psw: string;
     createdBy: number;
-    createdDate: string;   // ISO date string
+    createdDate: string;   
     modifiedBy: number;
     modifiedDate: string | null;
 }

@@ -77,7 +77,7 @@ export class Teams {
       "modifiedDate": "2025-10-06T05:45:30.120Z"
     }
     this.teamsService.addNewTeam(payload)
-    .pipe().subscribe(res => console.log(res))
+      .pipe().subscribe(res => console.log(res))
   }
 
 

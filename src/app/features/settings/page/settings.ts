@@ -5,8 +5,8 @@ import { Users } from '../sub-modules/users/page/users';
 import { AccessControl } from '../sub-modules/access-control/page/access-control';
 import { Firm } from '../sub-modules/firm/firm';
 import { OrganizationProfile } from '../sub-modules/organization-profile/organization-profile';
-import { Integration } from '../sub-modules/integration/integration';
-import { Security } from '../sub-modules/security/security';
+import { Integration } from '../sub-modules/integration/page/integration';
+import { Security } from '../sub-modules/security/page/security';
 
 
 @Component({

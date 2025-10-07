@@ -1,12 +1,12 @@
 import { Component, signal } from '@angular/core';
-import { Card } from "../../../../shared/components/ui/card/card";
-import { Tabs } from "../../../../shared/components/tabs/tabs";
-import { MyIntegrations } from "./components/my-integrations/my-integrations";
-import { AllIntegrations } from "./components/all-integrations/all-integrations";
+import { Tabs } from '../../../../../shared/components/tabs/tabs';
+import { MyIntegrations } from '../components/my-integrations/my-integrations';
+import { AllIntegrations } from '../components/all-integrations/all-integrations';
 
 @Component({
   selector: 'app-integration',
-  imports: [ Tabs, MyIntegrations, AllIntegrations],
+  imports: [ Tabs, MyIntegrations,
+     AllIntegrations],
   templateUrl: './integration.html',
   styleUrl: './integration.css'
 })
