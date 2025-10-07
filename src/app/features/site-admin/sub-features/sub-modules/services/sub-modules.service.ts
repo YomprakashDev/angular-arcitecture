@@ -37,8 +37,11 @@ export class SubModulesService {
     return this.http.patch<SubModule>(`${this.apiUrl}/SubModules/children/${id}/status?status=${status}`, {})
   }
 
-  saveChildSubModuleName(title: string, id: number): Observable<Child> {
-    return this.http.patch<Child>(`${this.apiUrl}/SubModules/children/${id}title?childName=${title}`,{})
+  saveChildSubModuleName
+  (childName: string, id: number): Observable<Child> {
+ console.warn(childName);
+    return this.http.patch<Child>
+    (`${this.apiUrl}/SubModules/children/${id}/title?childName=${childName}`,{})
   }
 
 }
