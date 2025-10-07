@@ -60,9 +60,7 @@
         >
           Team Name
         </th>
-        <td mat-cell
-        *matCellDef="let row"
-         class="px-4 py-3 text-gray-900">{{ row.teamName }}</td>
+        <td mat-cell *matCellDef="let row" class="px-4 py-3 text-gray-900">{{ row.teamName }}</td>
       </ng-container>
 
       <!-- Description -->
@@ -92,9 +90,7 @@
           <div class="flex items-center gap-3">
             <div
               class="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-100 text-xs font-semibold text-indigo-700 ring-2 ring-white"
-            >
-              
-            </div>
+            ></div>
             <span class="text-gray-900">{{ row.teamName }}</span>
           </div>
         </td>
@@ -127,9 +123,9 @@
         >
           Last Action Taken On
         </th>
-        <td mat-cell
-         *matCellDef="let row" 
-         class="px-4 py-3 text-gray-700">{{ row.modifiedDate }}</td>
+        <td mat-cell *matCellDef="let row" class="px-4 py-3 text-gray-700">
+          {{ row.modifiedDate }}
+        </td>
       </ng-container>
 
       <!-- Rows -->
@@ -156,14 +152,21 @@
     <!-- Team Name -->
     <div class="space-y-2">
       <label for="teamName" class="form-label form-lable-required"> Team Name </label>
-      <input name="teamName" id="teamName" [(ngModel)]="temaName" type="text" placeholder="Enter Team Name" class="form-input" />
+      <input
+        name="teamName"
+        id="teamName"
+        [(ngModel)]="temaName"
+        type="text"
+        placeholder="Enter Team Name"
+        class="form-input"
+      />
     </div>
 
     <!-- Team Lead -->
     <div class="space-y-3">
       <label for="teamLead" class="form-label"> Team Lead </label>
       <div class="relative">
-        <select name="teamLead" [(ngModel)]="teamLead" id="teamLead" class="form-select">
+        <select id="teamLead" name="teamLead" [(ngModel)]="teamLead" class="form-select">
           <option selected disabled>Select</option>
           <option>Pramod</option>
           <option>Sumanth</option>
@@ -177,7 +180,7 @@
     <div class="space-y-3">
       <label for="description" class="form-label form-lable-required"> Description </label>
       <textarea
-      name="description"
+        name="description"
         [(ngModel)]="teamDescription"
         id="description"
         rows="6"

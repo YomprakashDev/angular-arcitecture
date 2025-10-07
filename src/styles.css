@@ -113,8 +113,9 @@ body {
   }
 
   .form-select {
-    @apply w-full rounded-md outline-none border-none bg-white py-3 pr-4 
-      focus:outline-none sm:text-sm;
+    @apply w-full rounded-md 
+     border-none bg-white py-3 pl-2 
+     outline-none sm:text-sm;
   }
 
   .form-textarea {
