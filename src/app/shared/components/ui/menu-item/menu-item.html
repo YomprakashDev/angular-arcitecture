@@ -2,6 +2,7 @@
   (click)="onSelect()" 
   [class]="'flex justify-between items-center cursor-pointer p-4 my-2 rounded-lg ' + (isSelected() ? 'bg-primary-surface text-primary-blue font-bold ' : 'hover:bg-gray-50 text-[16px] font-semibold text-gray-subtle')"
 >
+
   <span class="text-lg font-medium">{{ item().name }}</span>
   <lucide-angular [img]="icons.chevronRight"></lucide-angular>
 </div>

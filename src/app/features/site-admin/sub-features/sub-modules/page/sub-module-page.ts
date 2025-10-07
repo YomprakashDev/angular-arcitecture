@@ -7,7 +7,7 @@ import { catchError, EMPTY, finalize } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Card } from "../../../../../shared/components/ui/card/card";
-type ModuleMin = { id: number; name: string };
+type ModuleMin = { id: number; name: string ,status:boolean};
 
 @Component({
   selector: 'app-sub-module-page',
@@ -34,7 +34,7 @@ export class SubModulePage {
 
   // [{ id, name }] projection for menus.
   moduleNameList = computed<ModuleMin[]>(
-    () => this.items()?.map(m => ({ id: m.moduleID, name: m.moduleName })) ?? []
+    () => this.items()?.map(m => ({ id: m.moduleID, name: m.moduleName, status:m.moduleStatus})) ?? []
   );
 
   // The currently selected full Module object

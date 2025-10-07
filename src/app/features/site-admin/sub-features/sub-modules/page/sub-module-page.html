@@ -17,7 +17,8 @@
     <h1 class="text-2xl font-bold   mb-6  text-foreground">Modules</h1>
     <div>
       @for (item of moduleNameList(); track item.id) {
-      <app-menu-item
+     
+        <app-menu-item
         [item]="item"
         [isSelected]="selectedItem() === item.id"
         (itemSelected)="selectItem($event)"
