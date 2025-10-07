@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { LucideAngularModule} from 'lucide-angular';
+import { LucideAngularModule } from 'lucide-angular';
 import { ModuleService } from './../services/module.service';
 import { Module } from './../model/module.model';
 import { EMPTY } from 'rxjs';
@@ -41,12 +41,12 @@ import { AppIcons } from './../../../../../../assets/icons/icons';
   templateUrl: './module-page.html',
   styleUrls: ['./module-page.css'],
 })
-export class ModulePage  {
+export class ModulePage {
   /** Table columns */
   displayedColumns = ['actions', 'status', 'moduleName', 'description', 'icon'];
 
   /** Icons */
-readonly icons= AppIcons;
+  readonly icons = AppIcons;
   /** UI state */
   isLoading = signal<boolean>(true);
   error = signal<string | null>(null);
@@ -68,33 +68,34 @@ readonly icons= AppIcons;
 
   @ViewChild(MatPaginator)
   private paginator!: MatPaginator;
-   
+
 
 
   /** Load data with error handling. */
   loadModules(): void {
- 
+
     this.error.set(null);
 
     this.moduleService
       .getModules(1, 10)
       .pipe(
-        takeUntilDestroyed(),
+
         finalize(() => this.isLoading.set(false)),
         catchError((err) => {
           console.error('[ModulePage] load error:', err);
           this.error.set('Failed to load modules. Please try again.');
           this.dataSource.data = [];
           return EMPTY;
-        })
+        }),
+        takeUntilDestroyed(),
       )
       .subscribe((res) => {
         this.dataSource.data = res.data ?? [];
         if (this.paginator) {
           this.dataSource.paginator = this.paginator;
 
-      }
-        
+        }
+
       }
       );
   }

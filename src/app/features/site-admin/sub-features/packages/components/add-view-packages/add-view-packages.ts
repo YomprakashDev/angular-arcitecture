@@ -20,8 +20,10 @@ type ModuleMin = { id: number; name: string };
 export class AddViewPackages {
   packageName = signal('Silver');
   private subModuleService = inject(SubModulesService);
+  
   // All modules from API
   items = signal<Modules | null>(null);
+
   icons = AppIcons;
   constructor() {
     this.loadSubModules();
@@ -29,7 +31,8 @@ export class AddViewPackages {
   }
 
   selectedItem = signal<number | null>(null);
-  // Submodules of the selected module (kept as a plain array to match your current template binding)
+
+  // Submodules of the selected module 
   selectedSubModules: SubModule[] = [];
 
 

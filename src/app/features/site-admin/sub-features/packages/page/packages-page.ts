@@ -19,6 +19,7 @@ import { LucideAngularModule, } from 'lucide-angular';
 import { AddViewPackages } from "./../components/add-view-packages/add-view-packages";
 import { AppIcons } from './../../../../../../assets/icons/icons';
 import { Card } from "./../../../../../shared/components/ui/card/card";
+import { LoadingSpinner } from "../../../../../shared/components/ui/loading-spinner/loading-spinner";
 
 
 export interface PackageRow {
@@ -42,7 +43,7 @@ export interface PackageRow {
     MatSortModule,
     MatPaginatorModule,
     LucideAngularModule,
-    MatProgressSpinnerModule, AddViewPackages, Card],
+    MatProgressSpinnerModule, AddViewPackages, Card, LoadingSpinner],
   templateUrl: './packages-page.html',
   styleUrls: ['./packages-page.css']
 })
