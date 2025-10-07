@@ -73,7 +73,7 @@ readonly icons= AppIcons;
 
   /** Load data with error handling. */
   loadModules(): void {
-    this.isLoading.set(true);
+ 
     this.error.set(null);
 
     this.moduleService

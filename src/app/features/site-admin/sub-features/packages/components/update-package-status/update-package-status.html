@@ -1,0 +1,32 @@
+<div class="w-full mx-auto bg-white">
+  @for ( item of subModules(); track item.subModuleId) {
+  <div class="border-b-4 border-surface-soft3">
+    <div class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50">
+      <div class="flex items-center space-x-2">
+        <button>
+          <input type="checkbox" />
+        </button>
+        <span class="text-lg font-semibold text-black">{{ item.subModuleName }}</span>
+        @if(item.children.length > 0) {
+
+        <button class="text-gray-400 hover:text-gray-600">
+          <lucide-angular [img]="icons.chevronUp"></lucide-angular>
+        </button>
+
+        }
+      </div>
+    </div>
+
+    <!-- Children -->
+    <div *ngIf="item.children && isExpanded(item.subModuleId)">
+      @for ( child of item.children; track child.childID) {
+      <div class="border-b-4 border-surface-soft3 last:border-b-0">
+        <div class="flex items-center justify-between p-3 hover:bg-gray-100">
+          <span class="text-gray-subtleAlt font-semibold text-[16px]">{{ child.childName }}</span>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  }
+</div>

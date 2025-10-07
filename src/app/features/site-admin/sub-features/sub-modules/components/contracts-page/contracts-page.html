@@ -8,7 +8,9 @@
       <div class="flex items-center space-x-2">
         <!-- Expand/Collapse icon for parent items with children -->
 
-        <button><lucide-angular [img]="icons.drag" class="text-gray-subtleAlt"></lucide-angular></button>
+        <button>
+          <lucide-angular [img]="icons.drag" class="text-gray-subtleAlt"></lucide-angular>
+        </button>
         @if (editId() !== item.subModuleId){
         <span class="text-lg font-semibold text-black">{{ item.subModuleName }}</span>
         } @if(editId() === item.subModuleId){
@@ -24,8 +26,11 @@
           (click)="$event.stopPropagation(); toggleChildren(item.subModuleId)"
           class="text-gray-400 hover:text-gray-600"
         >
-          item.expanded ? <lucide-angular [img]="icons.chevronDown"></lucide-angular> :
+          @if(item.expanded){
+          <lucide-angular [img]="icons.chevronDown"></lucide-angular>
+          }@else{
           <lucide-angular [img]="icons.chevronUp"></lucide-angular>
+          }
         </button>
 
         }
@@ -75,7 +80,7 @@
               (click)="saveChildSubModuleName(child)"
               class="text-gray-400 hover:text-gray-600"
             >
-              <lucide-angular [img]="icons.check"></lucide-angular>
+              <lucide-angular [img]="icons.edit"></lucide-angular>
             </button>
             <label class="switch">
               <input

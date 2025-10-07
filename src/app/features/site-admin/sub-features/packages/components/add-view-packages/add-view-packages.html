@@ -31,5 +31,25 @@
         />
       </div>
     </div>
+
+     <div class="flex w-full h-full gap-4 bg-transparent">
+  <div class="w-[238px] bg-white rounded-lg p-4 min-h-full">
+    <h1 class="text-2xl font-bold   mb-6  text-foreground">Modules</h1>
+    <div>
+      @for (item of moduleNameList(); track item.id) {
+      <app-menu-item
+        [item]="item"
+         (itemSelected)="selectItem($event)"
+      >
+      </app-menu-item>
+      }
+    </div>
+  </div>
+
+  <div class="flex-1 p-6 bg-white rounded-lg">
+    <h1 class="text-xl font-bold mb-4 text-secondary-blue"> Sub Module</h1>
+   <app-update-package-status [subModules]="selectedSubModules"></app-update-package-status>
+  </div>
+</div>
   </div>
 </div>
