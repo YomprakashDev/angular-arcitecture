@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, DestroyRef, inject, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -41,9 +41,11 @@ import { AppIcons } from './../../../../../../assets/icons/icons';
   templateUrl: './module-page.html',
   styleUrls: ['./module-page.css'],
 })
-export class ModulePage {
+export class ModulePage implements AfterViewInit  {
   /** Table columns */
   displayedColumns = ['actions', 'status', 'moduleName', 'description', 'icon'];
+
+  private destroyRef = inject(DestroyRef);
 
   /** Icons */
   readonly icons = AppIcons;
@@ -69,6 +71,9 @@ export class ModulePage {
   @ViewChild(MatPaginator)
   private paginator!: MatPaginator;
 
+  ngAfterViewInit() {
+    if (this.paginator) this.dataSource.paginator = this.paginator;
+  }
 
 
   /** Load data with error handling. */
@@ -87,7 +92,7 @@ export class ModulePage {
           this.dataSource.data = [];
           return EMPTY;
         }),
-        takeUntilDestroyed(),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((res) => {
         this.dataSource.data = res.data ?? [];
