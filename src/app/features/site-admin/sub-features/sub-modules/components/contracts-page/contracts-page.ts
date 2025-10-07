@@ -59,7 +59,7 @@ export class ContractsPage {
           next: () => {
             item.subModuleName = this.editedSubModule();
             this.editId.set(null);
-            this.childEditId.set(null)
+          
           }
         })
 
@@ -96,7 +96,12 @@ export class ContractsPage {
   saveChildSubModuleName(child: Child) {
     this.
       subModuleService.
-      saveChildSubModuleName(this.editedSubModule(), child.childID)
+      saveChildSubModuleName(this.editedChildSubModule(), child.childID).subscribe({
+        next:() => {
+          child.childName = this.editedChildSubModule()
+          this.childEditId.set(null)
+        }
+      })
   }
 
 }

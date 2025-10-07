@@ -75,11 +75,11 @@
       <div class="border-b-4 border-surface-soft3 last:border-b-0">
         <div class="flex items-center justify-between p-3 hover:bg-gray-100">
           @if (childEditId() !== child.childID){
-          <span class="text-lg font-semibold text-black">{{ item.subModuleName }}</span>
+          <span class="text-lg font-semibold text-black">{{ child.childName }}</span>
           } @if(childEditId() === child.childID){
           <input
             type="text"
-            (ngModelChange)="editedSubModule.set($event)"
+            (ngModelChange)="editedChildSubModule.set($event)"
             [ngModel]="editedChildSubModule()"
             class="px-3 text-lg font-semibold text-gray-800 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
           />
@@ -92,22 +92,20 @@
             >
               <lucide-angular [img]="icons.edit"></lucide-angular>
             </button>
-            }
-             @if(childEditId() === child.childID){
-        <button
-          (click)="saveModule(item)"
-          class="px-4 py-1 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 cursor-pointer focus:ring-indigo-500"
-        >
-          Save
-        </button>
-        <button
-          (click)="cancelEdit()"
-          class="px-4 py-1 text-sm font-medium text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 cursor-pointer focus:ring-gray-300"
-        >
-          Cancel
-        </button>
-        }
-        @if(childEditId() !== child.childID){
+            } @if(childEditId() === child.childID){
+            <button
+              (click)="saveChildSubModuleName(child)"
+              class="px-4 py-1 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 cursor-pointer focus:ring-indigo-500"
+            >
+              Save
+            </button>
+            <button
+              (click)="cancelEdit()"
+              class="px-4 py-1 text-sm font-medium text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 cursor-pointer focus:ring-gray-300"
+            >
+              Cancel
+            </button>
+            } @if(childEditId() !== child.childID){
             <label class="switch">
               <input
                 (change)="updateStatusChild(child, $event.target.checked)"
@@ -116,7 +114,7 @@
               />
               <span class="slider"></span>
             </label>
-          }
+            }
           </div>
         </div>
       </div>
