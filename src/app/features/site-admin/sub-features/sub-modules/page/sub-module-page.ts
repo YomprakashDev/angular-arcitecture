@@ -1,8 +1,8 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { MenuItemComponent } from './../../../../../shared/components/ui/menu-item/menu-item';
+import { MenuItemComponent } from '../../../../../shared/components/ui/menu-item/menu-item';
 import { ContractsPage } from '../components/contracts-page/contracts-page';
-import { SubModulesService } from './../services/sub-modules.service';
-import { Module as ModuleNode, Modules, SubModule } from './../models/sub-module.model';
+import { SubModulesService } from '../services/sub-modules.service';
+import { Module as ModuleNode, Modules, SubModule } from '../models/sub-module.model';
 import { catchError, EMPTY, finalize } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -12,7 +12,7 @@ type ModuleMin = { id: number; name: string };
 @Component({
   selector: 'app-sub-module-page',
   standalone: true,
-  imports: [MenuItemComponent, ContractsPage, MatProgressSpinnerModule, Card],
+  imports: [MenuItemComponent, ContractsPage, MatProgressSpinnerModule],
   templateUrl: './sub-module-page.html',
   styleUrls: ['./sub-module-page.css']
 })

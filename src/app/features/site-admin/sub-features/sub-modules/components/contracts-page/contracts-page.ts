@@ -20,44 +20,48 @@ export class ContractsPage {
   icons = AppIcons;
 
   editId = signal<number | null>(null)
+  childEditId = signal<number | null>(null)
   subModuleService = inject(SubModulesService);
   subModules = input.required<SubModule[]>()
 
   editedSubModule = signal<string>('');
-
+  editedChildSubModule = signal<string>('')
   // NEW: keep expansion locally (don’t mutate input objects)
   private expandedIds = signal<Set<number>>(new Set());
 
-  // NEW: derive expansion state for an id
   isExpanded(id: number): boolean {
     return this.expandedIds().has(id);
   }
-
   toggleChildren(id: number) {
     const next = new Set(this.expandedIds());
     next.has(id) ? next.delete(id) : next.add(id);
     this.expandedIds.set(next);
   }
-
   startEdit(item: SubModule) {
+    this.childEditId.set(null)
     this.editId.set(item.subModuleId);
     this.editedSubModule.set(item.subModuleName)
   }
-
+  startEditChild(item: Child) {
+    this.editId.set(null)
+    this.childEditId.set(item.childID);
+    this.editedChildSubModule.set(item.childName)
+  }
   cancelEdit() {
     this.editId.set(null);
+    this.childEditId.set(null);
   }
-
   saveModule(item: SubModule) {
 
     this.subModuleService.
-    saveSubModuleName(this.editedSubModule(),
-     item.subModuleId).subscribe({
-      next: () => {
-        item.subModuleName = this.editedSubModule();
-        this.editId.set(null);
-      }
-    })
+      saveSubModuleName(this.editedSubModule(),
+        item.subModuleId).subscribe({
+          next: () => {
+            item.subModuleName = this.editedSubModule();
+            this.editId.set(null);
+            this.childEditId.set(null)
+          }
+        })
 
   }
 
@@ -90,7 +94,9 @@ export class ContractsPage {
   }
 
   saveChildSubModuleName(child: Child) {
-    // console.log(child);
+    this.
+      subModuleService.
+      saveChildSubModuleName(this.editedSubModule(), child.childID)
   }
 
 }

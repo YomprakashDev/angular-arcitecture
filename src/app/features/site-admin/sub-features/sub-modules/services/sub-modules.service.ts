@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../../../environments/environment';
 import { Observable } from 'rxjs';
-import {  Module, Modules, SubModule } from '../models/sub-module.model';
+import { Child, Module, Modules, SubModule } from '../models/sub-module.model';
 
 /**
  * A service for managing sub-module-related data and operations.
@@ -20,28 +20,25 @@ export class SubModulesService {
     return this.http.get<Modules>(`${this.apiUrl}/SubModules`);
   }
 
-  saveSubModuleName(title: string, id: number): Observable<Module> {
-      const safe = encodeURIComponent(title.trim());     
-    return this.http.patch<Module>(
-      `${this.apiUrl}/SubModules/${id}/title?subModuleName=${safe}`,
-      {},
+  saveSubModuleName(name: string, id: number): Observable<Module> {
+    const safeName = encodeURIComponent(name.trim());
+    console.warn(safeName);
+    return this.http.put<Module>(
+      `${this.apiUrl}/SubModules/${id}/title`,
+      { subModuleName: safeName },
     );
   }
 
   updateSubModuleStatus(id: number, status: boolean): Observable<SubModule> {
-
     return this.http.patch<SubModule>(`${this.apiUrl}/SubModules/${id}/status?status=${status}`, {})
-
   }
-
 
   updateChildModuleStatus(id: number, status: boolean): Observable<SubModule> {
-
     return this.http.patch<SubModule>(`${this.apiUrl}/SubModules/children/${id}/status?status=${status}`, {})
-
   }
 
-  // saveChildSubModuleName(title:string,id:number):Observable<Child>{
-  //   return this.http.patch<Child>(`${this.apiUrl}`)
+  saveChildSubModuleName(title: string, id: number): Observable<Child> {
+    return this.http.patch<Child>(`${this.apiUrl}/SubModules/children/${id}title?childName=${title}`,{})
+  }
 
 }
