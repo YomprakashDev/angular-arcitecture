@@ -30,7 +30,7 @@ export class Tags {
 
   tagName = signal('test');
   editedTagName = signal('')
-  tasService = inject(Tagsservice);
+  tagsServices = inject(Tagsservice);
   tagsData = signal<Tag[]>([]);
 
   constructor() {
@@ -49,7 +49,7 @@ export class Tags {
       "modifidBy": 1,
       "modifiedDate": "2025-10-08T08:52:31.082Z"
     }
-    this.tasService.addNewTag(payLoad).pipe(
+    this.tagsServices.addNewTag(payLoad).pipe(
 
     ).subscribe(res => {
       console.log(res)
@@ -60,7 +60,7 @@ export class Tags {
   }
 
   loadTags() {
-    this.tasService.getTags(1).pipe(
+    this.tagsServices.getTags(1).pipe(
 
     ).subscribe(res => {
       this.tagsData.set(res)
@@ -87,7 +87,7 @@ export class Tags {
       modifiedDate:"2025-10-08T00:00:00"
     };
 
-    this.tasService.editTag(payLoad).subscribe(res => {
+    this.tagsServices.editTag(payLoad).subscribe(res => {
       console.log(res);
       this.editingTagId.set(null);
       this.isEditingTag.set(false);

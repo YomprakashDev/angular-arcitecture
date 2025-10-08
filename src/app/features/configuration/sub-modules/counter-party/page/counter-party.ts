@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -13,19 +13,14 @@ import { CounterpartyForm } from '../components/counterparty-form/counterparty-f
 import { ConfirmDialog } from '../../../../../shared/components/ui/confirm-dialog/confirm-dialog';
 import { Plus, Search, Eye, LucideAngularModule, SquarePen, Trash } from 'lucide-angular';
 import { ViewCounterpartyInformation } from "../components/view-counterparty-information/view-counterparty-information";
+import { Counterparty } from '../services/counter-party.service';
+import { CounterPartyModel } from '../models/counter-party.model';
+import { AppIcons } from '../../../../../../assets/icons/icons';
+
+
 type CounterpartyType = 'Vendor' | 'Client' | 'Partner';
 
-interface Counterparty {
-  name: string;
-  link?: string;
-  type: CounterpartyType;
-  address: string;
-  city: string;
-  state: string;
-  country: string;
-  contactName: string;
-  contactNumber: string;
-}
+
 @Component({
   selector: 'app-counter-party',
   standalone: true,
@@ -60,80 +55,26 @@ export class CounterParty {
   ] as const;
 
 
-  dataSource = new MatTableDataSource<Counterparty>([
-    { name: 'Acme Corp', link: '#', type: 'Vendor', address: '123 Main Street', city: 'Austin', state: 'TX', country: 'USA', contactName: 'John Doe', contactNumber: '7932986841' },
-    { name: 'Nova Health', link: '#', type: 'Client', address: '5 Park Ave', city: 'New York', state: 'NY', country: 'USA', contactName: 'Antony', contactNumber: '9858752465' },
-    { name: 'InnoTech Pvt Ltd', link: '#', type: 'Partner', address: '22 MG Road', city: 'Mumbai', state: 'MH', country: 'India', contactName: 'Rajeev varma', contactNumber: '8626167684' },
-    { name: 'Nova Health', link: '#', type: 'Client', address: '5 Park Ave', city: 'New York', state: 'NY', country: 'USA', contactName: 'Antony', contactNumber: '8090522110' },
-    { name: 'Acme Corp', link: '#', type: 'Vendor', address: '123 Main Street', city: 'Austin', state: 'TX', country: 'USA', contactName: 'John Doe', contactNumber: '6752970474' },
-  ]);
+  dataSource = new MatTableDataSource<CounterPartyModel>();
+
+  icons = AppIcons;
+
+  counterPartyService = inject(Counterparty);
+
+  constructor() {
+    this.loadCounterParties();
+  }
+
+  counterPartyData = signal<CounterPartyModel[]>([]);
 
 
-  // static data
-  readonly allRows = signal<Counterparty[]>([
-    {
-      name: 'Acme Corp',
-      link: '#',
-      type: 'Vendor',
-      address: '123 Main Street',
-      city: 'Austin',
-      state: 'TX',
-      country: 'USA',
-      contactName: 'John Doe',
-      contactNumber: '7932986841',
-    },
-    {
-      name: 'Nova Health',
-      link: '#',
-      type: 'Client',
-      address: '5 Park Ave',
-      city: 'New York',
-      state: 'NY',
-      country: 'USA',
-      contactName: 'Antony',
-      contactNumber: '9858752465',
-    },
-    {
-      name: 'InnoTech Pvt Ltd',
-      link: '#',
-      type: 'Partner',
-      address: '22 MG Road',
-      city: 'Mumbai',
-      state: 'MH',
-      country: 'India',
-      contactName: 'Rajeev varma',
-      contactNumber: '8626167684',
-    },
-    {
-      name: 'Nova Health',
-      link: '#',
-      type: 'Client',
-      address: '5 Park Ave',
-      city: 'New York',
-      state: 'NY',
-      country: 'USA',
-      contactName: 'Antony',
-      contactNumber: '8090522110',
-    },
-    {
-      name: 'Acme Corp',
-      link: '#',
-      type: 'Vendor',
-      address: '123 Main Street',
-      city: 'Austin',
-      state: 'TX',
-      country: 'USA',
-      contactName: 'John Doe',
-      contactNumber: '6752970474',
-    },
-  ]);
-
-  readonly plus = Plus;
-  readonly searchIcon = Search;
-  readonly eyeIcon = Eye;
-  readonly editIcon = SquarePen;
-  readonly deleteIcon = Trash;
-
+  loadCounterParties() {
+    this.counterPartyService.
+      getCounterParties(3001).subscribe(res => {
+        this.counterPartyData.set(res);
+        this.dataSource.data = res;
+      })
+  }
 
   // --- UI state  ---
   readonly selectedType = signal<string>('');

@@ -9,7 +9,7 @@
           (click)="addCounterParty()"
           class="inline-flex items-center gap-2 px-4 border border-[#6D7BFA] text-[16px] rounded-lg bg-[#6D7BFA] text-white  py-2.5 text-sm font-bold shadow-sm hover:brightness-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#6C63FF]"
         >
-         <lucide-angular [img]="plus" class="text-white"></lucide-angular>
+         <lucide-angular [img]="icons.plus" class="text-white"></lucide-angular>
           Add Counter Party
         </button>
       </div>
@@ -48,7 +48,7 @@
 
         <!-- Search -->
         <div class="w-[475px] relative">
-     <lucide-angular [img]="searchIcon" class="absolute -translate-y-1/2 text-[#787A7F] edit-icon left-1 top-1/2"></lucide-angular>
+     <lucide-angular [img]="icons.search" class="absolute -translate-y-1/2 text-[#787A7F] edit-icon left-1 top-1/2"></lucide-angular>
       <input
         type="text"
         placeholder="Search here"
@@ -72,13 +72,13 @@
             <td mat-cell *matCellDef="let r" class=" py-3">
               <div class="flex items-center  text-[#8A8F98]">
                 <button (click)="viewCounterParty()"  mat-icon-button matTooltip="View">
-                  <lucide-angular [img]="eyeIcon" class="text-[#8A8F98]"></lucide-angular>
+                  <lucide-angular [img]="icons.view" class="text-[#8A8F98]"></lucide-angular>
                 </button>
                 <button (click)="editCounterParty()" mat-icon-button matTooltip="Edit">
-                  <lucide-angular [img]="editIcon" class="text-[#8A8F98]"></lucide-angular>
+                  <lucide-angular [img]="icons.edit" class="text-[#8A8F98]"></lucide-angular>
                 </button>
                 <button (click)="deleteCounterParty()" mat-icon-button matTooltip="Delete">
-                  <lucide-angular [img]="deleteIcon" class="text-[#8A8F98]"></lucide-angular>
+                  <lucide-angular [img]="icons.delete" class="text-[#8A8F98]"></lucide-angular>
                 </button>
               </div>
             </td>
@@ -94,7 +94,7 @@
               Counterparty Name
             </th>
             <td mat-cell *matCellDef="let r" class=" py-3">
-              <a [href]="r.link || '#'" class="text-[#1B79E7] underline">{{ r.name }}</a>
+              <a [href]="r.link || '#'" class="text-[#1B79E7] underline">{{ r.counterPartyName }}</a>
             </td>
           </ng-container>
 
@@ -107,7 +107,7 @@
             >
               Type
             </th>
-            <td mat-cell *matCellDef="let r" class=" py-3 text-[#1D1D21]">{{ r.type }}</td>
+            <td mat-cell *matCellDef="let r" class=" py-3 text-[#1D1D21]">{{ r.counterPartyType }}</td>
           </ng-container>
 
           <!-- Address -->
@@ -131,7 +131,7 @@
             >
               City
             </th>
-            <td mat-cell *matCellDef="let r" class=" py-3 text-[#1D1D21]">{{ r.city }}</td>
+            <td mat-cell *matCellDef="let r" class=" py-3 text-[#1D1D21]">{{ r.cityID }}</td>
           </ng-container>
 
           <!-- State -->
@@ -143,7 +143,7 @@
             >
               State
             </th>
-            <td mat-cell *matCellDef="let r" class=" py-3 text-[#1D1D21]">{{ r.state }}</td>
+            <td mat-cell *matCellDef="let r" class=" py-3 text-[#1D1D21]">{{ r.stateID }}</td>
           </ng-container>
 
           <!-- Country -->
@@ -168,7 +168,7 @@
               Contact Name
             </th>
             <td mat-cell *matCellDef="let r" class=" py-3 text-[#1D1D21]">
-              {{ r.contactName }}
+              {{ r.personName }}
             </td>
           </ng-container>
 
@@ -182,7 +182,7 @@
               Contact Number
             </th>
             <td mat-cell *matCellDef="let r" class=" py-3 text-[#1D1D21]">
-              {{ r.contactNumber }}
+              {{ r.contactNo }}
             </td>
           </ng-container>
 
