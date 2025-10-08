@@ -1,6 +1,6 @@
-import { Component, inject, signal } from '@angular/core';
+import { AfterViewInit, Component, inject, signal, ViewChild } from '@angular/core';
 import { Card } from "../../../../../shared/components/ui/card/card";
-import { MatTable, MatTableModule } from '@angular/material/table';
+import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Button } from "../../../../../shared/components/ui/button/button";
 import { LucideAngularModule } from "lucide-angular";
 import { AppIcons } from '../../../../../../assets/icons/icons';
@@ -12,18 +12,24 @@ import { Team } from '../model/teams.model';
 import { catchError, EMPTY, finalize } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
+import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
 
 
 
 @Component({
   standalone: true,
   selector: 'app-teams',
-  imports: [Card, FormsModule, MatTable, MatTableModule, Button, LucideAngularModule, Tabs, Modal, ConfirmDialog],
+  imports: [Card, FormsModule, MatTable, MatTableModule, Button, LucideAngularModule, Tabs, Modal, ConfirmDialog, MatPaginatorModule],
   templateUrl: './teams.html',
   styleUrls: ['./teams.css'],
 })
-export class Teams {
+export class Teams implements AfterViewInit {
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
   // tabs + UI flags
   readonly tabs = signal<Tab[]>([
     { id: 'active', label: 'Active' },
@@ -85,7 +91,7 @@ export class Teams {
   isLoading = signal(true);
   error = signal<string | null>(null);
   teamsData = signal<Team[]>([]);
-
+  dataSource = new MatTableDataSource<Team>([])
   teamsService = inject(TeamsService);
 
   constructor() {
@@ -104,7 +110,8 @@ export class Teams {
         takeUntilDestroyed()
       )
       .subscribe((res) => {
-        this.teamsData.set(res);
+        this.teamsData.set(res)
+        this.dataSource.data = res
       })
   }
 }
