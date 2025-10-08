@@ -75,15 +75,24 @@
 </app-card>
 
 @if(isNewUserAdding()){
-<app-modal [footerClases]="'flex justify-between items-center'" [saveButtonText]="'Send Invite'" (closed)="isNewUserAdding.set(false)" [modelContainerClass]="'w-full max-w-[850px]'" [modalBodyClass]="'bg-white'" (save)="saveNewUser()" [isOpen]="isNewUserAdding()" (closed)="isNewUserAdding()">
-  <div class=" bg-surface-raised rounded-md p-6 ">
+<app-modal
+  [footerClases]="'flex justify-between items-center'"
+  [saveButtonText]="'Send Invite'"
+  (closed)="isNewUserAdding.set(false)"
+  [modelContainerClass]="'w-full max-w-[850px]'"
+  [modalBodyClass]="'bg-white'"
+  (save)="saveNewUser()"
+  [isOpen]="isNewUserAdding()"
+  (closed)="isNewUserAdding()"
+>
+  <div class="bg-surface-raised rounded-md p-6">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <!-- Full Name -->
       <div class="col-span-1">
         <label class="form-label">Full Name</label>
         <input
-        name="fullname"
-        [(ngModel)]="fullName"
+          name="fullname"
+          [(ngModel)]="fullName"
           type="text"
           placeholder="Enter here"
           class="form-input"
@@ -92,12 +101,10 @@
 
       <!-- Job Title -->
       <div class="col-span-2">
-        <label class="form-label form-lable-required"
-          >Job Title</label
-        >
+        <label class="form-label form-lable-required">Job Title</label>
         <input
-         name="title"
-        [(ngModel)] = 'jobTitle'
+          name="title"
+          [(ngModel)]="jobTitle"
           type="text"
           placeholder="Enter here"
           class="form-input"
@@ -106,12 +113,10 @@
 
       <!-- Email ID -->
       <div>
-        <label class="form-label form-lable-required"
-          >Email ID</label
-        >
+        <label class="form-label form-lable-required">Email ID</label>
         <input
-         name="email"
-        [(ngModel)] = 'email'
+          name="email"
+          [(ngModel)]="email"
           type="email"
           placeholder="Enter here"
           class="form-input"
@@ -121,27 +126,17 @@
       <!-- Select Role -->
       <div>
         <label class="form-label">Select Role</label>
-        <select
-         name="role"
-        [(ngModel)] = 'role'
-          class="form-select"
-        >
-          <option>Bussiness</option>
-          <option>Admin</option>
-          <option>Leagal</option>
-       
+        <select name="role" [(ngModel)]="role" class="form-select">
+          @for(role of roles(); track role.roleID){
+          <option>{{ role.roleName }}</option>
+          }
         </select>
       </div>
 
       <!-- Select Team -->
       <div class="md:col-span-1">
         <label class="form-lable">Select Team</label>
-        <select
-        name="team"
-        [(ngModel)] = 'team'
-         class="form-select"
-         
-        >
+        <select name="team" [(ngModel)]="team" class="form-select">
           <option>Select</option>
         </select>
       </div>
@@ -149,12 +144,14 @@
 
     <!-- Add More Button -->
     <div class="mt-6">
-     <app-button [variant]="'primary'" [text]="'Add More'"><lucide-angular [img]='icons.plus'></lucide-angular></app-button>
+      <app-button [variant]="'primary'" [text]="'Add More'"
+        ><lucide-angular [img]="icons.plus"></lucide-angular
+      ></app-button>
     </div>
   </div>
 
-   <div modal-footer>
+  <div modal-footer>
     <p><span>Note:</span> will be sent to the entered email IDs</p>
-   </div>
+  </div>
 </app-modal>
 }

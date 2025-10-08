@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, DestroyRef, effect, inject, signal } from '@angular/core';
 import { Card } from "../../../../../shared/components/ui/card/card";
 import { Button } from "../../../../../shared/components/ui/button/button";
 import { LucideAngularModule } from "lucide-angular";
@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 import { UserService } from '../services/user.service';
 import { catchError, EMPTY, finalize } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { User } from '../model/user.model';
+import { Role, User } from '../model/user.model';
 import { Modal } from "../../../../../shared/components/ui/modal/modal";
 import { FormsModule } from '@angular/forms';
 
@@ -22,7 +22,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class Users {
   icons = AppIcons;
-
+  private destroyRef = inject(DestroyRef);
   fullName = signal('');
   jobTitle = signal('');
   email = signal('');
@@ -39,9 +39,7 @@ export class Users {
   isLoading = signal(true);
   error = signal<string | null>(null);
 
-  addUser() {
-    this.isNewUserAdding.set(true);
-  }
+
   // tabs + UI flags
   readonly tabs = signal<Tab[]>([
     { id: 'active', label: 'Active' },
@@ -50,10 +48,60 @@ export class Users {
 
   isNewUserAdding = signal(false);
 
+  roles = signal<Role[]>([]);
+  rolesLoading = signal(false);
+  rolesError = signal<string | null>(null);
+
   users = signal<User[]>([]);
 
+  addUser() {
+    this.isNewUserAdding.set(true);
+
+  }
+
+  loadRoles() {
+    console.log('[loadRoles] called');
+    // optional: prevent duplicate in-flight calls
+    if (this.rolesLoading()) {
+      console.log('[loadRoles] already loading, skip');
+      return;
+    }
+
+    this.rolesLoading.set(true);
+    this.rolesError.set(null);
+
+    this.userService.getRoles().pipe(
+      takeUntilDestroyed(this.destroyRef),              // ok in components
+      catchError((err) => {
+        console.error('[loadRoles] error:', err);
+        this.rolesError.set(err?.message ?? 'Failed to load roles');
+        return EMPTY;                       // swallow error so finalize still runs
+      }),
+      finalize(() => {
+        console.log('[loadRoles] finalize -> set loading false');
+        this.rolesLoading.set(false);
+      }),
+    ).subscribe((res) => {
+      console.log('[loadRoles] success:', res);
+      this.roles.set(res ?? []);
+    });
+  }
   constructor() {
     this.loadUsers();
+
+    effect(() => {
+      const open = this.isNewUserAdding();
+      console.log('[effect] isNewUserAdding =', open);
+      if (!open) return;
+
+      // fetch roles only the first time; remove this guard to fetch every open
+      if (this.roles().length) {
+        console.log('[effect] roles already loaded, skipping fetch');
+        return;
+      }
+
+      this.loadRoles();
+    });
   }
 
   loadUsers() {
