@@ -1,46 +1,59 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, signal, ViewChild } from '@angular/core';
 import { Button } from "../../../../shared/components/ui/button/button";
 import { AppIcons } from '../../../../../assets/icons/icons';
 import { LucideAngularModule } from "lucide-angular";
+import { FirmSerivice, OrgFirmDto } from './services/firm.service';
+import { catchError, EMPTY, finalize } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Modal } from "../../../../shared/components/ui/modal/modal";
+import { AddFirm } from "./components/add-firm/add-firm";
 
 @Component({
   selector: 'app-firm',
-  imports: [CommonModule, Button, LucideAngularModule],
+  imports: [CommonModule, Button, LucideAngularModule, Modal, AddFirm],
   templateUrl: './firm.html',
   styleUrl: './firm.css'
 })
 export class Firm {
-
+  @ViewChild('addFirmRef') addFirm?: AddFirm; 
   icons = AppIcons;
-//  Static array with two companies
-  companies = [
-    {
-      companyName: 'IGuru Portal Services Pvt Ltd',
-      tag: 'Primary',
-      firmName: 'Beta Pvt Ltd',
-      jurisdiction: 'India',
-      companyType: 'Private Limited Company',
-      address:
-        '#24, 5th Main Road, Indiranagar, Bengaluru, Karnataka, near CMH Road Metro Station, opposite XYZ Plaza,',
-      postalCode: '345678',
-      country: 'India',
-      timeFormat: 'DD:MM:YYYY, HH:mm:ss, UTC +5:30',
-      dateFormat: 'DD/MM/YYYY',
-      emailLogo: 'Custom',
-    },
-    {
-      companyName: 'Alpha Technologies LLP',
-      firmName: 'Alpha LLP',
-      jurisdiction: 'India',
-      companyType: 'Limited Liability Partnership',
-      address:
-        '#101, MG Road, Pune, Maharashtra, opposite Green Plaza, near Metro Mall,',
-      postalCode: '411001',
-      country: 'India',
-      timeFormat: 'MM-DD-YYYY, HH:mm:ss, UTC +5:30',
-      dateFormat: 'MM/DD/YYYY',
-      emailLogo: 'Standard',
-    },
-  ];
+
+  isNewFirmAdding = signal(false);
+   // 👇 same approach as your Teams component
+  isLoading = signal(true);
+  error = signal<string | null>(null);
+  firm = signal<OrgFirmDto[]>([]);
+
+  private orgFirmsSvc = inject(FirmSerivice);
+
+  constructor() {
+    this.loadFirms();
+  }
+
+  submitForm(){
+    this.addFirm?.submitFromParent()
+  }
+
+   onSubmitted(dto: OrgFirmDto) { 
+    this.orgFirmsSvc.addOrgFirm(dto).subscribe(() => {
+      this.isNewFirmAdding.set(false);
+      this.loadFirms();
+    });
+  }
+
+  loadFirms() {
+    this.orgFirmsSvc.getOrgFirms(1)
+      .pipe(
+        catchError(err => {
+          this.error.set(err?.message ?? 'Failed to load firms');
+          return EMPTY;
+        }),
+        finalize(() => this.isLoading.set(false)),
+        takeUntilDestroyed()
+      )
+      .subscribe(rows => {
+        this.firm.set(rows);
+      });
+    }
 }

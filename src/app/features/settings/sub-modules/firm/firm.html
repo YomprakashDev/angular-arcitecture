@@ -1,80 +1,82 @@
 <div class="flex flex-col p-6 mx-auto gap-4">
+  <div>
+    <app-button [text]="'Add Firm'" (clicked)="isNewFirmAdding.set(true)"></app-button>
+  </div>
+  @for(company of firm(); track $index){
+  <div class="bg-white border border-Gray86 rounded-lg font-[mulish] p-5 w-full">
+    <div class="flex items-start justify-between mb-4 gap-4">
+      <div>
+        <div class="flex items-center">
+          <h3 class="text-xl font-bold text-gray-deep">{{ company.firmName }}</h3>
 
-  @for(company of companies; track $index){
-<div class="bg-white border border-Gray86 rounded-lg font-[mulish]  p-5 w-full ">
-  <div class="flex items-start justify-between mb-4 gap-4">
-    <div>
-      <div class="flex items-center">
-        <h3 class="text-xl font-bold text-gray-deep">{{company.companyName}}</h3>
-        
-        <span *ngIf="company.tag"  class="ml-3 text-xs 
+          <!-- <span *ngIf="company.tag"  class="ml-3 text-xs 
         font-bold bg-pale-blue text-primary-blue px-2 py-0.5 rounded-full">
          {{company.tag}}
-        </span>
+        </span> -->
+        </div>
+      </div>
+
+      <div class="flex items-center">
+        <app-button [variant]="'primary'" [text]="'Edit'">
+          <lucide-angular [img]="icons.edit"></lucide-angular>
+        </app-button>
       </div>
     </div>
 
-    <div class="flex items-center">
-      <app-button [variant]="'primary'" [text]="'Edit'">
-        <lucide-angular [img]="icons.edit"></lucide-angular>
-      </app-button>
-    </div>
-  </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-8 text-sm">
+      <div>
+        <p class="text-gray-subtle font-semibold text-sm">Firm Name</p>
+        <div class="font-semibold text-sm text-black">{{ company.firmName }}</div>
+      </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-8 text-sm ">
-    <div>
-      <p class="text-gray-subtle font-semibold text-sm">Firm Name</p>
-      <div class="font-semibold text-sm text-black">{{company.firmName}}</div>
-    </div>
+      <div>
+        <p class="text-gray-subtle font-semibold text-sm">Jurisdiction of incorporation</p>
+        <div class="font-semibold text-sm text-black">{{ company.firmincorporated }}</div>
+      </div>
 
-    <div>
-      <p class="text-gray-subtle font-semibold text-sm">Jurisdiction of incorporation</p>
-      <div class="font-semibold text-sm text-black">{{company.jurisdiction}}</div>
-    </div>
+      <div>
+        <p class="text-gray-subtle font-semibold text-sm">Company Type</p>
+        <div class="font-semibold text-sm text-black">{{ company.companyType }}</div>
+      </div>
 
-    <div>
-      <p class="text-gray-subtle font-semibold text-sm">Company Type</p>
-      <div class="font-semibold text-sm text-black">{{company.companyType}}</div>
-    </div>
+      <div class="md:col-span-3">
+        <p class="text-gray-subtle font-semibold text-sm">Street Address</p>
+        <div class="font-medium text-sm text-gray-deep break-words">
+          {{ company.address }}
+        </div>
+      </div>
 
-    <div class="md:col-span-3">
-      <p class="text-gray-subtle font-semibold text-sm">Street Address</p>
-      <div class="font-medium text-sm text-gray-deep break-words">
-{{company.address}}
+      <div>
+        <p class="text-gray-subtle font-semibold text-sm">Postal Code</p>
+        <div class="font-semibold text-sm text-black">{{ company.zIpCode }}</div>
+      </div>
+
+      <div>
+        <p class="text-gray-subtle font-semibold text-sm">Country</p>
+        <div class="font-semibold text-sm text-black">{{ company.address }}</div>
+      </div>
+
+      <div>
+        <p class="text-gray-subtle font-semibold text-sm">Time and date format</p>
+        <div class="font-semibold text-sm text-black">{{ company.timeZone }}</div>
+      </div>
+
+      <div>
+        <p class="text-gray-subtle font-semibold text-sm">Date format</p>
+        <div class="font-semibold text-sm text-black">{{ company.formateDate }}</div>
+      </div>
+
+      <div>
+        <p class="text-gray-subtle font-semibold text-sm">Email/Logo</p>
+        <div class="font-semibold text-sm text-black">{{ company.logo }}</div>
       </div>
     </div>
-
-    <div>
-      <p class="text-gray-subtle font-semibold text-sm">Postal Code</p>
-      <div class="font-semibold text-sm text-black">{{company.postalCode}}</div>
-    </div>
-
-    <div>
-      <p class="text-gray-subtle font-semibold text-sm">Country</p>
-      <div class="font-semibold text-sm text-black">{{company.country}}</div>
-    </div>
-
-    <div>
-      <p class="text-gray-subtle font-semibold text-sm">Time and date format</p>
-      <div class="font-semibold text-sm text-black">{{company.timeFormat}}</div>
-    </div>
-
-    <div>
-      <p class="text-gray-subtle font-semibold text-sm">Date format</p>
-      <div class="font-semibold text-sm text-black">{{company.dateFormat}}</div>
-    </div>
-
-    <div>
-      <p class="text-gray-subtle font-semibold text-sm">Email/Logo</p>
-      <div class="font-semibold text-sm text-black">{{company.emailLogo}}</div>
-    </div>
   </div>
-</div>
   }
-
-
-
-
-
-
 </div>
+
+@if(isNewFirmAdding()){
+<app-modal (closed)="isNewFirmAdding.set(false)" [isOpen]="isNewFirmAdding()" (save)="submitForm()">
+  <app-add-firm    #addFirmRef       (submitted)="onSubmitted($event)"/>
+</app-modal>
+}
