@@ -3,7 +3,7 @@ import { Component, inject, signal } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { Modal } from '../../../../shared/components/ui/modal/modal';
 import { Tagsservice } from './services/tag.service';
-import { Tag } from './model/tags.model';
+import { EditTagPayload, Tag } from './model/tags.model';
 import { ToggleSwitch } from "../../../../shared/components/ui/toggle-switch/toggle-switch";
 import { Card } from "../../../../shared/components/ui/card/card";
 import { Button } from "../../../../shared/components/ui/button/button";
@@ -44,9 +44,9 @@ export class Tags {
       "tagName": this.tagName(),
       "status": 0,
       "orgID": 1,
-      "createdBy": 0,
+      "createdBy": 1,
       "createdDate": "2025-10-08T08:52:31.082Z",
-      "modifidBy": 0,
+      "modifidBy": 1,
       "modifiedDate": "2025-10-08T08:52:31.082Z"
     }
     this.tasService.addNewTag(payLoad).pipe(
@@ -55,6 +55,7 @@ export class Tags {
       console.log(res)
       this.isAddingNewTag.set(false);
       this.loadTags();
+      
     })
   }
 
@@ -77,9 +78,13 @@ export class Tags {
     const id = this.editingTagId();
     const currenTag = this.tagsData().find(each => each.tagID === id);
     
-    const payLoad = {
-      ...currenTag,
+    const payLoad:EditTagPayload  = {
+      tagID: Number(this.editingTagId()),
       tagName: this.editedTagName(),
+      modifidBy:0,
+      orgID:1,
+      createdDate: "2025-10-08T08:52:31.083",
+      modifiedDate:"2025-10-08T00:00:00"
     };
 
     this.tasService.editTag(payLoad).subscribe(res => {

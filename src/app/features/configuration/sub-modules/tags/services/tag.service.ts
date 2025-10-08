@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../../../environments/environment';
 import { Observable } from 'rxjs';
-import { Tag } from '../model/tags.model';
+import { EditTagPayload, Tag } from '../model/tags.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class Tagsservice {
     return this.http.post<Tag[]>(`${this.apiUrl}/Tags/AddNewTags`, data)
   }
 
-  editTag(payLoad: Tag) {
+  editTag(payLoad: EditTagPayload) {
     return this.http.put(`${this.apiUrl}/Tags/EditTag`, payLoad)
   }
 
