@@ -10,6 +10,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UpdatePackageStatus } from "../update-package-status/update-package-status";
 import { PackageRequest, SelectedPkgModule } from '../../models/package.model';
 import { Button } from "../../../../../../shared/components/ui/button/button";
+import { PackageService } from '../../services/package.service';
 type ModuleMin = { id: number; name: string; };
 
 @Component({
@@ -21,25 +22,30 @@ type ModuleMin = { id: number; name: string; };
 export class AddViewPackages {
 
   private subModuleService = inject(SubModulesService);
-  
+
   // All modules from API
   items = signal<Modules | null>(null);
 
+  pkgService = inject(PackageService)
+
   // form pieces (signals)
   packageName = signal('Silver');
-  packageCode = signal('SILV');
+  packageCode = signal('Sil');
   createdBy = signal(1);
   pkgStatus = signal(1);
 
+  // 1) keep module selections separate
+moduleSelections = signal<SelectedPkgModule[]>([]);
+
   // final payload we will POST
-  payload = signal<PackageRequest>({
-    packageId: 0,
-    packageName: '',
-    packageCode: '',
-    createdby: 0,
-    status: 1,
-    selectedPkgModule: [],
-  });
+  payload = computed<PackageRequest>(() => ({
+  packageId: 1,
+  packageName: this.packageName(),
+  packageCode: this.packageCode(),
+  createdby: this.createdBy(),
+  status: this.pkgStatus(),
+  selectedPkgModule: this.moduleSelections()
+}));
 
   icons = AppIcons;
   constructor() {
@@ -75,17 +81,23 @@ export class AddViewPackages {
     const modules = this.items()?.find(m => m.moduleID === id);
     this.selectedSubModules = modules?.subModules ?? [];
   }
+upsertModuleSelection(updated: SelectedPkgModule) {
+  const arr = [...this.moduleSelections()];
+  const i = arr.findIndex(m => m.moduleID === updated.moduleID);
+  if (i > -1) arr[i] = updated; else arr.push(updated);
+  this.moduleSelections.set(arr);
+}
+  save() {
+    console.log('FINAL PAYLOAD', this.payload());
 
-  // Child tells us which submodules are checked for THIS module
-  upsertModuleSelection(updated: SelectedPkgModule) {
-    const p = this.payload();
-    const idx = p.selectedPkgModule.findIndex(m => m.moduleID === updated.moduleID);
-    if (idx > -1) p.selectedPkgModule[idx] = updated;
-    else p.selectedPkgModule.push(updated);
-    this.payload.set({ ...p });
-  }
+    this.pkgService.addNewPackage(this.payload()).subscribe({
+      next: (res) => {
+        console.log(res)
+      },
+      error(err) {
+        console.log(err)
+      },
+    })
 
-  save(){
-       console.log('FINAL PAYLOAD', this.payload);
   }
 }

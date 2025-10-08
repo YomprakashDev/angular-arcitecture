@@ -1,6 +1,6 @@
 // Child level
 export interface ChildItem {
-  childID: number | null;
+  childID: number 
   childName: string;
   subChildStatus: boolean;
 }
@@ -38,7 +38,7 @@ export interface PackageRequest {
 }
 //  child structure
 export interface SelectedChild {
-  childId: number;
+  childId: number | null;
   status: number; 
 }
 
@@ -51,7 +51,7 @@ export interface SelectedPkgModule {
 export interface SelectedPkgSub {
   subModuleId: number;
   status: number;
-  selectedChildren?: SelectedChild[];
+  // selectedChildren?: SelectedChild[];
 }
 
 
