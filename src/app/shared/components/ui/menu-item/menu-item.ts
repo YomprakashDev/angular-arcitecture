@@ -10,7 +10,7 @@ import { LucideAngularModule } from "lucide-angular";
   styleUrls: ['./menu-item.css'],
 })
 export class MenuItemComponent {
-  item = input.required<{ name: string, id: number,status:boolean }>();
+  item = input.required<{ name: string, id: number }>();
   isSelected = input(false);
   itemSelected = output<number>();
 

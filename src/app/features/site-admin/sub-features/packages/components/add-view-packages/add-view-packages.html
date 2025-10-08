@@ -9,7 +9,7 @@
           aria-label="Go back"
           class="flex items-center justify-center w-7 h-7 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-         <lucide-angular [img] ='icons.back'></lucide-angular>
+          <lucide-angular [img]="icons.back"></lucide-angular>
         </button>
 
         <!-- Title -->
@@ -25,32 +25,35 @@
           id="packageName"
           type="text"
           placeholder="Silver"
-          [(ngModel)]="packageName"
+          [ngModel]="packageName()"
+          (ngModelChange)="packageName.set($event)"
           required
           class="w-full bg-white max-w-sm h-9 px-3 py-2 border border-gray-200 rounded-md text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
         />
       </div>
     </div>
 
-     <div class="flex w-full h-full mt-4 gap-4 bg-transparent">
-  <div class="w-[238px] bg-white rounded-lg p-4 min-h-full">
-    <h1 class="text-2xl font-bold   mb-6  text-foreground">Modules</h1>
-    <div>
-      @for (item of moduleNameList(); track item.id) {
-      <app-menu-item
-        [item]="item"
-          [isSelected]="selectedItem() === item.id"
-         (itemSelected)="selectItem($event)"
-      >
-      </app-menu-item>
-      }
-    </div>
-  </div>
+    <div class="flex w-full h-full mt-4 gap-4 bg-transparent">
+      <div class="w-[238px] bg-white rounded-lg p-4 min-h-full">
+        <h1 class="text-2xl font-bold mb-6 text-foreground">Modules</h1>
+        <div>
+          @for (item of moduleNameList(); track item.id) {
+          <app-menu-item
+            [item]="item"
+            [isSelected]="selectedItem() === item.id"
+            (itemSelected)="selectItem($event)"
+          >
+          </app-menu-item>
+          }
+        </div>
+      </div>
 
-  <div class="flex-1 p-6 bg-white rounded-lg">
-    <h1 class="text-xl font-bold mb-4 text-secondary-blue"> Sub Module</h1>
-   <app-update-package-status [subModules]="selectedSubModules"></app-update-package-status>
-  </div>
-</div>
+      <div class="flex-1 p-6 bg-white rounded-lg">
+        <h1 class="text-xl font-bold mb-4 text-secondary-blue">Sub Module</h1>
+        <app-update-package-status  [moduleId]="selectedItem()!" [subModules]="selectedSubModules"></app-update-package-status>
+      </div>
+      <!-- Save -->
+<app-button [text]="'Save'" [variant]="'primary'" (clicked)="save()"></app-button>
+    </div>
   </div>
 </div>
