@@ -17,8 +17,12 @@ export class Tagsservice {
     return this.http.get<Tag[]>(`${this.apiUrl}/Tags/GetTags/${orgId}`)
   }
 
-  addNewTag(data:Tag){
-    return this.http.post(`${this.apiUrl}/Tags/AddNewTags`,data)
+  addNewTag(data: Tag): Observable<Tag[]> {
+    return this.http.post<Tag[]>(`${this.apiUrl}/Tags/AddNewTags`, data)
+  }
+
+  editTag(payLoad: Tag) {
+    return this.http.put(`${this.apiUrl}/Tags/EditTag`, payLoad)
   }
 
 }

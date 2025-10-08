@@ -20,23 +20,22 @@ import { FormsModule } from '@angular/forms';
 })
 export class Tags {
 
-
   icons = AppIcons;
+  // track which tag is being edited
+  editingTagId = signal<number | null>(null);
 
   isAddingNewTag = signal<boolean>(false);
   isEditingTag = signal<boolean>(false);
   displayedColumns = ['actions', 'status', 'tagType', 'contractsTagged'];
 
   tagName = signal('test');
-
+  editedTagName = signal('')
   tasService = inject(Tagsservice);
   tagsData = signal<Tag[]>([]);
 
   constructor() {
     this.loadTags();
   }
-
-
 
   addNewTag() {
 
@@ -55,11 +54,9 @@ export class Tags {
     ).subscribe(res => {
       console.log(res)
       this.isAddingNewTag.set(false);
-       this.loadTags();
+      this.loadTags();
     })
   }
-
-
 
   loadTags() {
     this.tasService.getTags(1).pipe(
@@ -68,4 +65,30 @@ export class Tags {
       this.tagsData.set(res)
     })
   }
+
+  editTag(r: Tag) {
+    console.log(r);
+    this.editingTagId.set(r.tagID);
+    this.editedTagName.set(r.tagName);
+    this.isEditingTag.set(true);
+  }
+
+  saveEditedTag() {
+    const id = this.editingTagId();
+    const currenTag = this.tagsData().find(each => each.tagID === id);
+    
+    const payLoad = {
+      ...currenTag,
+      tagName: this.editedTagName(),
+    };
+
+    this.tasService.editTag(payLoad).subscribe(res => {
+      console.log(res);
+      this.editingTagId.set(null);
+      this.isEditingTag.set(false);
+      this.loadTags();
+    })
+
+  }
+
 }
