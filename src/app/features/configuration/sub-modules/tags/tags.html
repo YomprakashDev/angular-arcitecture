@@ -1,164 +1,139 @@
-<div class="flex bg-white w-full h-full">
-  <div class="flex-1 p-6">
-    <div class="p-6">
-      <!-- Header -->
-      <div class="flex items-center justify-between mb-4">
-        <h1 class="text-[22px] font-semibold text-[#1D1D21]">Tags Types</h1>
+<app-card>
+  <div class="p-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-4 font-[mulish]">
+      <h1 class="text-xl font-bold text-primary-black">Tags Types</h1>
 
-        <div class="flex items-center gap-4">
-          <!-- Search (visual only) -->
-          <label class="relative">
-            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <circle cx="11" cy="11" r="7"></circle>
-                <path d="M21 21l-4.35-4.35"></path>
-              </svg>
-            </span>
-            <input
-              type="text"
-              placeholder="Search here"
-              class="w-[280px] pl-9 pr-3 py-2 rounded-lg border border-[#E6E6E6] text-sm focus:outline-none"
-            />
-          </label>
+      <app-button [text]="'Add Tag Type'" (clicked)="isAddingNewTag.set(true)">
+        <lucide-angular [img]="icons.plus"></lucide-angular>
+      </app-button>
+    </div>
 
-          <!-- Add button (visual only) -->
-          <button
-            type="button"
-            (click)="isAddingNewTag.set(true)"
-            class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#7C83FF] text-white text-sm font-semibold"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M12 5v14M5 12h14"></path>
-            </svg>
-            Add Tag Type
-          </button>
-        </div>
-      </div>
-
-      <!-- Card + Material table -->
-      <div class="overflow-hidden rounded-xl border border-[#F0F0F0] bg-white">
-        <table mat-table [dataSource]="rows" class="w-full mat-elevation-z0 text-sm">
-          <!-- Actions -->
-          <ng-container matColumnDef="actions">
-            <th
-              mat-header-cell
-              *matHeaderCellDef
-              class="px-4 py-3 font-medium text-[#6B7280] bg-[#F6F8FB] w-[120px]"
-            >
-              Actions
-            </th>
-            <td mat-cell *matCellDef="let r" class="px-4 py-3">
-              <div class="flex items-center gap-3 text-[#787A7F]">
-                <!-- edit -->
-                <button (click)="isEditingTag.set(true)" aria-label="Edit">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M12 20h9"></path>
-                    <path d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4 12.5-12.5z"></path>
-                  </svg>
-                </button>
-                <!-- download -->
-                <button aria-label="Download">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <path d="M7 10l5 5 5-5"></path>
-                    <path d="M12 15V3"></path>
-                  </svg>
-                </button>
-                <!-- delete -->
-                <button aria-label="Delete">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <polyline points="3 6 5 6 21 6"></polyline>
-                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
-                    <path d="M10 11v6"></path>
-                    <path d="M14 11v6"></path>
-                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
-                  </svg>
-                </button>
-              </div>
-            </td>
-          </ng-container>
-
-          <!-- Status (visual toggle only) -->
-          <ng-container matColumnDef="status">
-            <th
-              mat-header-cell
-              *matHeaderCellDef
-              class="px-4 py-3 font-medium text-[#6B7280] bg-[#F6F8FB] w-[120px]"
-            >
-              Status
-            </th>
-            <td mat-cell *matCellDef="let r" class="px-4 py-3">
-              <div
-                class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors"
-                [class.bg-gray-300]="r.status === 'off'"
-                [class.bg-indigo-500]="r.status === 'on'"
-              >
-                <span
-                  class="h-4 w-4 bg-white rounded-full shadow transform transition-transform"
-                  [class.translate-x-1]="r.status === 'off'"
-                  [class.translate-x-5]="r.status === 'on'"
-                ></span>
-              </div>
-            </td>
-          </ng-container>
-
-          <!-- Tag Type -->
-          <ng-container matColumnDef="tagType">
-            <th
-              mat-header-cell
-              *matHeaderCellDef
-              class="px-4 py-3 font-medium text-[#6B7280] bg-[#F6F8FB]"
-            >
-              Tag Type
-            </th>
-            <td mat-cell *matCellDef="let r" class="px-4 py-3 text-[#1D1D21]">
-              {{ r.tagType }}
-            </td>
-          </ng-container>
-
-          <!-- Contracts Tagged -->
-          <ng-container matColumnDef="contractsTagged">
-            <th
-              mat-header-cell
-              *matHeaderCellDef
-              class="px-4 py-3 font-medium text-[#6B7280] bg-[#F6F8FB]"
-            >
-              Contracts Tagged
-            </th>
-            <td mat-cell *matCellDef="let r" class="px-4 py-3 text-[#1D1D21]">
-              {{ r.contractsTagged }}
-            </td>
-          </ng-container>
-
-          <!-- Rows -->
-          <tr mat-header-row *matHeaderRowDef="displayedColumns" class="!bg-[#F6F8FB]"></tr>
-          <tr
-            mat-row
-            *matRowDef="let row; columns: displayedColumns"
-            class="odd:bg-white even:bg-[#F9FAFC]"
-          ></tr>
-        </table>
+    <div class="flex items-center justify-end mb-4 gap-4">
+      <div class="relative w-72">
+        <label class="sr-only" for="org-search">Search organizations</label>
+        <lucide-angular
+          [img]="icons.search"
+          class="absolute left-1 top-1/2 -translate-y-1/2 text-gray-subtleAlt text-xs"
+        ></lucide-angular>
+        <input
+          type="text"
+          id="org-search"
+          placeholder="Search organizations"
+          class="block w-full py-2 pl-10 pr-4 text-gray-900 border border-gray-300 rounded-md bg-transparent"
+        />
       </div>
     </div>
+
+    <!-- Card + Material table -->
+    <div class="overflow-hidden rounded-xl border border-white-gray bg-white">
+      <table mat-table [dataSource]="tagsData()" class="w-full mat-elevation-z0 text-sm">
+        <!-- Actions -->
+        <ng-container matColumnDef="actions">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="px-4 py-3 font-bold font-[mulish] text-gray-subtle bg-gray-surfaceAlt w-[120px]"
+          >
+            Actions
+          </th>
+          <td mat-cell *matCellDef="let r" class="px-4 py-3">
+            <div class="flex items-center gap-3">
+              <!-- edit -->
+              <button (click)="isEditingTag.set(true)" aria-label="Edit">
+                <lucide-angular class="text-gray-subtleAlt w-5" [img]="icons.edit"></lucide-angular>
+              </button>
+
+              <!-- delete -->
+              <button aria-label="Delete">
+                <lucide-angular
+                  class="text-gray-subtleAlt w-5"
+                  [img]="icons.delete"
+                ></lucide-angular>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Status (visual toggle only) -->
+        <ng-container matColumnDef="status">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="px-4 py-3 font-bold font-[mulish] text-gray-subtle bg-gray-surfaceAlt w-[120px]"
+          >
+            Status
+          </th>
+          <td mat-cell *matCellDef="let r" class="px-4 py-3">
+            <app-toggle-switch></app-toggle-switch>
+          </td>
+        </ng-container>
+
+        <!-- Tag Type -->
+        <ng-container matColumnDef="tagType">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="px-4 py-3 font-bold font-[mulish] text-gray-subtle bg-gray-surfaceAlt"
+          >
+            Tag Type
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let r"
+            class="px-4 py-3 font-normal font-[mulish] text-black text-sm"
+          >
+            {{ r.tagName }}
+          </td>
+        </ng-container>
+
+        <!-- Contracts Tagged -->
+        <ng-container matColumnDef="contractsTagged">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="px-4 py-3 font-bold font-[mulish] text-gray-subtle bg-gray-surfaceAlt"
+          >
+            Contracts Tagged
+          </th>
+          <td mat-cell *matCellDef="let r" class="px-4 py-3 text-[#1D1D21]">
+            {{ 0 }}
+          </td>
+        </ng-container>
+
+        <!-- Rows -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="!bg-[#F6F8FB]"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+          class="odd:bg-white even:bg-[#F9FAFC]"
+        ></tr>
+      </table>
+    </div>
   </div>
-</div>
+</app-card>
 
 @if(isAddingNewTag()){
-<app-modal [modelContainerClass]="'max-w-[450px]'"  [isOpen]="isAddingNewTag()" (closed)="isAddingNewTag.set(false)" [title]="'Add New Tag'">
-  <div>
-    <label class="block text-[#6B7280] text-sm font-medium mb-1">Tag Type</label>
-    <input
-      type="text"
-      class="border-[#E5E7EB] border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
-      placeholder="Tag Type"
-    />
+<app-modal
+  [modelContainerClass]="'max-w-[450px]'"
+  [modalBodyClass]="'bg-white'"
+  [isOpen]="isAddingNewTag()"
+  (closed)="isAddingNewTag.set(false)"
+  [title]="'Add New Tag'"
+  (save)="addNewTag()"
+>
+  <div class="bg-surface-raised2 p-4 rounded-lg">
+    <label class="form-lable form-lable-required">Tag Type</label>
+    <input [(ngModel)]="tagName" type="text" class="form-input" placeholder="Tag Type" />
   </div>
 </app-modal>
-}
-
-
-@if(isEditingTag()){
-<app-modal [modelContainerClass]="'max-w-xl'"  [isOpen]="isEditingTag()" (closed)="isEditingTag.set(false)" [title]="'Edit Tag'">
+} @if(isEditingTag()){
+<app-modal
+  [modelContainerClass]="'max-w-xl'"
+  [isOpen]="isEditingTag()"
+  (closed)="isEditingTag.set(false)"
+  [title]="'Edit Tag'"
+>
   <div>
     <label class="block text-[#6B7280] text-sm font-medium mb-1">Tag Type</label>
     <input

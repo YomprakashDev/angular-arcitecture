@@ -31,11 +31,12 @@ body {
 
   --color-secondary: #6f42c1;
   --color-accent: #fd7e14;
-  --color-Gray35:##595959
+  --color-Gray35:##595959;
 
   /* Links / extra blues */
   --color-link: #1b79e7;
   --color-link-strong: #0000ff;
+  --color-white-gray:#F0F0F0;
 
   /* Status */
   --color-success: #23b93e;
@@ -101,14 +102,14 @@ body {
   }
 
   .form-label {
-    @apply block text-sm font-semibold text-gray-dark mb-1;
+    @apply block  text-sm font-semibold text-gray-dark;
   }
   .form-lable-required {
     @apply after:content-['*']  after:text-error;
   }
 
   .form-input {
-    @apply w-full py-3 px-3 rounded-md bg-white
+    @apply w-full py-3 px-3 mt-2 rounded-md bg-white
      sm:text-sm placeholder:text-gray-subtle placeholder:font-medium placeholder:text-sm focus:outline-none;
   }
 

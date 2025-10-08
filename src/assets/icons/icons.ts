@@ -8,6 +8,7 @@ import {
     LogOut,
     CircleX,
     Check,
+    Trash,
     ChevronRight,
     ChevronUp,
     ChevronDown,
@@ -47,6 +48,7 @@ export const AppIcons = {
     lock: LockKeyhole,
     settingsIcon: Settings,
     mail: Mail,
-    back:ArrowLeft 
+    back:ArrowLeft ,
+    delete:Trash
 
 };
