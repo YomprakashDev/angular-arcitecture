@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -11,15 +11,15 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Modal } from '../../../../../shared/components/ui/modal/modal';
 import { CounterpartyForm } from '../components/counterparty-form/counterparty-form';
 import { ConfirmDialog } from '../../../../../shared/components/ui/confirm-dialog/confirm-dialog';
-import { Plus, Search, Eye, LucideAngularModule, SquarePen, Trash } from 'lucide-angular';
+import { LucideAngularModule } from 'lucide-angular';
 import { ViewCounterpartyInformation } from "../components/view-counterparty-information/view-counterparty-information";
 import { Counterparty } from '../services/counter-party.service';
-import { CounterPartyModel, CounterPartyType, ViewCounterParty } from '../models/counter-party.model';
+import { CounterPartyModel, CounterPartyType, ViewCounterParty, AddCounterParty } from '../models/counter-party.model';
 import { AppIcons } from '../../../../../../assets/icons/icons';
+import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 
 type CounterpartyType = 'Vendor' | 'Client' | 'Partner';
-
 
 @Component({
   selector: 'app-counter-party',
@@ -37,6 +37,7 @@ type CounterpartyType = 'Vendor' | 'Client' | 'Partner';
     Modal,
     CounterpartyForm,
     LucideAngularModule, ConfirmDialog,
+    ReactiveFormsModule,
     ViewCounterpartyInformation],
   templateUrl: './counter-party.html',
   styleUrls: ['./counter-party.css']
@@ -44,7 +45,7 @@ type CounterpartyType = 'Vendor' | 'Client' | 'Partner';
 export class CounterParty {
 
   readonly types: CounterpartyType[] = ['Vendor', 'Client', 'Partner'];
- 
+
   readonly countries = ['USA', 'India'];
   // ---------- Table ----------
   displayedColumns = [
@@ -59,6 +60,25 @@ export class CounterParty {
     'contactNumber',
   ] as const;
 
+
+  private fb = inject(FormBuilder);
+
+  form = this.fb.group({
+    counterPartyName: ['', Validators.required],
+    type: new FormControl<number | null>(null, Validators.required),
+    websiteUrl: [''],
+
+    streetAddress: ['', Validators.required],
+    city: ['',Validators.required],
+    state: ['', Validators.required],
+    country: ['', Validators.required],
+    isPrimary: [false],
+
+    contactPersonName: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    contactNumber: ['', [Validators.required, Validators.pattern(/^[0-9+\-() ]{7,20}$/)]],
+    designation: ['', Validators.required],
+  });
 
   dataSource = new MatTableDataSource<CounterPartyModel>();
 
@@ -108,22 +128,70 @@ export class CounterParty {
   isAdding = signal(false);
   isDeleting = signal(false);
   isViewing = signal(false);
- 
- 
+
+
   addCounterParty() {
     this.isAdding.set(true);
     this.loadCounterPartyTypes();
   }
 
   viewCounterParty(r: CounterPartyModel) {
-
     this.isViewing.set(true);
-
     this.viewParty(r.orgCounterPartyID);
   }
 
   counterPartyTypesData = signal<CounterPartyType[]>([]);
 
+  orgId = 3001;
+  userId = 207;
+  stateID = 1;
+  cityID = 1;
+  countryID = 1;
+
+  addNewCounterParty() {
+
+    this.form.markAllAsTouched();
+    if (this.form.invalid) return;
+
+    const v = this.form.value;
+    const payload = {
+      counterPartyName: (v.counterPartyName ?? '').trim(),
+      orgID: this.orgId,
+      counterPartyType: Number(v.type),
+      webSiteUrl: v.websiteUrl || null, 
+      createdBy: this.userId,
+      createdDate: new Date().toISOString(),
+      newAddressList: [
+        {
+          address: (v.streetAddress ?? '').trim(),
+          stateID: this.stateID,
+          cityID: this.cityID,
+          countryID: this.countryID,
+          defultPrimary: v.isPrimary ? 1 : 0
+        }
+      ],
+      newContactsList: [
+        {
+          personName: (v.contactPersonName ?? '').trim(),
+          email: (v.email ?? '').trim(),
+          contactNo: (v.contactNumber ?? '').trim(),
+          designation: (v.designation ?? '').trim(),
+          primaryContact: 1
+        }
+      ]
+    }
+    this.counterPartyService.addNewCounterParty(payload).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.isAdding.set(false);
+        this.loadCounterParties();
+        this.form.reset()
+      },
+      error: (e) => {
+        console.error(e)
+      }
+    })
+  }
 
   loadCounterPartyTypes() {
     this.counterPartyService.getAllCounterPartyTypes().subscribe({
@@ -137,9 +205,7 @@ export class CounterParty {
     })
   }
 
-
   editCounterParty() {
-
   }
 
   deleteCounterParty() {

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../../../environments/environment';
-import { ViewCounterParty, CounterPartyModel, CounterPartyType } from '../models/counter-party.model';
+import { ViewCounterParty, CounterPartyModel, CounterPartyType, AddCounterParty } from '../models/counter-party.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -18,12 +18,17 @@ export class Counterparty {
 
   viewCounterParyDetails(orgId: number): Observable<ViewCounterParty> {
     return this.http.get<ViewCounterParty>(`${this.apiUrl}/CounterParty/GetCounterParty/${orgId}`);
-    
+
   }
 
-  getAllCounterPartyTypes(): Observable<CounterPartyType[]>{
-  return this.http.get<CounterPartyType[]>
-  (`${this.apiUrl}/CounterParty/GetCounterPartyTypes`);
+  getAllCounterPartyTypes(): Observable<CounterPartyType[]> {
+    return this.http.get<CounterPartyType[]>
+      (`${this.apiUrl}/CounterParty/GetCounterPartyTypes`);
+  }
+
+  addNewCounterParty(payload: AddCounterParty): Observable<AddCounterParty> {
+    return this.http.post<AddCounterParty>
+      (`${this.apiUrl}/CounterParty/AddCounterParty`, payload);
   }
 
 }

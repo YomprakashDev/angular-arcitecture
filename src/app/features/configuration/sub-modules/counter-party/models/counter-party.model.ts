@@ -16,7 +16,7 @@ export interface Address {
   stateID: number;
   cityID: number;
   countryID: number;
-  defultPrimary: number; 
+  defultPrimary: number;
 }
 
 // Represents a Contact object
@@ -39,4 +39,22 @@ export interface ViewCounterParty {
 export interface CounterPartyType {
   counterPartyTypeId: number;
   counterPartyTypeName: string;
+}
+
+export interface NewContact extends Contact {
+  primaryContact: number;
+}
+
+
+
+export interface AddCounterParty {
+  counterPartyName: string;
+  orgID: number;
+  counterPartyType: number;
+  webSiteUrl: string | null;
+  createdBy: number;
+  createdDate: string;
+  newAddressList: Address[];
+  newContactsList: NewContact[];
+
 }

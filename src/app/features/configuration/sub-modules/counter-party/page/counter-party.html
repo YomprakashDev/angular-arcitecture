@@ -207,10 +207,11 @@
   [isOpen]="isAdding()"
   (closed)="isAdding.set(false)"
   [title]="'Add Counter Party Details'"
+  (save)="addNewCounterParty()"
 >
-  <app-counterparty-form [counterPartyTypesData]="counterPartyTypesData()">
-
-  </app-counterparty-form>
+  <app-counterparty-form 
+  [counterPartyTypesData]="counterPartyTypesData()"
+  [form]="form"   > </app-counterparty-form>
 </app-modal>
 } @if(isDeleting()){
 <app-confirm-dialog
