@@ -14,7 +14,7 @@ import { ConfirmDialog } from '../../../../../shared/components/ui/confirm-dialo
 import { Plus, Search, Eye, LucideAngularModule, SquarePen, Trash } from 'lucide-angular';
 import { ViewCounterpartyInformation } from "../components/view-counterparty-information/view-counterparty-information";
 import { Counterparty } from '../services/counter-party.service';
-import { CounterPartyModel, ViewCounterParty } from '../models/counter-party.model';
+import { CounterPartyModel, CounterPartyType, ViewCounterParty } from '../models/counter-party.model';
 import { AppIcons } from '../../../../../../assets/icons/icons';
 
 
@@ -24,7 +24,8 @@ type CounterpartyType = 'Vendor' | 'Client' | 'Partner';
 @Component({
   selector: 'app-counter-party',
   standalone: true,
-  imports: [CommonModule,
+  imports: [
+    CommonModule,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
@@ -32,16 +33,18 @@ type CounterpartyType = 'Vendor' | 'Client' | 'Partner';
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
-    MatTooltipModule, Modal, CounterpartyForm,
+    MatTooltipModule,
+    Modal,
+    CounterpartyForm,
     LucideAngularModule, ConfirmDialog,
-
-     ViewCounterpartyInformation],
+    ViewCounterpartyInformation],
   templateUrl: './counter-party.html',
   styleUrls: ['./counter-party.css']
 })
 export class CounterParty {
 
   readonly types: CounterpartyType[] = ['Vendor', 'Client', 'Partner'];
+ 
   readonly countries = ['USA', 'India'];
   // ---------- Table ----------
   displayedColumns = [
@@ -77,13 +80,13 @@ export class CounterParty {
     newContactList: []
   });
 
-  viewParty(id:number) {
+  viewParty(id: number) {
     this.counterPartyService.viewCounterParyDetails(id).subscribe({
-      next:(res) => {
-       
+      next: (res) => {
+
         this.viewCounterPartyData.set(res);
       },
-      error:(e) => {
+      error: (e) => {
         console.log(e)
       }
     })
@@ -105,17 +108,34 @@ export class CounterParty {
   isAdding = signal(false);
   isDeleting = signal(false);
   isViewing = signal(false);
+ 
+ 
   addCounterParty() {
     this.isAdding.set(true);
+    this.loadCounterPartyTypes();
   }
 
-  viewCounterParty(r:CounterPartyModel) {
-   
+  viewCounterParty(r: CounterPartyModel) {
+
     this.isViewing.set(true);
-    
+
     this.viewParty(r.orgCounterPartyID);
   }
 
+  counterPartyTypesData = signal<CounterPartyType[]>([]);
+
+
+  loadCounterPartyTypes() {
+    this.counterPartyService.getAllCounterPartyTypes().subscribe({
+      next: (res) => {
+        console.log(res);
+        this.counterPartyTypesData.set(res);
+      },
+      error: (e) => {
+        console.log(e)
+      }
+    })
+  }
 
 
   editCounterParty() {

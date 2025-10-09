@@ -17,12 +17,13 @@ export class Counterparty {
   }
 
   viewCounterParyDetails(orgId: number): Observable<ViewCounterParty> {
-    return this.http.get<ViewCounterParty>(`${this.apiUrl}/CounterParty/GetCounterParty/${orgId}`)
-
+    return this.http.get<ViewCounterParty>(`${this.apiUrl}/CounterParty/GetCounterParty/${orgId}`);
+    
   }
 
-  getAllCounterParties(): Observable<CounterPartyType[]>{
-  return this.http.get<CounterPartyType[]>(`${this.apiUrl}/CounterParty/GetCounterPartyTypes`);
+  getAllCounterPartyTypes(): Observable<CounterPartyType[]>{
+  return this.http.get<CounterPartyType[]>
+  (`${this.apiUrl}/CounterParty/GetCounterPartyTypes`);
   }
 
 }

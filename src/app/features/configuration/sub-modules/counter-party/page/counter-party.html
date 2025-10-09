@@ -7,9 +7,9 @@
 
         <button
           (click)="addCounterParty()"
-          class="inline-flex items-center gap-2 px-4 border border-[#6D7BFA] text-[16px] rounded-lg bg-[#6D7BFA] text-white  py-2.5 text-sm font-bold shadow-sm hover:brightness-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#6C63FF]"
+          class="inline-flex items-center gap-2 px-4 border border-[#6D7BFA] text-[16px] rounded-lg bg-[#6D7BFA] text-white py-2.5 text-sm font-bold shadow-sm hover:brightness-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#6C63FF]"
         >
-         <lucide-angular [img]="icons.plus" class="text-white"></lucide-angular>
+          <lucide-angular [img]="icons.plus" class="text-white"></lucide-angular>
           Add Counter Party
         </button>
       </div>
@@ -18,7 +18,7 @@
       <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
         <div class="flex items-center gap-3">
           <!-- Type -->
-          <mat-form-field appearance="outline" class="w-[160px] ">
+          <mat-form-field appearance="outline" class="w-[160px]">
             <mat-select
               [value]="selectedType()"
               (valueChange)="selectedType.set($event)"
@@ -48,13 +48,16 @@
 
         <!-- Search -->
         <div class="w-[475px] relative">
-     <lucide-angular [img]="icons.search" class="absolute -translate-y-1/2 text-[#787A7F] edit-icon left-1 top-1/2"></lucide-angular>
-      <input
-        type="text"
-        placeholder="Search here"
-        class="w-full pl-10 pr-4 font-normal py-2 rounded-lg placeholder:text-[#787A7F] border border-[#d9d9d9] focus:outline-none text-sm"
-      />
-    </div>
+          <lucide-angular
+            [img]="icons.search"
+            class="absolute -translate-y-1/2 text-[#787A7F] edit-icon left-1 top-1/2"
+          ></lucide-angular>
+          <input
+            type="text"
+            placeholder="Search here"
+            class="w-full pl-10 pr-4 font-normal py-2 rounded-lg placeholder:text-[#787A7F] border border-[#d9d9d9] focus:outline-none text-sm"
+          />
+        </div>
       </div>
 
       <!-- Table -->
@@ -65,13 +68,13 @@
             <th
               mat-header-cell
               *matHeaderCellDef
-              class=" py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
+              class="py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
             >
               Actions
             </th>
-            <td mat-cell *matCellDef="let r" class=" py-3">
-              <div class="flex items-center  text-[#8A8F98]">
-                <button (click)="viewCounterParty(r)"  mat-icon-button matTooltip="View">
+            <td mat-cell *matCellDef="let r" class="py-3">
+              <div class="flex items-center text-[#8A8F98]">
+                <button (click)="viewCounterParty(r)" mat-icon-button matTooltip="View">
                   <lucide-angular [img]="icons.view" class="text-[#8A8F98]"></lucide-angular>
                 </button>
                 <button (click)="editCounterParty()" mat-icon-button matTooltip="Edit">
@@ -89,12 +92,14 @@
             <th
               mat-header-cell
               *matHeaderCellDef
-              class=" py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
+              class="py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
             >
               Counterparty Name
             </th>
-            <td mat-cell *matCellDef="let r" class=" py-3">
-              <a [href]="r.link || '#'" class="text-[#1B79E7] underline">{{ r.counterPartyName }}</a>
+            <td mat-cell *matCellDef="let r" class="py-3">
+              <a [href]="r.link || '#'" class="text-[#1B79E7] underline">{{
+                r.counterPartyName
+              }}</a>
             </td>
           </ng-container>
 
@@ -103,11 +108,13 @@
             <th
               mat-header-cell
               *matHeaderCellDef
-              class=" py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
+              class="py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
             >
               Type
             </th>
-            <td mat-cell *matCellDef="let r" class=" py-3 text-[#1D1D21]">{{ r.counterPartyType }}</td>
+            <td mat-cell *matCellDef="let r" class="py-3 text-[#1D1D21]">
+              {{ r.counterPartyType }}
+            </td>
           </ng-container>
 
           <!-- Address -->
@@ -115,11 +122,11 @@
             <th
               mat-header-cell
               *matHeaderCellDef
-              class=" py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
+              class="py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
             >
               Address
             </th>
-            <td mat-cell *matCellDef="let r" class=" py-3 text-[#1D1D21]">{{ r.address }}</td>
+            <td mat-cell *matCellDef="let r" class="py-3 text-[#1D1D21]">{{ r.address }}</td>
           </ng-container>
 
           <!-- City -->
@@ -127,11 +134,11 @@
             <th
               mat-header-cell
               *matHeaderCellDef
-              class=" py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
+              class="py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
             >
               City
             </th>
-            <td mat-cell *matCellDef="let r" class=" py-3 text-[#1D1D21]">{{ r.cityID }}</td>
+            <td mat-cell *matCellDef="let r" class="py-3 text-[#1D1D21]">{{ r.cityID }}</td>
           </ng-container>
 
           <!-- State -->
@@ -139,11 +146,11 @@
             <th
               mat-header-cell
               *matHeaderCellDef
-              class=" py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
+              class="py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
             >
               State
             </th>
-            <td mat-cell *matCellDef="let r" class=" py-3 text-[#1D1D21]">{{ r.stateID }}</td>
+            <td mat-cell *matCellDef="let r" class="py-3 text-[#1D1D21]">{{ r.stateID }}</td>
           </ng-container>
 
           <!-- Country -->
@@ -151,11 +158,11 @@
             <th
               mat-header-cell
               *matHeaderCellDef
-              class=" py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
+              class="py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
             >
               Country
             </th>
-            <td mat-cell *matCellDef="let r" class=" py-3 text-[#1D1D21]">{{ r.country }}</td>
+            <td mat-cell *matCellDef="let r" class="py-3 text-[#1D1D21]">{{ r.country }}</td>
           </ng-container>
 
           <!-- Contact Name -->
@@ -163,11 +170,11 @@
             <th
               mat-header-cell
               *matHeaderCellDef
-              class=" py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
+              class="py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
             >
               Contact Name
             </th>
-            <td mat-cell *matCellDef="let r" class=" py-3 text-[#1D1D21]">
+            <td mat-cell *matCellDef="let r" class="py-3 text-[#1D1D21]">
               {{ r.personName }}
             </td>
           </ng-container>
@@ -177,11 +184,11 @@
             <th
               mat-header-cell
               *matHeaderCellDef
-              class=" py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
+              class="py-3 bg-[#F6F7FB] text-[#6B7280] font-semibold text-left"
             >
               Contact Number
             </th>
-            <td mat-cell *matCellDef="let r" class=" py-3 text-[#1D1D21]">
+            <td mat-cell *matCellDef="let r" class="py-3 text-[#1D1D21]">
               {{ r.contactNo }}
             </td>
           </ng-container>
@@ -196,19 +203,30 @@
 </div>
 
 @if(isAdding()){
-<app-modal [isOpen]="isAdding()"  (closed)="isAdding.set(false)" [title]="'Add Counter Party Details'">
-  <app-counterparty-form></app-counterparty-form>
+<app-modal
+  [isOpen]="isAdding()"
+  (closed)="isAdding.set(false)"
+  [title]="'Add Counter Party Details'"
+>
+  <app-counterparty-form [counterPartyTypesData]="counterPartyTypesData()">
+
+  </app-counterparty-form>
 </app-modal>
-}
-
-@if(isDeleting()){
-  <app-confirm-dialog [variant]="'danger'" [text]="'Are you sure you want to delete this counterparty?'" [open]="isDeleting()" (closed)="isDeleting.set(false)"></app-confirm-dialog>
-}
-
-@if(isViewing()){
-  <app-modal [isOpen]="isViewing()" [isButtonsShowing]="isButtonsShowing()" (closed)="isViewing.set(false)" [title]="'Counterparty: Ace Corporation'">
+} @if(isDeleting()){
+<app-confirm-dialog
+  [variant]="'danger'"
+  [text]="'Are you sure you want to delete this counterparty?'"
+  [open]="isDeleting()"
+  (closed)="isDeleting.set(false)"
+></app-confirm-dialog>
+} @if(isViewing()){
+<app-modal
+  [isOpen]="isViewing()"
+  [isButtonsShowing]="isButtonsShowing()"
+  (closed)="isViewing.set(false)"
+  [title]="'Counterparty: Ace Corporation'"
+>
   <app-view-counterparty-information [viewCounterPartyData]="viewCounterPartyData()">
-
   </app-view-counterparty-information>
-  </app-modal>
+</app-modal>
 }
