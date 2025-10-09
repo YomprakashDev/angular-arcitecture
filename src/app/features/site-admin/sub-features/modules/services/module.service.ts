@@ -6,7 +6,10 @@ import { environment } from '../../../../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ModuleService {
+
   private http = inject(HttpClient);
+   
+  /** Base API URL */
   private apiUrl = environment.apiUrl;
 
   getModules(page: number, pageSize: number): Observable<ModuleResponse> {
