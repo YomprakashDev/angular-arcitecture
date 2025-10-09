@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from "@angular/material/paginator";
+import { ViewCounterParty } from '../../models/counter-party.model';
 
 // Interface for the Contact Details data structure
 interface Contact {
@@ -26,10 +27,11 @@ interface Contract {
   owner: string;
 }
 @Component({
+  standalone:true,
   selector: 'app-view-counterparty-information',
   imports: [CommonModule, MatTableModule, MatPaginatorModule],
   templateUrl: './view-counterparty-information.html',
-  styleUrl: './view-counterparty-information.css'
+  styleUrls: ['./view-counterparty-information.css']
 })
 export class ViewCounterpartyInformation {
   // --- Counterparty Information ---
@@ -58,6 +60,8 @@ export class ViewCounterpartyInformation {
       country: 'India'
     }
   ];
+  viewCounterPartyData = input<ViewCounterParty>();
+
 
   // --- Contact Details ---
   public contacts: Contact[] = [
@@ -68,18 +72,8 @@ export class ViewCounterpartyInformation {
   ];
   // Define the columns to be displayed in the order you want
   displayedColumns: string[] = ['contractId', 'email', 'status', 'owner'];
-  contracts: Contract[] = [
-    { contractId: '#CT00123', email: 'Vendor Agreement', status: 'Draft', owner: 'Ravi Kumar' },
-    { contractId: '#CT00145', email: 'NDA - Tech Partner', status: 'Executed', owner: 'Neha S.' },
-    { contractId: '#CT00123', email: 'Vendor Agreement', status: 'Approval', owner: 'Ravi Kumar' },
-    { contractId: '#CT00145', email: 'NDA - Tech Partner', status: 'Expired', owner: 'Neha S.' },
-    { contractId: '#CT00123', email: 'Vendor Agreement', status: 'Due for Renewal', owner: 'Ravi Kumar' },
-    { contractId: '#CT00145', email: 'NDA - Tech Partner', status: 'Signature Due', owner: 'Neha S.' },
-    { contractId: '#CT00123', email: 'Vendor Agreement', status: 'Executed', owner: 'Ravi Kumar' },
-    { contractId: '#CT00145', email: 'NDA - Tech Partner', status: 'Review', owner: 'Neha S.' },
-    { contractId: '#CT00123', email: 'Vendor Agreement', status: 'Signature Due', owner: 'Ravi Kumar' },
-    { contractId: '#CT00145', email: 'NDA - Tech Partner', status: 'Draft', owner: 'Neha S.' },
-  ];
+  
+
 
 
   getStatusClass(status: string) {

@@ -71,7 +71,7 @@
             </th>
             <td mat-cell *matCellDef="let r" class=" py-3">
               <div class="flex items-center  text-[#8A8F98]">
-                <button (click)="viewCounterParty()"  mat-icon-button matTooltip="View">
+                <button (click)="viewCounterParty(r)"  mat-icon-button matTooltip="View">
                   <lucide-angular [img]="icons.view" class="text-[#8A8F98]"></lucide-angular>
                 </button>
                 <button (click)="editCounterParty()" mat-icon-button matTooltip="Edit">
@@ -207,6 +207,8 @@
 
 @if(isViewing()){
   <app-modal [isOpen]="isViewing()" [isButtonsShowing]="isButtonsShowing()" (closed)="isViewing.set(false)" [title]="'Counterparty: Ace Corporation'">
-  <app-view-counterparty-information></app-view-counterparty-information>
+  <app-view-counterparty-information [viewCounterPartyData]="viewCounterPartyData()">
+
+  </app-view-counterparty-information>
   </app-modal>
 }

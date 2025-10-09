@@ -14,7 +14,7 @@ import { ConfirmDialog } from '../../../../../shared/components/ui/confirm-dialo
 import { Plus, Search, Eye, LucideAngularModule, SquarePen, Trash } from 'lucide-angular';
 import { ViewCounterpartyInformation } from "../components/view-counterparty-information/view-counterparty-information";
 import { Counterparty } from '../services/counter-party.service';
-import { CounterPartyModel } from '../models/counter-party.model';
+import { CounterPartyModel, ViewCounterParty } from '../models/counter-party.model';
 import { AppIcons } from '../../../../../../assets/icons/icons';
 
 
@@ -33,7 +33,9 @@ type CounterpartyType = 'Vendor' | 'Client' | 'Partner';
     MatSelectModule,
     MatButtonModule,
     MatTooltipModule, Modal, CounterpartyForm,
-    LucideAngularModule, ConfirmDialog, ViewCounterpartyInformation],
+    LucideAngularModule, ConfirmDialog,
+
+     ViewCounterpartyInformation],
   templateUrl: './counter-party.html',
   styleUrls: ['./counter-party.css']
 })
@@ -67,6 +69,25 @@ export class CounterParty {
 
   counterPartyData = signal<CounterPartyModel[]>([]);
 
+  viewCounterPartyData = signal<ViewCounterParty>({
+    counterPartyName: '',
+    webSiteUrl: '',
+    counterPartyType: 0,
+    newAddressList: [],
+    newContactList: []
+  });
+
+  viewParty(id:number) {
+    this.counterPartyService.viewCounterParyDetails(id).subscribe({
+      next:(res) => {
+       
+        this.viewCounterPartyData.set(res);
+      },
+      error:(e) => {
+        console.log(e)
+      }
+    })
+  }
 
   loadCounterParties() {
     this.counterPartyService.
@@ -88,9 +109,14 @@ export class CounterParty {
     this.isAdding.set(true);
   }
 
-  viewCounterParty() {
+  viewCounterParty(r:CounterPartyModel) {
+   
     this.isViewing.set(true);
+    
+    this.viewParty(r.orgCounterPartyID);
   }
+
+
 
   editCounterParty() {
 
