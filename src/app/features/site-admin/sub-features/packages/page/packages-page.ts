@@ -4,8 +4,6 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { catchError, EMPTY, finalize } from 'rxjs';
@@ -33,8 +31,6 @@ import { ToggleSwitch } from "../../../../../shared/components/ui/toggle-switch/
     MatPaginatorModule,
     MatSortModule,
     MatButtonModule,
-    MatCardModule,
-    MatProgressSpinnerModule,
     // 3P
     LucideAngularModule,
     // App UI
@@ -121,14 +117,18 @@ export class PackagesPage implements OnInit {
   }
 
   onToggelChange(row: PackageRow) {
-const next = !row.status;
-  const prev = row.status;
-    
+    const next = !row.status;
+    const prev = row.status;
+
     row.status = next;
 
-     this.packageService.updatePackageStatus(row.packageID, next).subscribe({
-      next:(Res) => {
+    this.packageService.updatePackageStatus(row.packageID, next).subscribe({
+      next: (Res) => {
         console.log(Res);
+      },
+      error: (e) => {
+        console.log(e);
+        row.status = prev;
       }
     })
   }

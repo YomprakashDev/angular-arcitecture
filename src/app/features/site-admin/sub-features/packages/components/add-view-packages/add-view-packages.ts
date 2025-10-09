@@ -1,103 +1,129 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { LucideAngularModule } from "lucide-angular";
+import { LucideAngularModule } from 'lucide-angular';
+
 import { AppIcons } from '../../../../../../../assets/icons/icons';
-import { MenuItemComponent } from "../../../../../../shared/components/ui/menu-item/menu-item";
+import { MenuItemComponent } from '../../../../../../shared/components/ui/menu-item/menu-item';
+import { Button } from '../../../../../../shared/components/ui/button/button';
+
 import { SubModulesService } from '../../../sub-modules/services/sub-modules.service';
 import { Modules, SubModule } from '../../../sub-modules/models/sub-module.model';
+
+import { UpdatePackageStatus } from '../update-package-status/update-package-status';
+import { PackageRequest, SelectedPkgModule } from '../../models/package.model';
+
 import { catchError, EMPTY } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { UpdatePackageStatus } from "../update-package-status/update-package-status";
-import { PackageRequest, SelectedPkgModule } from '../../models/package.model';
-import { Button } from "../../../../../../shared/components/ui/button/button";
 import { PackageService } from '../../services/package.service';
-type ModuleMin = { id: number; name: string; };
+
+type ModuleMin = { id: number; name: string };
 
 @Component({
   selector: 'app-add-view-packages',
   imports: [FormsModule, LucideAngularModule, MenuItemComponent, UpdatePackageStatus, Button],
   templateUrl: './add-view-packages.html',
-  styleUrl: './add-view-packages.css'
+  styleUrls: ['./add-view-packages.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AddViewPackages {
+export class AddViewPackages implements OnInit {
 
-  private subModuleService = inject(SubModulesService);
+  // Services
+  private readonly subModuleService = inject(SubModulesService);
+  private readonly pkgService = inject(PackageService);
+  private readonly destoryRef = inject(DestroyRef);
+  // Icons
+  readonly icons = AppIcons;
 
-  // All modules from API
-  items = signal<Modules | null>(null);
+  // API data
+  readonly items = signal<Modules>([]);
 
-  pkgService = inject(PackageService)
+  // Form state (signals)
+  readonly packageName = signal<string>('Silver');
+  readonly packageCode = signal<string>('Sil');
+  readonly createdBy = signal<number>(1);
+  readonly pkgStatus = signal<number>(1);
 
-  // form pieces (signals)
-  packageName = signal('Silver');
-  packageCode = signal('Sil');
-  createdBy = signal(1);
-  pkgStatus = signal(1);
 
-  // 1) keep module selections separate
-moduleSelections = signal<SelectedPkgModule[]>([]);
+  // Module selection state
+  readonly selectedItem = signal<number | null>(null);
+  readonly moduleSelections = signal<SelectedPkgModule[]>([]);
 
-  // final payload we will POST
-  payload = computed<PackageRequest>(() => ({
-  packageId: 1,
-  packageName: this.packageName(),
-  packageCode: this.packageCode(),
-  createdby: this.createdBy(),
-  status: this.pkgStatus(),
-  selectedPkgModule: this.moduleSelections()
-}));
+  // Derived lists
+  readonly moduleNameList = computed<ModuleMin[]>(
+    () => this.items().map(m => ({ id: m.moduleID, name: m.moduleName }))
+  );
 
-  icons = AppIcons;
-  constructor() {
+  // Compute submodules for the selected module reactively
+  readonly selectedSubModules = computed<SubModule[]>(() => {
+    const id = this.selectedItem();
+    if (id == null) return [];
+    const found = this.items().find(m => m.moduleID === id);
+    return found?.subModules ?? [];
+  });
+
+
+  // Final payload (UI → API DTO)
+  readonly payload = computed<PackageRequest>(() => ({
+    // For "add" flows, avoid hard-coding 1. Use 0/undefined per API contract.
+    packageId: 0,
+    packageName: this.packageName(),
+    packageCode: this.packageCode(),
+    createdby: this.createdBy(), // keep casing only if your API requires 'createdby'
+    status: this.pkgStatus(),
+    selectedPkgModule: this.moduleSelections()
+  }));
+
+  // Save button enablement
+  readonly canSave = computed<boolean>(() => {
+    const name = this.packageName().trim();
+    const code = this.packageCode().trim();
+    return !!name && !!code && this.moduleSelections().length > 0;
+  });
+
+
+  ngOnInit(): void {
     this.loadSubModules();
-
   }
-
-  selectedItem = signal<number | null>(null);
-
-  // Submodules of the selected module 
-  selectedSubModules: SubModule[] = [];
-
-
-  moduleNameList = computed<ModuleMin[]>(
-    () => this.items()?.map(m => ({ id: m.moduleID, name: m.moduleName })) ?? []
-  )
 
   private loadSubModules(): void {
-
     this.subModuleService.getSubModules()
-      .pipe(catchError(() => {
-        return EMPTY;
-      }),
-        takeUntilDestroyed()
+      .pipe(
+        catchError(err => {
+          console.error('[AddViewPackages] getSubModules error', err);
+          return EMPTY;
+        }),
+        takeUntilDestroyed(this.destoryRef)
       )
-      .subscribe((res) => {
-        this.items.set(res);
-      });
+      .subscribe(res => this.items.set(res ?? []));
   }
+
 
   selectItem(id: number): void {
     this.selectedItem.set(id);
-    const modules = this.items()?.find(m => m.moduleID === id);
-    this.selectedSubModules = modules?.subModules ?? [];
+    // selectedSubModules is computed—no imperative assignment needed
   }
-upsertModuleSelection(updated: SelectedPkgModule) {
-  const arr = [...this.moduleSelections()];
-  const i = arr.findIndex(m => m.moduleID === updated.moduleID);
-  if (i > -1) arr[i] = updated; else arr.push(updated);
-  this.moduleSelections.set(arr);
-}
-  save() {
-    console.log('FINAL PAYLOAD', this.payload());
 
-    this.pkgService.addNewPackage(this.payload()).subscribe({
-      next: (res) => {
-        console.log(res)
-      },
-      error(err) {
-        console.log(err)
-      },
-    })
+  upsertModuleSelection(updated: SelectedPkgModule): void {
+    const arr = [...this.moduleSelections()];
+    const i = arr.findIndex(m => m.moduleID === updated.moduleID);
+    if (i > -1) arr[i] = updated; else arr.push(updated);
+    this.moduleSelections.set(arr);
+  }
 
+  save(): void {
+    if (!this.canSave()) return;
+
+    const request = this.payload();
+    this.pkgService.addNewPackage(request)
+      .pipe(takeUntilDestroyed())
+      .subscribe({
+        next: (res) => {
+          console.log('[AddViewPackages] saved', res);
+          // TODO: emit close/success if parent should react
+        },
+        error: (err) => {
+          console.error('[AddViewPackages] save error', err);
+        }
+      });
   }
 }
