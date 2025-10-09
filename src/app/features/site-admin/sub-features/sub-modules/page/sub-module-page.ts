@@ -7,7 +7,7 @@ import { catchError, EMPTY, finalize } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Card } from "../../../../../shared/components/ui/card/card";
-type ModuleMin = { id: number; name: string ,status:boolean};
+type ModuleMin = { id: number; name: string, status: boolean };
 
 @Component({
   selector: 'app-sub-module-page',
@@ -34,14 +34,15 @@ export class SubModulePage {
 
   // [{ id, name }] projection for menus.
   moduleNameList = computed<ModuleMin[]>(
-    () => this.items()?.map(m => ({ id: m.moduleID, name: m.moduleName, status:m.moduleStatus})) ?? []
+    () => this.items()?.map(m => ({ id: m.moduleID, name: m.moduleName, status: m.moduleStatus })) ?? []
   );
 
   // The currently selected full Module object
   selectedModule = computed<ModuleNode | null>(() => {
     const mods = this.items();
     const id = this.selectedItem();
-    return (id && mods) ? (mods.find(m => m.moduleID === id) ?? null) : null;
+    if (!mods || id == null) return null;
+    return mods.find(m => m.moduleID === id) ?? null;
   });
 
   constructor() {
@@ -63,6 +64,14 @@ export class SubModulePage {
       )
       .subscribe((res) => {
         this.items.set(res);
+
+        // choose a default: first with moduleStatus=true, otherwise first item
+        const defaultId =
+          res.find(m => m.moduleStatus)?.moduleID ?? res[0]?.moduleID;
+
+        if (defaultId != null) {
+          this.selectItem(defaultId); // also fills selectedSubModules
+        }
       });
   }
 
