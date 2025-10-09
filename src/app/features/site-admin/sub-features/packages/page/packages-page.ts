@@ -1,26 +1,25 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, ViewChild, inject, signal, OnInit } from '@angular/core';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { PackageService } from './../services/package.service';
-import { catchError, EMPTY, finalize, } from 'rxjs';
+
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { PackagesResponse } from './../models/package.model';
-import { LucideAngularModule, } from 'lucide-angular';
-import { AddViewPackages } from "./../components/add-view-packages/add-view-packages";
+import { catchError, EMPTY, finalize } from 'rxjs';
+
+import { LucideAngularModule } from 'lucide-angular';
 import { AppIcons } from './../../../../../../assets/icons/icons';
+
+import { PackageService } from './../services/package.service';
+import { PackagesResponse } from './../models/package.model';
+
+import { AddViewPackages } from "./../components/add-view-packages/add-view-packages";
 import { Card } from "./../../../../../shared/components/ui/card/card";
 import { LoadingSpinner } from "../../../../../shared/components/ui/loading-spinner/loading-spinner";
-
+import { ToggleSwitch } from "../../../../../shared/components/ui/toggle-switch/toggle-switch";
 
 export interface PackageRow {
   packageID: number;
@@ -32,88 +31,121 @@ export interface PackageRow {
 @Component({
   selector: 'app-packages-page',
   standalone: true,
-  imports: [CommonModule,
+  imports: [
+    CommonModule,
+    // Material
     MatTableModule,
-    MatSlideToggleModule,
-    MatIconModule,
+    MatPaginatorModule,
+    MatSortModule,
     MatButtonModule,
     MatCardModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatSortModule,
-    MatPaginatorModule,
+    MatProgressSpinnerModule,
+    // 3P
     LucideAngularModule,
-    MatProgressSpinnerModule, AddViewPackages, Card, LoadingSpinner],
+    // App UI
+    AddViewPackages,
+    Card,
+    LoadingSpinner,
+    ToggleSwitch
+  ],
   templateUrl: './packages-page.html',
-  styleUrls: ['./packages-page.css']
+  styleUrls: ['./packages-page.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PackagesPage {
-  // Configuration for the table columns.
-  displayedColumns: string[] = ['actions', 'status', 'packageName', 'modules'];
-  // source-of-truth (matches your org approach)
-  packages = signal<PackagesResponse>([]);
-  // State for inline editing.
-  editingModuleId = signal<number | null>(null);
-  editedModuleName = signal('');
-  editedModuleDescription = signal('');
+export class PackagesPage implements OnInit {
+  // Columns
+  readonly displayedColumns = ['actions', 'status', 'packageName', 'modules'] as const;
 
-  /**
-   * The source of truth for the list of modules.
-   */
+  // Raw API cache (if this is actually an array, consider renaming PackagesResponse -> PackageDto[])
+  readonly packages = signal<PackagesResponse>([]);
 
-  icons = AppIcons;
-  isAddView = signal(false)
+  // UI state
+  readonly isAddView = signal(false);
+  readonly isLoading = signal(false);
+  readonly error = signal<string | null>(null);
 
+  // Icons
+  readonly icons = AppIcons;
 
-  toggleAddView() {
-    this.isAddView.set(true)
+  // DataSource
+  readonly dataSource = new MatTableDataSource<PackageRow>([]);
+
+  // Services
+  private readonly packageService = inject(PackageService);
+  private readonly destroyRef = inject(DestroyRef);
+
+  // Paginator + Sort wiring
+  @ViewChild(MatPaginator)
+  set matPaginator(p: MatPaginator | undefined) {
+    if (!p) return;
+    if (this.dataSource.paginator !== p) this.dataSource.paginator = p;
   }
-  private packageService = inject(PackageService);
-
-  // loading signal
-  isLoading = signal<boolean>(false);
-  error = signal<string | null>(null);
 
 
-  // material data source
-  dataSource = new MatTableDataSource<PackageRow>([]);
 
-  constructor() {
+  ngOnInit(): void {
     this.loadPackages();
   }
-  // Keep packages in a signal
-  loadPackages(): void {
+
+  private mapToRows(dto: PackagesResponse): PackageRow[] {
+    return dto.map(pkg => ({
+      packageID: pkg.packageID,
+      packageName: pkg.packageName,
+      modules: (pkg.modules ?? []).map(m => m.moduleName),
+      status: (pkg.modules ?? []).some(m => m.moduleStatus),
+    }));
+  }
+
+  private loadPackages(): void {
     this.isLoading.set(true);
     this.error.set(null);
 
     this.packageService.getPackages()
       .pipe(
         catchError(err => {
-          console.error('[PackagesPage] API error:', err);
+          console.error('[PackagesPage] getPackages error', err);
           this.error.set('Failed to load packages.');
           this.dataSource.data = [];
           return EMPTY;
         }),
         finalize(() => this.isLoading.set(false)),
-        takeUntilDestroyed()
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(resp => {
-        // keep the raw API in a signal (like your org page)
         this.packages.set(resp);
-
-        // map to rows for the table
-        const rows: PackageRow[] = resp.map(pkg => ({
-          packageID: pkg.packageID,
-          packageName: pkg.packageName,
-          modules: (pkg.modules ?? []).map(m => m.moduleName),
-          status: (pkg.modules ?? []).some(m => m.moduleStatus),
-        }));
-
-        this.dataSource = new MatTableDataSource(rows);
-
+        this.dataSource.data = this.mapToRows(resp);
       });
   }
 
+  // UI events
+  openCreate(): void {
+    this.isAddView.set(true);
+  }
+  closeCreate(): void {
+    this.isAddView.set(false);
+  }
 
+  onToggelChange(pkg: PackageRow) {
 
+    const payload: PackageRow = {
+      ...pkg,
+      status: !pkg.status
+    }
+    console
+      .log(payload);
+
+      this.packageService.updatepackageStatus(payload).subscribe({
+        next:(Res) => {
+          console.log(res);
+        }
+      })
+  }
+
+  onView(row: PackageRow): void {
+    console.log('view', row.packageID);
+  }
+
+  onEdit(row: PackageRow): void {
+    console.log('edit', row.packageID);
+  }
 }
