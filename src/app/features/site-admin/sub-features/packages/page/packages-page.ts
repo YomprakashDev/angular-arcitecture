@@ -134,11 +134,11 @@ export class PackagesPage implements OnInit {
     console
       .log(payload);
 
-      this.packageService.updatepackageStatus(payload).subscribe({
-        next:(Res) => {
-          console.log(res);
-        }
-      })
+      // this.packageService.updatepackageStatus(payload).subscribe({
+      //   next:(Res) => {
+      //     console.log(res);
+      //   }
+      // })
   }
 
   onView(row: PackageRow): void {

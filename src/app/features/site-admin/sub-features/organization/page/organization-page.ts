@@ -117,7 +117,7 @@ export class OrganizationPage {
       .subscribe((orgs) => {
         this.organizations.set(orgs);
         this.dataSource.data = orgs;
-        if (this.paginator) this.paginator.firstPage();
+      
       });
   }
 
