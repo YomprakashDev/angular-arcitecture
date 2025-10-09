@@ -3,11 +3,9 @@
   <div class="border-b-4 border-surface-soft3">
     <div class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50">
       <div class="flex items-center space-x-2">
-        <input
-        type="checkbox"
-        [checked]="selected().has(item.subModuleId)"
-        (change)="toggle(item.subModuleId, $event.target.checked)"
-      />
+        <button>
+          <input type="checkbox" />
+        </button>
         <span class="text-lg font-semibold text-black">{{ item.subModuleName }}</span>
         @if(item.children.length > 0) {
 
@@ -23,11 +21,12 @@
     <div *ngIf="item.children">
       @for ( child of item.children; track child.childID) {
       <div class="border-b-4 border-surface-soft3 last:border-b-0">
-        <div class="flex items-center gap-2  p-3 hover:bg-gray-100">
-          <input
-          type="checkbox"
-
-        />
+        <div class="flex items-center gap-2 p-3 hover:bg-gray-100">
+          <!-- <input
+            type="checkbox"
+            [checked]="isChildChecked(item.subModuleId, child.childID)"
+            (change)="toggleChild(item.subModuleId, child.childID, $event.target.checked)"
+          /> -->
           <span class="text-gray-subtleAlt font-semibold text-[16px]">{{ child.childName }}</span>
         </div>
       </div>
@@ -35,8 +34,8 @@
     </div>
   </div>
   }
-  <div class="flex items-center gap-3 mt-4 justify-center">
-   <app-button [text]="'Cancle'" [variant]="'secondary'" ></app-button>
-   <app-button [text]="'Save'" [variant]="'primary'" ></app-button>
+  <div class="flex items-center mt-4 gap-4 justify-center">
+    <app-button [text]="'Cancle'" [variant]="'secondary'"></app-button>
+    <app-button [text]="'Save'" [variant]="'primary'"></app-button>
   </div>
 </div>

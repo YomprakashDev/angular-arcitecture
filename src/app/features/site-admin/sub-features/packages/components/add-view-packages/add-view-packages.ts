@@ -20,6 +20,7 @@ type ModuleMin = { id: number; name: string };
 
 @Component({
   selector: 'app-add-view-packages',
+  standalone: true,
   imports: [FormsModule, LucideAngularModule, MenuItemComponent, UpdatePackageStatus, Button],
   templateUrl: './add-view-packages.html',
   styleUrls: ['./add-view-packages.css'],
@@ -30,7 +31,7 @@ export class AddViewPackages implements OnInit {
   // Services
   private readonly subModuleService = inject(SubModulesService);
   private readonly pkgService = inject(PackageService);
-  private readonly destoryRef = inject(DestroyRef);
+ private readonly destroyRef = inject(DestroyRef);
   // Icons
   readonly icons = AppIcons;
 
@@ -73,12 +74,12 @@ export class AddViewPackages implements OnInit {
     selectedPkgModule: this.moduleSelections()
   }));
 
-  // Save button enablement
-  readonly canSave = computed<boolean>(() => {
-    const name = this.packageName().trim();
-    const code = this.packageCode().trim();
-    return !!name && !!code && this.moduleSelections().length > 0;
-  });
+  // // Save button enablement
+  // readonly canSave = computed<boolean>(() => {
+  //   const name = this.packageName().trim();
+  //   const code = this.packageCode().trim();
+  //   return !!name && !!code && this.moduleSelections().length > 0;
+  // });
 
 
   ngOnInit(): void {
@@ -92,7 +93,7 @@ export class AddViewPackages implements OnInit {
           console.error('[AddViewPackages] getSubModules error', err);
           return EMPTY;
         }),
-        takeUntilDestroyed(this.destoryRef)
+         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(res => this.items.set(res ?? []));
   }
@@ -111,11 +112,10 @@ export class AddViewPackages implements OnInit {
   }
 
   save(): void {
-    if (!this.canSave()) return;
-
+   
     const request = this.payload();
     this.pkgService.addNewPackage(request)
-      .pipe(takeUntilDestroyed())
+    .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (res) => {
           console.log('[AddViewPackages] saved', res);

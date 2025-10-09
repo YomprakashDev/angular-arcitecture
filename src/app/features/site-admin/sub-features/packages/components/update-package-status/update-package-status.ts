@@ -7,21 +7,21 @@ import { Button } from "../../../../../../shared/components/ui/button/button";
 type ChildMap = Map<number, Set<number>>; // subModuleId -> set(childId)
 
 @Component({
+  standalone: true,
   selector: 'app-update-package-status',
   imports: [LucideAngularModule, CommonModule, Button],
   templateUrl: './update-package-status.html',
-  styleUrl: './update-package-status.css'
+  styleUrls: ['./update-package-status.css']
 })
 export class UpdatePackageStatus {
   icons = AppIcons;
   subModules = input.required<SubModule[]>();
 
-  selectedPkgModule = signal([]);
   moduleId = input.required<number>();
 
   // keep the checked ids locally (simple set)
   selected = signal<Set<number>>(new Set());
-// NEW: child selections grouped by subModule
+  // NEW: child selections grouped by subModule
   childSelected = signal<ChildMap>(new Map());
 
   // Parent event
@@ -50,7 +50,7 @@ export class UpdatePackageStatus {
   // }
 
 
-private emitSelection() {
+  private emitSelection() {
     const subSet = this.selected();
     const childMap = this.childSelected();
 
