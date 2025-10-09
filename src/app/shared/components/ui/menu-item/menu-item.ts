@@ -1,6 +1,14 @@
-import { Component, input, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output,
+} from '@angular/core';
+import { LucideAngularModule } from 'lucide-angular';
 import { AppIcons } from '../../../../../assets/icons/icons';
-import { LucideAngularModule } from "lucide-angular";
+
+// Input model for the menu row
+type MenuItem = Readonly<{ id: number; name: string; enabled?: boolean }>;
 
 @Component({
   standalone: true,
@@ -8,15 +16,20 @@ import { LucideAngularModule } from "lucide-angular";
   imports: [LucideAngularModule],
   templateUrl: './menu-item.html',
   styleUrls: ['./menu-item.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush, 
 })
 export class MenuItemComponent {
-  item = input.required<{ name: string, id: number }>();
+  // inputs/outputs
+  item = input.required<MenuItem>();
   isSelected = input(false);
-  itemSelected = output<number>();
+  itemSelected = output<number>(); 
 
+  // icons 
   icons = AppIcons;
 
-  onSelect() {
+  // click
+  onSelect(): void {
+  
     this.itemSelected.emit(this.item().id);
   }
 }

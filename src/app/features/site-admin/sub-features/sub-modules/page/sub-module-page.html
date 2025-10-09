@@ -1,37 +1,31 @@
-@if (isLoading()) {
-  <div class="loading-overlay" aria-live="polite">
-    <mat-progress-spinner mode="indeterminate" diameter="48" aria-label="Loading"></mat-progress-spinner>
-  </div>
-}
-
-@if (error()) {
-  <div class="m-4 p-3 rounded border border-red-200 bg-red-50 text-red-800 text-sm">
-    {{ error() }}
-  </div>
-}
-
-
-@if(!isLoading() && !error() ) {
+@if (!isLoading() && !error()) {
   <div class="flex w-full h-full gap-4 bg-transparent">
-  <div class="w-[238px] bg-white rounded-lg p-4 min-h-full">
-    <h1 class="text-2xl font-bold   mb-6  text-foreground">Modules</h1>
-    <div>
-      @for (item of moduleNameList(); track item.id) {
-     
-        <app-menu-item
-        [item]="item"
-        [isSelected]="selectedItem() === item.id"
-        (itemSelected)="selectItem($event)"
-      >
-      </app-menu-item>
-      }
-    </div>
-  </div>
+    <aside class="w-[238px] bg-white rounded-lg p-4 min-h-full">
+      <h1 class="text-2xl font-bold mb-6 text-foreground">Modules</h1>
+      <div>
+        @for (item of menuItems(); track item.id) {
+          <app-menu-item
+            [item]="item"
+            [isSelected]="selectedModuleId() === item.id"
+            (itemSelected)="selectModule($event)">
+          </app-menu-item>
+        }
+        @if (!menuItems().length) {
+          <p class="text-sm text-gray-500">No modules available.</p>
+        }
+      </div>
+    </aside>
 
-  <div class="flex-1 p-6 bg-white rounded-lg">
-    <h1 class="text-xl font-bold mb-4 text-secondary-blue">{{ selectedModule()?.moduleName}} Sub Module</h1>
-    <app-contracts-page [subModules]="selectedSubModules"></app-contracts-page>
-  </div>
-</div>
+    <main class="flex-1 p-6 bg-white rounded-lg">
+      <h2 class="text-xl font-bold mb-4 text-secondary-blue">
+        @if (selectedModule()) {
+          {{ selectedModule()!.moduleName }} — Sub Modules
+        } @else {
+          Select a module
+        }
+      </h2>
 
+      <app-contracts-page [subModules]="selectedSubmodules()"></app-contracts-page>
+    </main>
+  </div>
 }

@@ -1,8 +1,15 @@
-<div 
-  (click)="onSelect()" 
-  [class]="'flex justify-between items-center cursor-pointer p-4 my-2 rounded-lg ' + (isSelected() ? 'bg-primary-surface text-primary-blue font-bold ' : 'hover:bg-gray-50 text-[16px] font-semibold text-gray-subtle')"
+<!-- Use a button for semantics, focus, and keyboard support -->
+<button
+  type="button"
+  (click)="onSelect()"
+  class="flex justify-between items-center w-full text-left cursor-pointer p-4 my-2 rounded-lg text-[16px] font-semibold"
+  [class.bg-primary-surface]="isSelected()"
+  [class.text-primary-blue]="isSelected()"
+  [class.font-bold]="isSelected()"
+  [class.hover:bg-gray-50]="!isSelected()"
+  [class.text-gray-subtle]="!isSelected()"
+  [attr.aria-pressed]="isSelected()"
 >
-
   <span class="text-lg font-medium">{{ item().name }}</span>
   <lucide-angular [img]="icons.chevronRight"></lucide-angular>
-</div>
+</button>
