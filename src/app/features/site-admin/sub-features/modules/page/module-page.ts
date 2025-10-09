@@ -1,27 +1,36 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, DestroyRef, inject, signal, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  OnInit,
+  ViewChild,
+  inject,
+  signal
+} from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { LucideAngularModule } from 'lucide-angular';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { catchError, finalize } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
+
 import { ModuleService } from './../services/module.service';
 import { Module } from './../model/module.model';
-import { EMPTY } from 'rxjs';
-import { catchError, finalize } from 'rxjs/operators';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { LoadingSpinner } from "./../../../../../shared/components/ui/loading-spinner/loading-spinner";
-import { ErrorBanner } from "./../../../../../shared/components/ui/error-banner/error-banner";
-import { ToggleSwitch } from "./../../../../../shared/components/ui/toggle-switch/toggle-switch";
-import { Card } from "./../../../../../shared/components/ui/card/card";
-import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
-import { AppIcons } from './../../../../../../assets/icons/icons';
 
+import { LoadingSpinner } from './../../../../../shared/components/ui/loading-spinner/loading-spinner';
+import { ErrorBanner } from './../../../../../shared/components/ui/error-banner/error-banner';
+import { ToggleSwitch } from './../../../../../shared/components/ui/toggle-switch/toggle-switch';
+import { Card } from './../../../../../shared/components/ui/card/card';
+import { LucideAngularModule } from 'lucide-angular';
+import { AppIcons } from './../../../../../../assets/icons/icons';
+import { FormsModule } from '@angular/forms';
 /** Modules page */
 @Component({
   selector: 'app-module-page',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
     CommonModule,
@@ -30,7 +39,6 @@ import { AppIcons } from './../../../../../../assets/icons/icons';
     MatIconModule,
     MatButtonModule,
     MatInputModule,
-    MatProgressSpinnerModule,
     LucideAngularModule,
     LoadingSpinner,
     ErrorBanner,
@@ -40,52 +48,58 @@ import { AppIcons } from './../../../../../../assets/icons/icons';
   ],
   templateUrl: './module-page.html',
   styleUrls: ['./module-page.css'],
+
 })
-export class ModulePage implements AfterViewInit  {
-  /** Table columns */
-  displayedColumns = ['actions', 'status', 'moduleName', 'description', 'icon'];
+export class ModulePage implements OnInit {
+  /** Visible table columns (order matters). */
+  readonly displayedColumns = ['actions', 'status', 'moduleName', 'description', 'icon'] as const;
 
-  private destroyRef = inject(DestroyRef);
+  /** Page UI state. */
+  readonly isLoading = signal(true);
+  readonly error = signal<string | null>(null);
 
-  /** Icons */
+  /** Inline edit state. */
+  readonly editingModuleId = signal<number | null>(null);
+  readonly editedModuleName = signal('');
+  readonly editedModuleDescription = signal('');
+  readonly isDirty = signal(false);
+
+  /** Table data source (client-side paginate/sort/filter). */
+  readonly dataSource = new MatTableDataSource<Module>([]);
+
+  /** Icons used in the template. */
   readonly icons = AppIcons;
-  /** UI state */
-  isLoading = signal<boolean>(true);
-  error = signal<string | null>(null);
 
-  /** Inline edit state */
-  editingModuleId = signal<number | null>(null);
-  editedModuleName = signal('');
-  editedModuleDescription = signal('');
-  isDirty = signal(false);
+  // DI
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly moduleService = inject(ModuleService);
 
-  /** Table DS */
-  dataSource = new MatTableDataSource<Module>([]);
+  @ViewChild(MatPaginator)
+  set matPaginator(p: MatPaginator | undefined) {
+    if (p) {
+      this.paginator = p;
+      this.dataSource.paginator = p;
 
-  private moduleService = inject(ModuleService);
+    }
+  }
+  private paginator!: MatPaginator;
 
-  constructor() {
+
+  /** Initial data load. */
+  ngOnInit(): void {
     this.loadModules();
   }
 
-  @ViewChild(MatPaginator)
-  private paginator!: MatPaginator;
-
-  
-  ngAfterViewInit() {
-    if (this.paginator) this.dataSource.paginator = this.paginator;
-  }
-
-
-  /** Load data with error handling. */
+  /**
+   * Fetch modules and populate the table.
+   */
   loadModules(): void {
 
+    this.isLoading.set(true);
     this.error.set(null);
-
     this.moduleService
       .getModules(1, 10)
       .pipe(
-
         finalize(() => this.isLoading.set(false)),
         catchError((err) => {
           console.error('[ModulePage] load error:', err);
@@ -97,17 +111,23 @@ export class ModulePage implements AfterViewInit  {
       )
       .subscribe((res) => {
         this.dataSource.data = res.data ?? [];
-        if (this.paginator) {
-          this.dataSource.paginator = this.paginator;
-
-        }
 
       }
       );
   }
 
-  /** Track rows by stable id. */
-  trackById = (_: number, row: Module) => row.id;
+  /** Mark inline fields as dirty . */
+  onFieldChange() {
+    this.isDirty.set(true);
+  }
+
+  /** Exit inline edit mode and clear temporary values. */
+  private resetEdit() {
+    this.editingModuleId.set(null);
+    this.editedModuleName.set('');
+    this.editedModuleDescription.set('');
+    this.isDirty.set(false);
+  }
 
   /** Enter edit mode for a row. */
   editModule(module: Module) {
@@ -117,20 +137,15 @@ export class ModulePage implements AfterViewInit  {
     this.isDirty.set(false);
   }
 
-  /**  inline fields dirty. */
-  onFieldChange() {
-    this.isDirty.set(true);
-  }
-
   /** Cancel edit mode. */
   cancelEditModule() {
     this.editingModuleId.set(null);
   }
 
   /** Save Inline edited module name and description  */
-  saveModule(module: Module) {
+  saveModule(row: Module) {
     const payload: Module = {
-      ...module,
+      ...row,
       moduleName: this.editedModuleName(),
       description: this.editedModuleDescription(),
     };
@@ -139,9 +154,11 @@ export class ModulePage implements AfterViewInit  {
       .saveModule(payload)
       .subscribe({
         next: () => {
-          this.editingModuleId.set(null);
-          this.loadModules();
-          
+
+          this.dataSource.data = this.dataSource.data.map((m) =>
+            m.id === row.id ? { ...m, ...payload } : m
+          );
+          this.resetEdit();
         },
         error: (err) => {
           console.error('[ModulePage] save error:', err);

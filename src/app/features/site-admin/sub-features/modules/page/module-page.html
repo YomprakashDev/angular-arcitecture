@@ -1,49 +1,84 @@
+<!-- Loading + error -->
 <app-loading-spinner [show]="isLoading()" [diameter]="48"></app-loading-spinner>
 <app-error-banner [message]="error()"></app-error-banner>
 
-@if (!isLoading() && !error() ) {
+@if (!isLoading() && !error()) {
 <app-card>
-    <h1 class="heading-page">Modules</h1>
+  <h1 class="heading-page">Modules</h1>
+
   <div class="relative overflow-hidden rounded-lg module-table border border-gray-light">
     <table mat-table [dataSource]="dataSource" class="w-full bg-white">
+      <caption class="sr-only">
+        List of modules
+      </caption>
+
+      <!-- Actions -->
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef class="tracking-wider">Actions</th>
-        <td mat-cell *matCellDef="let module" class="flex items-center whitespace-nowrap">
-          <span class="mr-2 cursor-move drag-handle" aria-label="Drag handle">
-            <lucide-angular [img]="icons.drag" class="text-gray-subtleAlt"></lucide-angular>
-          </span>
+        <td mat-cell *matCellDef="let module" class="flex items-center whitespace-nowrap gap-1">
+          <button
+            type="button"
+            class="mr-2 cursor-move drag-handle"
+            aria-label="Reorder module"
+            title="Drag to reorder"
+          >
+            <lucide-angular
+              [img]="icons.drag"
+              class="text-gray-subtleAlt"
+              aria-hidden="true"
+            ></lucide-angular>
+          </button>
+
           @if (editingModuleId() !== module.id) {
           <button
+            type="button"
             (click)="editModule(module)"
             mat-icon-button
             class="edit-icon"
             aria-label="Edit module"
+            title="Edit"
           >
-            <lucide-angular [img]="icons.edit" class="edit-icon text-gray-subtleAlt"></lucide-angular>
+            <lucide-angular
+              [img]="icons.edit"
+              class="edit-icon text-gray-subtleAlt"
+              aria-hidden="true"
+            ></lucide-angular>
           </button>
           } @else {
           <button
+            type="button"
             (click)="saveModule(module)"
             mat-icon-button
             color="primary"
             [disabled]="!isDirty()"
-            aria-label="Savemodule"
+            aria-label="Save module"
+            title="Save"
           >
-           <lucide-angular [img]="icons.check" class="text-success"></lucide-angular>
+            <lucide-angular
+              [img]="icons.check"
+              class="text-success"
+              aria-hidden="true"
+            ></lucide-angular>
           </button>
           <button
-            (click)="cancelEditModule()"
             type="button"
+            (click)="cancelEditModule()"
             mat-icon-button
             color="warn"
             aria-label="Cancel edit"
+            title="Cancel"
           >
-            <lucide-angular [img]="icons.close" class="text-danger-bright"></lucide-angular>
+            <lucide-angular
+              [img]="icons.close"
+              class="text-danger-bright"
+              aria-hidden="true"
+            ></lucide-angular>
           </button>
           }
         </td>
       </ng-container>
 
+      <!-- Status -->
       <ng-container matColumnDef="status">
         <th
           mat-header-cell
@@ -56,15 +91,16 @@
           <app-toggle-switch
             (stateChange)="toggleModuleStatus(module, $event)"
             [isChecked]="module.status"
+            aria-label="Toggle module status"
           ></app-toggle-switch>
         </td>
       </ng-container>
 
+      <!-- Module Name -->
       <ng-container matColumnDef="moduleName">
         <th
           mat-header-cell
           *matHeaderCellDef
-          sortActionDescription="Sort by module name"
           class="p-4 text-sm font-bold tracking-wider text-left text-gray-700"
         >
           Module Name
@@ -72,30 +108,29 @@
         <td
           mat-cell
           *matCellDef="let module"
-          class="p-4 whitespace-nowrap font-[Mulish] font-normal text-[14px] leading-[100%] tracking-[0%]"
+          class="p-4 whitespace-nowrap font-[Mulish] text-[14px] leading-[100%]"
         >
           @if (editingModuleId() !== module.id) {
           {{ module.moduleName }}
           } @else {
-
           <input
             class="edit-input"
             matInput
             [ngModel]="editedModuleName()"
             (ngModelChange)="editedModuleName.set($event); onFieldChange()"
             placeholder="Module name"
+            aria-label="Module name"
           />
-
           }
         </td>
       </ng-container>
 
+      <!-- Description -->
       <ng-container matColumnDef="description">
         <th
           mat-header-cell
           *matHeaderCellDef
-          sortActionDescription="Sort by description"
-          class="text-sm font-bold tracking-wider text-left text-gray-700"
+          class="p-4 text-sm font-bold tracking-wider text-left text-gray-700"
         >
           Description
         </th>
@@ -103,19 +138,19 @@
           @if (editingModuleId() !== module.id) {
           {{ module.description }}
           } @else {
-
           <input
             class="edit-input"
             matInput
             [ngModel]="editedModuleDescription()"
             (ngModelChange)="editedModuleDescription.set($event); onFieldChange()"
             placeholder="Description"
+            aria-label="Description"
           />
-
           }
         </td>
       </ng-container>
 
+      <!-- Icon -->
       <ng-container matColumnDef="icon">
         <th
           mat-header-cell
@@ -125,21 +160,29 @@
           Icon
         </th>
         <td mat-cell *matCellDef="let module" class="p-4 whitespace-nowrap">
-          <mat-icon class="module-icon">{{ module.icon }}</mat-icon>
+          <mat-icon class="module-icon" aria-hidden="true">{{ module.icon }}</mat-icon>
         </td>
       </ng-container>
 
+      <!-- Header/Data rows -->
       <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-gray-50"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-      <tr class="mat-row" *ngIf="!isLoading() && (dataSource.data?.length ?? 0) === 0">
+
+      <!-- Empty state -->
+      <tr class="mat-row" *ngIf="(dataSource.data?.length ?? 0) === 0">
         <td class="mat-cell p-6 text-center text-gray-500" [attr.colspan]="displayedColumns.length">
           No modules found.
         </td>
       </tr>
     </table>
-    <mat-paginator [pageSize]="6" [pageSizeOptions]="[5, 10, 25, 50, 100]" showFirstLastButtons>
-    </mat-paginator>
+
+    <!--  paginator -->
+    <mat-paginator
+      [pageSize]="6"
+      [pageSizeOptions]="[5, 10, 25, 50, 100]"
+      showFirstLastButtons
+      aria-label="Modules pagination"
+    ></mat-paginator>
   </div>
 </app-card>
-
 }
