@@ -56,3 +56,9 @@ export interface SelectedPkgSub {
 
 
 
+export interface PackageRow {
+  packageID: number;
+  packageName: string;
+  modules: string[];
+  status: boolean;
+}

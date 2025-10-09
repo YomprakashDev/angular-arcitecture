@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PackageRequest, PackagesResponse } from '../models/package.model';
+import { PackageRequest, PackageRow, PackagesResponse } from '../models/package.model';
 import { environment } from '../../../../../../environments/environment';
 
 @Injectable({
@@ -19,7 +19,10 @@ export class PackageService {
   }
 
 
-  updatepackageStatus(payload: PackageRequest): Observable<PackageRequest> {
-    return this.http.post<PackageRequest>(`${this.apiUrl}/Packages/${payload.packageId}/status`, payload)
-  }
+ updatePackageStatus(packageId: number, status: boolean) {
+  return this.http.patch<PackageRow>(
+    `${this.apiUrl}/packages/${packageId}/status`,
+    { status }
+  );
+}
 }

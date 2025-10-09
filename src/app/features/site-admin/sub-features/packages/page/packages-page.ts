@@ -14,19 +14,14 @@ import { LucideAngularModule } from 'lucide-angular';
 import { AppIcons } from './../../../../../../assets/icons/icons';
 
 import { PackageService } from './../services/package.service';
-import { PackagesResponse } from './../models/package.model';
+import { PackageRow, PackagesResponse } from './../models/package.model';
 
 import { AddViewPackages } from "./../components/add-view-packages/add-view-packages";
 import { Card } from "./../../../../../shared/components/ui/card/card";
 import { LoadingSpinner } from "../../../../../shared/components/ui/loading-spinner/loading-spinner";
 import { ToggleSwitch } from "../../../../../shared/components/ui/toggle-switch/toggle-switch";
 
-export interface PackageRow {
-  packageID: number;
-  packageName: string;
-  modules: string[];
-  status: boolean;
-}
+
 
 @Component({
   selector: 'app-packages-page',
@@ -125,20 +120,17 @@ export class PackagesPage implements OnInit {
     this.isAddView.set(false);
   }
 
-  onToggelChange(pkg: PackageRow) {
+  onToggelChange(row: PackageRow) {
+const next = !row.status;
+  const prev = row.status;
+    
+    row.status = next;
 
-    const payload: PackageRow = {
-      ...pkg,
-      status: !pkg.status
-    }
-    console
-      .log(payload);
-
-      // this.packageService.updatepackageStatus(payload).subscribe({
-      //   next:(Res) => {
-      //     console.log(res);
-      //   }
-      // })
+     this.packageService.updatePackageStatus(row.packageID, next).subscribe({
+      next:(Res) => {
+        console.log(Res);
+      }
+    })
   }
 
   onView(row: PackageRow): void {
