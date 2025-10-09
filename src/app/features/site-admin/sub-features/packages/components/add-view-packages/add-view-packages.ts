@@ -16,7 +16,8 @@ import { catchError, EMPTY } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PackageService } from '../../services/package.service';
 
-type ModuleMin = { id: number; name: string };
+// UI projection for menu list items
+type ModuleMenuItem = Readonly<{ id: number; name: string; }>;
 
 @Component({
   selector: 'app-add-view-packages',
@@ -31,12 +32,12 @@ export class AddViewPackages implements OnInit {
   // Services
   private readonly subModuleService = inject(SubModulesService);
   private readonly pkgService = inject(PackageService);
- private readonly destroyRef = inject(DestroyRef);
+  private readonly destroyRef = inject(DestroyRef);
   // Icons
   readonly icons = AppIcons;
 
   // API data
-  readonly items = signal<Modules>([]);
+  readonly modules = signal<Modules>([]);
 
   // Form state (signals)
   readonly packageName = signal<string>('Silver');
@@ -44,21 +45,24 @@ export class AddViewPackages implements OnInit {
   readonly createdBy = signal<number>(1);
   readonly pkgStatus = signal<number>(1);
 
+ readonly selectedModuleId = signal<number | null>(null);
 
   // Module selection state
   readonly selectedItem = signal<number | null>(null);
   readonly moduleSelections = signal<SelectedPkgModule[]>([]);
 
-  // Derived lists
-  readonly moduleNameList = computed<ModuleMin[]>(
-    () => this.items().map(m => ({ id: m.moduleID, name: m.moduleName }))
+  readonly menuItems = computed<ModuleMenuItem[]>(() =>
+    this.modules().filter(m => m.moduleStatus).map(m => ({
+      id: m.moduleID,
+      name: m.moduleName,
+    }))
   );
 
   // Compute submodules for the selected module reactively
   readonly selectedSubModules = computed<SubModule[]>(() => {
-    const id = this.selectedItem();
+  const id = this.selectedModuleId();
     if (id == null) return [];
-    const found = this.items().find(m => m.moduleID === id);
+    const found = this.modules().find(m => m.moduleID === id);
     return found?.subModules ?? [];
   });
 
@@ -93,15 +97,27 @@ export class AddViewPackages implements OnInit {
           console.error('[AddViewPackages] getSubModules error', err);
           return EMPTY;
         }),
-         takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe(res => this.items.set(res ?? []));
+      .subscribe(res => {
+        const list = res ?? [];
+        this.modules.set(list);
+
+         const enabled = list.filter(m => m.moduleStatus);
+          if (this.selectedModuleId() == null) {
+          this.selectedModuleId.set(enabled[0]?.moduleID ?? null);
+        } else {
+          // if current selection became disabled after refresh, fix it
+          const stillEnabled = enabled.some(m => m.moduleID === this.selectedModuleId());
+          if (!stillEnabled) this.selectedModuleId.set(enabled[0]?.moduleID ?? null);
+        }
+      });
   }
 
 
   selectItem(id: number): void {
-    this.selectedItem.set(id);
-    // selectedSubModules is computed—no imperative assignment needed
+    this.selectedModuleId.set(id);
+
   }
 
   upsertModuleSelection(updated: SelectedPkgModule): void {
@@ -112,10 +128,10 @@ export class AddViewPackages implements OnInit {
   }
 
   save(): void {
-   
+
     const request = this.payload();
     this.pkgService.addNewPackage(request)
-    .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (res) => {
           console.log('[AddViewPackages] saved', res);
