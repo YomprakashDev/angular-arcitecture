@@ -31,7 +31,6 @@ export class FirmSerivice {
 
    
   getOrgFirms(orgId: number): Observable<OrgFirmDto[]> {
-    
     return this.http.get<OrgFirmDto[]>(`${this.apiUrl}/OrgFirms/GetOrgFirms?OrgID=1`);
   }
 

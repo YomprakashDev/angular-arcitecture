@@ -33,6 +33,7 @@ export interface PackageInfo {
   gst: number;
   startDate: string;  
   validUpto: string;   
+  puc?:number;
 }
 
 export interface CreateOrganizationRequest {

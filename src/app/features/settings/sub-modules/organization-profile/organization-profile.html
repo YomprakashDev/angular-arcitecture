@@ -1,5 +1,4 @@
 
-  <div class="space-y-6  ">
   <!-- Header -->
   <div class="flex items-center justify-between">
     <div class="flex items-center gap-4">
@@ -11,8 +10,8 @@
         <lucide-angular [img]="icons.edit"></lucide-angular>
       </app-button>
   </div>
-
-  <!-- Organization Info -->
+<div class="p-6 space-y-6">
+  <!-- Organization Info (fixed: GST at end, URL gets more space) -->
   <div class="flex items-center gap-6 p-6 bg-white rounded-lg shadow-sm">
     <img
       src="assets/images/common/org-logo.png"
@@ -21,139 +20,172 @@
     />
 
     <div class="flex-1 min-w-0 text-sm">
-      <!-- top row -->
+      <!-- top row: 5 columns (URL gets 2 cols, GST stays at the end) -->
       <div class="grid grid-cols-1 sm:grid-cols-5 gap-x-8 gap-y-3">
         <div class="min-w-0 sm:col-span-1">
           <div class="text-xs text-gray-400">Organization Name</div>
           <div class="text-sm font-semibold text-gray-800 truncate">
-            IGuru Portal Services Pvt Ltd
+            {{ orgProfileData()?.orgDetails?.organizationName }}
           </div>
         </div>
 
         <div class="min-w-0 sm:col-span-1">
           <div class="text-xs text-gray-400">Industry / Sector</div>
-          <div class="text-sm font-semibold text-gray-800">Information Technology</div>
+          <div class="text-sm font-semibold text-gray-800">
+            {{ orgProfileData()?.orgDetails?.industryName }}
+          </div>
         </div>
 
+        <!-- URL gets 2 columns to give it breathing room -->
         <div class="min-w-0 sm:col-span-2">
           <div class="text-xs text-gray-400">Organizational URL</div>
           <div class="text-sm font-semibold text-gray-800">
             <a
-              href="https://www.iguruportal.com"
               class="inline-block min-w-0 text-blue-600 break-words truncate hover:underline"
               target="_blank"
               rel="noopener"
-              >https://www.iguruportal.com</a
+              >{{ orgProfileData()?.orgDetails?.organizationalURL }}</a
             >
           </div>
         </div>
 
+        <!-- GST pinned to the far right -->
         <div class="min-w-0 text-sm text-right sm:col-span-1 sm:text-right">
           <div class="text-xs text-gray-400">GST Number</div>
-          <div class="text-sm font-semibold text-gray-800">29ABCDE1234F1Z9</div>
+          <div class="text-sm font-semibold text-gray-800">
+            {{ orgProfileData()?.orgDetails?.gstNumber }}
+          </div>
         </div>
       </div>
 
-      <!-- address -->
+      <!-- Street address and bottom row unchanged -->
       <div class="mt-4">
         <div class="text-xs text-gray-400">Street Address</div>
         <div class="text-sm text-gray-800 break-words">
-          #24, 5th Main Road, Indiranagar, Bengaluru, Karnataka, near CMH Road Metro
-          Station, opposite XYZ Plaza
+          {{ orgProfileData()?.orgDetails?.address }}
         </div>
       </div>
 
       <div class="grid grid-cols-2 mt-4 sm:grid-cols-3 md:grid-cols-5 gap-x-8 gap-y-3">
         <div>
           <div class="text-xs text-gray-400">Postal Code</div>
-          <div class="text-sm font-semibold text-gray-800">560038</div>
+          <div class="text-sm font-semibold text-gray-800">
+            {{ orgProfileData()?.orgDetails?.zipCode }}
+          </div>
         </div>
 
         <div>
           <div class="text-xs text-gray-400">State</div>
-          <div class="text-sm font-semibold text-gray-800">Karnataka</div>
+          <div class="text-sm font-semibold text-gray-800">
+            {{ orgProfileData()?.orgDetails?.stateName }}
+          </div>
         </div>
 
         <div>
           <div class="text-xs text-gray-400">Country</div>
-          <div class="text-sm font-semibold text-gray-800">India</div>
+          <div class="text-sm font-semibold text-gray-800">
+            {{ orgProfileData()?.orgDetails?.countryName }}
+          </div>
         </div>
 
         <div>
           <div class="text-xs text-gray-400">Currency</div>
-          <div class="text-sm font-semibold text-gray-800">INR (₹)</div>
+          <div class="text-sm font-semibold text-gray-800">
+            {{ orgProfileData()?.orgDetails?.currencyCode }}
+          </div>
         </div>
 
         <div>
           <div class="text-xs text-gray-400">Time Zone</div>
-          <div class="text-sm font-semibold text-gray-800">Asia/Kolkata (UTC+5:30)</div>
+          <div class="text-sm font-semibold text-gray-800">
+            {{ orgProfileData()?.orgDetails?.timeZone }}
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-<div class="grid grid-cols-1 gap-6 md:grid-cols-2 ">
-  <!-- Owner Details -->
-  <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
-    <h3 class="mb-4 text-lg font-semibold text-gray-800">Owner Details</h3>
-
-    <div class="grid grid-cols-1 gap-y-3 sm:grid-cols-4 text-sm">
-      <div>
-        <p class="text-xs text-gray-500">Owner Name</p>
-        <p class="font-medium text-gray-800">John Doe</p>
+  <!-- Contact + Package Info (Tailwind - aligned like your screenshot) -->
+  <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <!-- Contact -->
+    <div class="p-6 text-sm bg-white border border-gray-100 rounded-lg shadow-sm">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-semibold">Owner Details</h3>
       </div>
 
-      <div>
-        <p class="text-xs text-gray-500">Email</p>
-        <p class="font-medium text-gray-800">john@gmail.com</p>
-      </div>
+      <!-- top row: 3 columns (person, email, phone) -->
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
+        <div class="min-w-0">
+          <div class="text-xs text-gray-400">Contact Person</div>
+          <div class="text-sm font-semibold text-gray-800 truncate">
+            {{ orgProfileData()?.contactDetails?.contactPersonName }}
+          </div>
+        </div>
 
-      <div>
-        <p class="text-xs text-gray-500">Contact Number</p>
-        <p class="font-medium text-gray-800">9876768769</p>
-      </div>
+        <div class="min-w-0">
+          <div class="text-xs text-gray-400">Email</div>
+          <div class="text-sm font-semibold text-gray-800 truncate">
+            {{ orgProfileData()?.contactDetails?.emailID }}
+          </div>
+        </div>
 
-      <div>
-        <p class="text-xs text-gray-500">Team Size</p>
-        <p class="font-medium text-gray-800">1000+</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Billing Information -->
-  <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
-    <div class="flex items-center justify-between mb-4">
-      <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-1">
-        Billing Information
-        <span
-          class="inline-flex items-center justify-center w-4 h-4 text-xs text-gray-500 bg-gray-100 rounded-full"
-          >i</span
-        >
-      </h3>
-    </div>
-
-    <div class="grid grid-cols-1 gap-y-3 sm:grid-cols-4 text-sm">
-      <div>
-        <p class="text-xs text-gray-500">Package</p>
-        <p class="font-medium text-gray-800">Premium</p>
-      </div>
-
-      <div>
-        <p class="text-xs text-gray-500">Users Count</p>
-        <p class="font-medium text-gray-800">20</p>
-      </div>
-
-      <div>
-        <p class="text-xs text-gray-500">PUC</p>
-        <p class="font-medium text-gray-800">20000</p>
-      </div>
-
-      <div>
-        <p class="text-xs text-gray-500">Valid Upto</p>
-        <p class="font-medium text-gray-800">3 July 2026</p>
+        <div class="min-w-0">
+          <div class="text-xs text-gray-400">Contact Number</div>
+          <div class="text-sm font-semibold text-gray-800">
+            {{ orgProfileData()?.contactDetails?.contactNumber }}
+          </div>
+        </div>
+        <div class="'min-w-0">
+          <div class="text-xs text-gray-400">Team Size</div>
+          <div class="text-sm font-semibold text-gray-800">100+</div>
+        </div>
       </div>
     </div>
+
+    <!-- Package -->
+    <div class="p-6 text-sm bg-white border border-gray-100 rounded-lg shadow-sm">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="flex items-center gap-2 font-semibold">
+          Billing Information
+          <!-- small info circle -->
+          <span
+            class="inline-flex items-center justify-center w-5 h-5 text-xs text-gray-500 bg-gray-100 rounded-full"
+            >i</span
+          >
+        </h3>
+      </div>
+
+      <!-- top row: 4 columns (package, users, deal amount, GST-right) -->
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
+        <div class="min-w-0">
+          <div class="text-xs text-gray-400">Package</div>
+          <div class="text-sm font-semibold text-gray-800">
+            {{ orgProfileData()?.packageInfo?.packageName }}
+          </div>
+        </div>
+
+        <div class="min-w-0">
+          <div class="text-xs text-gray-400">Users Count</div>
+          <div class="text-sm font-semibold text-gray-800">
+            {{ orgProfileData()?.packageInfo?.userCount }}
+          </div>
+        </div>
+
+        <div class="min-w-0">
+          <div class="text-xs text-gray-400">Puc</div>
+ <div class="text-sm font-semibold text-gray-800">{{ orgProfileData()?.packageInfo?.puc }}</div> 
+        </div>
+          <div class="min-w-0">
+         <div class="text-xs text-gray-400">Valid Upto</div>
+        <div class="text-sm font-semibold text-gray-800">
+          {{ orgProfileData()?.packageInfo?.validUpto }}
+        </div>
+      </div>
+      </div>
+      </div>
+
+    
   </div>
 </div>
 
-</div>
+  
