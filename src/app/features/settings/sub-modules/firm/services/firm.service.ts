@@ -14,11 +14,11 @@ export interface OrgFirmDto {
   orgID: number;
   timeZone: string | null;
   formateDate: string | null;
-  logo: string | null;
+  logo?: string ;
   createdBy: number | null;
-  createdDate: string | null;
+  createdDate?: string | null;
   modifiedBy: number | null;
-  modifiedDate: string | number | null;
+  modifiedDate?: string | number | null;
 }
 
 @Injectable({

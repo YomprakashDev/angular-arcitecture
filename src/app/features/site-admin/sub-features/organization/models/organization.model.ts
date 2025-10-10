@@ -77,18 +77,18 @@ export interface OrganizationDto {
 // package.dto.ts
 export interface PackageDto {
   validFrom: string;               // ISO datetime
-  validTo: string;                 // ISO datetime
+  validTo: string;                 
   organizationID: number;
-  packageID: number;               // ID
-  status: number;                  // 0/1
+  packageID: number;               
+  status: number;                 
   noOfUsers: number;
   puc: number;
   dealAmount: number;
   gst: number;
   createdBy: number;
-  createdDate: string;             // ISO datetime
+  createdDate: string;             
   modifiedBy: number;
-  modifiedDate: string;            // ISO datetime
+  modifiedDate: string;           
   organizationPackageID: number;
 }
 
@@ -98,4 +98,12 @@ export interface SupportCredentialsDto {
   supportUserId: number;
   supportUserEmailID: string | null;
   supportUserPassword: string | null;
+}
+
+
+export interface toggleBody {
+
+  id: number;
+  status: boolean
+
 }
