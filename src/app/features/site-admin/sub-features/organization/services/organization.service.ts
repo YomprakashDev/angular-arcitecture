@@ -13,8 +13,8 @@ export class OrganizationService {
 
   apiUrl = environment.apiUrl
 
-  getOrganizations(): Observable<OrganizationData[]> {
-    return this.http.get<OrganizationData[]>(`${this.apiUrl}/Organizations`,)
+  getOrganizations(): Observable<OrganizationData> {
+    return this.http.get<OrganizationData>(`${this.apiUrl}/Organizations`,)
   }
 
   addNewOrganization(organization: CreateOrganizationRequest): Observable<SupportCredentialsDto> {

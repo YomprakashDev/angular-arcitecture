@@ -101,7 +101,7 @@ export class ModulePage implements OnInit {
     this.isLoading.set(true);
     this.error.set(null);
     this.moduleService
-      .getModules(1, 6)
+      .getModules(1, 100)
       .pipe(
         finalize(() => this.isLoading.set(false)),
         catchError((err) => {

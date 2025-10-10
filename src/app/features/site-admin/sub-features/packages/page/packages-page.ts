@@ -18,6 +18,7 @@ import { AddViewPackages } from "./../components/add-view-packages/add-view-pack
 import { Card } from "./../../../../../shared/components/ui/card/card";
 import { LoadingSpinner } from "../../../../../shared/components/ui/loading-spinner/loading-spinner";
 import { ToggleSwitch } from "../../../../../shared/components/ui/toggle-switch/toggle-switch";
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 
@@ -31,6 +32,7 @@ import { ToggleSwitch } from "../../../../../shared/components/ui/toggle-switch/
     MatPaginatorModule,
     MatSortModule,
     MatButtonModule,
+    MatTooltipModule,
     // 3P
     LucideAngularModule,
     // App UI

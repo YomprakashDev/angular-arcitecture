@@ -95,6 +95,7 @@
           <app-toggle-switch
             (stateChange)="toggleModuleStatus(module, $event)"
             [isChecked]="module.status"
+            [toolTipPosition]="'right'"
             aria-label="Toggle module status"
           ></app-toggle-switch>
         </td>

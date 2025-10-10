@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTooltipModule, TooltipPosition } from '@angular/material/tooltip';
 
 
 @Component({
@@ -21,6 +21,8 @@ export class ToggleSwitch {
 
   // Output event that emits the new state when the switch changes
   stateChange = output<boolean>();
+
+  toolTipPosition = input<TooltipPosition>('below');
 
   /**
    * Handles the change event from the checkbox and emits the new state.

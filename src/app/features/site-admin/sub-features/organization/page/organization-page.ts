@@ -21,7 +21,7 @@ import { OrganizationDetails } from '../components/organization-details/organiza
 import { LoadingSpinner } from '../../../../../shared/components/ui/loading-spinner/loading-spinner';
 import { ErrorBanner } from '../../../../../shared/components/ui/error-banner/error-banner';
 import { AppIcons } from '../../../../../../assets/icons/icons';
-import { OrganizationData } from '../models/organization.model';
+import { OrganizationData, OrganizationItem } from '../models/organization.model';
 import { OrganizationService } from '../services/organization.service';
 
 @Component({
@@ -59,9 +59,9 @@ export class OrganizationPage {
 
 
 
-  readonly organizations = signal<OrganizationData[]>([]);
+  readonly organizations = signal<OrganizationData | null>(null);
 
-  dataSource = new MatTableDataSource<OrganizationData>([]);
+  dataSource = new MatTableDataSource<OrganizationItem>();
 
   @ViewChild(MatPaginator)
   set matPaginator(p: MatPaginator) {
@@ -115,8 +115,9 @@ export class OrganizationPage {
         takeUntilDestroyed()
       )
       .subscribe((orgs) => {
+
         this.organizations.set(orgs);
-        this.dataSource.data = orgs;
+        this.dataSource.data = orgs.data;
       
       });
   }
@@ -136,49 +137,49 @@ export class OrganizationPage {
   }
 
 
-  exportToExcel() {
-    // 1. Get your data (from signal)
-    const orgs = this.organizations();
+  // exportToExcel() {
+  //   // 1. Get your data (from signal)
+  //   const orgs = this.organizations();
 
-    if (!orgs || orgs.length === 0) {
-      console.warn('No data to export');
-      return;
-    }
+  //   if (!orgs || orgs.length === 0) {
+  //     console.warn('No data to export');
+  //     return;
+  //   }
 
-    // 2. Map data into flat rows (because Excel sheets don’t support nested objects directly)
-    const exportData = orgs.map((org, index) => ({
-      '#': index + 1,
-      'Organization Name': org.orgDetails?.organizationName ?? '',
-      'Industry': org.orgDetails?.industryName ?? '',
-      'Website': org.orgDetails?.organizationalURL ?? '',
-      'GST Number': org.orgDetails?.gstNumber ?? '',
-      'Address': org.orgDetails?.address ?? '',
-      'Zip Code': org.orgDetails?.zipCode ?? '',
-      'State': org.orgDetails?.stateName ?? '',
-      'Country': org.orgDetails?.countryName ?? '',
-      'Currency': org.orgDetails?.currencyCode ?? '',
-      'Time Zone': org.orgDetails?.timeZone ?? '',
-      'Contact Person': org.contactDetails?.contactPersonName ?? '',
-      'Phone': org.contactDetails?.contactNumber ?? '',
-      'Email': org.contactDetails?.emailID ?? '',
-      'Package': org.packageInfo?.packageName ?? '',
-      'Users': org.packageInfo?.userCount ?? '',
-      'Deal Amount': org.packageInfo?.dealAmount ?? '',
-      'GST': org.packageInfo?.gst ?? '',
-      'Start Date': org.packageInfo?.startDate ?? '',
-      'Valid Upto': org.packageInfo?.validUpto ?? ''
-    }));
+  //   // 2. Map data into flat rows (because Excel sheets don’t support nested objects directly)
+  //   const exportData = orgs.map((org, index) => ({
+  //     '#': index + 1,
+  //     'Organization Name': org.orgDetails?.organizationName ?? '',
+  //     'Industry': org.orgDetails?.industryName ?? '',
+  //     'Website': org.orgDetails?.organizationalURL ?? '',
+  //     'GST Number': org.orgDetails?.gstNumber ?? '',
+  //     'Address': org.orgDetails?.address ?? '',
+  //     'Zip Code': org.orgDetails?.zipCode ?? '',
+  //     'State': org.orgDetails?.stateName ?? '',
+  //     'Country': org.orgDetails?.countryName ?? '',
+  //     'Currency': org.orgDetails?.currencyCode ?? '',
+  //     'Time Zone': org.orgDetails?.timeZone ?? '',
+  //     'Contact Person': org.contactDetails?.contactPersonName ?? '',
+  //     'Phone': org.contactDetails?.contactNumber ?? '',
+  //     'Email': org.contactDetails?.emailID ?? '',
+  //     'Package': org.packageInfo?.packageName ?? '',
+  //     'Users': org.packageInfo?.userCount ?? '',
+  //     'Deal Amount': org.packageInfo?.dealAmount ?? '',
+  //     'GST': org.packageInfo?.gst ?? '',
+  //     'Start Date': org.packageInfo?.startDate ?? '',
+  //     'Valid Upto': org.packageInfo?.validUpto ?? ''
+  //   }));
 
-    // 3. Convert to worksheet
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(exportData);
+  //   // 3. Convert to worksheet
+  //   const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(exportData);
 
-    // 4. Create workbook and append worksheet
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Organizations');
+  //   // 4. Create workbook and append worksheet
+  //   const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(wb, ws, 'Organizations');
 
-    // 5. Save as Excel file
-    XLSX.writeFile(wb, 'organizations.xlsx');
-  }
+  //   // 5. Save as Excel file
+  //   XLSX.writeFile(wb, 'organizations.xlsx');
+  // }
 
 
 

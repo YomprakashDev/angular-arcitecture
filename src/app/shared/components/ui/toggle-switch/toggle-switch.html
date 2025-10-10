@@ -1,7 +1,7 @@
 <label
   class="switch"
   matTooltip="{{ isChecked() ? 'Active' : 'Inactive' }}"
-  matTooltipPosition="right"
+  [matTooltipPosition]="toolTipPosition()"
 >
   <input type="checkbox" [checked]="isChecked()" (change)="onToggle($event)" />
   <span class="slider"></span>

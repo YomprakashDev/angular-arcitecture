@@ -1,4 +1,12 @@
 export interface OrganizationData {
+  currentPage?: null | number,
+  pageSize?: number,
+  totalPages?: number,
+  totalRecords?: number,
+  data: OrganizationItem[];
+
+}
+export interface OrganizationItem {
   orgDetails: OrgDetails;
   contactDetails: ContactDetails;
   packageInfo: PackageInfo;
@@ -31,9 +39,9 @@ export interface PackageInfo {
   userCount: number;
   dealAmount: number;
   gst: number;
-  startDate: string;  
-  validUpto: string;   
-  puc?:number;
+  startDate: string;
+  validUpto: string;
+  puc?: number;
 }
 
 export interface CreateOrganizationRequest {

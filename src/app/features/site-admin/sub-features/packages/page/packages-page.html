@@ -20,10 +20,12 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Actions</th>
         <td mat-cell *matCellDef="let pkg">
-          <button mat-icon-button type="button" aria-label="View package">
+          <button matTooltip="View"
+            matTooltipPosition="below" mat-icon-button type="button" aria-label="View package">
             <lucide-angular [img]="icons.view" class="text-gray-subtleAlt text-lg"></lucide-angular>
           </button>
-          <button mat-icon-button type="button" aria-label="Edit package">
+          <button   matTooltip="Edit"
+            matTooltipPosition="below"  mat-icon-button type="button" aria-label="Edit package">
             <lucide-angular [img]="icons.edit" class="text-gray-subtleAlt text-lg"></lucide-angular>
           </button>
         </td>
@@ -34,7 +36,7 @@
         <th mat-header-cell *matHeaderCellDef >Status</th>
         <td mat-cell *matCellDef="let pkg">
 
-          <app-toggle-switch (stateChange)="onToggelChange(pkg)" [isChecked]="pkg.status"></app-toggle-switch>
+          <app-toggle-switch     [toolTipPosition]="'right'" (stateChange)="onToggelChange(pkg)" [isChecked]="pkg.status"></app-toggle-switch>
         </td>
       </ng-container>
 
