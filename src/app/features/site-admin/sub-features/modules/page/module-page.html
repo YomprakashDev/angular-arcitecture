@@ -20,23 +20,22 @@
             type="button"
             class="mr-2 cursor-move drag-handle"
             aria-label="Reorder module"
-            title="Drag to reorder"
-          >
-            <lucide-angular
-              [img]="icons.drag"
-              class="text-gray-subtleAlt"
-              aria-hidden="true"
-            ></lucide-angular>
+           
+            matTooltipPosition="above"
+             matTooltip="Drag to Reorder"
+            mat-icon-button 
+         >
+            <lucide-angular [img]="icons.drag" class="text-gray-subtleAlt"></lucide-angular>
           </button>
 
           @if (editingModuleId() !== module.id) {
           <button
-            type="button"
             (click)="editModule(module)"
             mat-icon-button
             class="edit-icon"
             aria-label="Edit module"
-            title="Edit"
+            matTooltip="Edit"
+            matTooltipPosition="below"
           >
             <lucide-angular
               [img]="icons.edit"
@@ -45,28 +44,33 @@
             ></lucide-angular>
           </button>
           } @else {
-          <button
-            type="button"
-            (click)="saveModule(module)"
-            mat-icon-button
-            color="primary"
-            [disabled]="!isDirty()"
-            aria-label="Save module"
-            title="Save"
-          >
-            <lucide-angular
-              [img]="icons.check"
-              class="text-success"
-              aria-hidden="true"
-            ></lucide-angular>
-          </button>
+
+          <span matTooltip="Edit fields to save" matTooltipPosition="above">
+            <button
+              type="button"
+              (click)="saveModule(module)"
+              mat-icon-button
+              color="primary"
+              [disabled]="!isDirty()"
+              aria-label="Save module"
+              matTooltip="Save"
+              matTooltipPosition="below"
+            >
+              <lucide-angular
+                [img]="icons.check"
+                class="text-success"
+                aria-hidden="true"
+              ></lucide-angular>
+            </button>
+          </span>
           <button
             type="button"
             (click)="cancelEditModule()"
             mat-icon-button
             color="warn"
             aria-label="Cancel edit"
-            title="Cancel"
+            matTooltip="Cancel"
+            matTooltipPosition="below"
           >
             <lucide-angular
               [img]="icons.close"

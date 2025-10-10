@@ -1,5 +1,8 @@
-<label class="switch">
+<label
+  class="switch"
+  matTooltip="{{ isChecked() ? 'Active' : 'Inactive' }}"
+  matTooltipPosition="right"
+>
   <input type="checkbox" [checked]="isChecked()" (change)="onToggle($event)" />
   <span class="slider"></span>
 </label>
-<span *ngIf="label()">{{ label() }}</span>

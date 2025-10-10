@@ -27,6 +27,7 @@ import { Card } from './../../../../../shared/components/ui/card/card';
 import { LucideAngularModule } from 'lucide-angular';
 import { AppIcons } from './../../../../../../assets/icons/icons';
 import { FormsModule } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
 /** Modules page */
 @Component({
   selector: 'app-module-page',
@@ -37,6 +38,7 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     MatTableModule,
     MatIconModule,
+    MatTooltipModule,
     MatButtonModule,
     MatInputModule,
     LucideAngularModule,
@@ -48,6 +50,7 @@ import { FormsModule } from '@angular/forms';
   ],
   templateUrl: './module-page.html',
   styleUrls: ['./module-page.css'],
+  
 
 })
 export class ModulePage implements OnInit {
@@ -64,7 +67,7 @@ export class ModulePage implements OnInit {
   readonly editedModuleDescription = signal('');
   readonly isDirty = signal(false);
 
-  /** Table data source (client-side paginate/sort/filter). */
+  /** Table data source  */
   readonly dataSource = new MatTableDataSource<Module>([]);
 
   /** Icons used in the template. */
@@ -98,7 +101,7 @@ export class ModulePage implements OnInit {
     this.isLoading.set(true);
     this.error.set(null);
     this.moduleService
-      .getModules(1, 10)
+      .getModules(1, 6)
       .pipe(
         finalize(() => this.isLoading.set(false)),
         catchError((err) => {

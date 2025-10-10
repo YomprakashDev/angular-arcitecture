@@ -1,12 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 
 @Component({
   standalone: true,
   selector: 'app-toggle-switch',
-  imports: [CommonModule],
+  imports: [CommonModule,MatTooltipModule],
   templateUrl: './toggle-switch.html',
-  styleUrls: ['./toggle-switch.css']
+  styleUrls: ['./toggle-switch.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ToggleSwitch {
 
