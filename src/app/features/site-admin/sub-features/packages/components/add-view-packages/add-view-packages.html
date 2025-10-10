@@ -40,7 +40,7 @@
           @for (item of menuItems(); track item.id) {
           <app-menu-item
             [item]="item"
-           [isSelected]="selectedModuleId() === item.id"
+            [isSelected]="selectedModuleId() === item.id"
             (itemSelected)="selectItem($event)"
           >
           </app-menu-item>
@@ -50,11 +50,13 @@
 
       <div class="flex-1 p-6 bg-white rounded-lg">
         <h1 class="text-xl font-bold mb-4 text-secondary-blue">Sub Module</h1>
+        @if (selectedModuleId() !== null) {
         <app-update-package-status
-          [moduleId]="selectedItem()!"
+          [moduleId]="selectedModuleId()!"
           [subModules]="selectedSubModules()"
           (selectionChange)="upsertModuleSelection($event)"
         ></app-update-package-status>
+        + }
       </div>
       <!-- Save -->
       <app-button [text]="'Save'" [variant]="'primary'" (clicked)="save()"></app-button>

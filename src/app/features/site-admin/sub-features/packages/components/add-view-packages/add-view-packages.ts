@@ -45,7 +45,7 @@ export class AddViewPackages implements OnInit {
   readonly createdBy = signal<number>(1);
   readonly pkgStatus = signal<number>(1);
 
- readonly selectedModuleId = signal<number | null>(null);
+  readonly selectedModuleId = signal<number | null>(null);
 
   // Module selection state
   readonly selectedItem = signal<number | null>(null);
@@ -60,7 +60,7 @@ export class AddViewPackages implements OnInit {
 
   // Compute submodules for the selected module reactively
   readonly selectedSubModules = computed<SubModule[]>(() => {
-  const id = this.selectedModuleId();
+    const id = this.selectedModuleId();
     if (id == null) return [];
     const found = this.modules().find(m => m.moduleID === id);
     return found?.subModules ?? [];
@@ -103,8 +103,8 @@ export class AddViewPackages implements OnInit {
         const list = res ?? [];
         this.modules.set(list);
 
-         const enabled = list.filter(m => m.moduleStatus);
-          if (this.selectedModuleId() == null) {
+        const enabled = list.filter(m => m.moduleStatus);
+        if (this.selectedModuleId() == null) {
           this.selectedModuleId.set(enabled[0]?.moduleID ?? null);
         } else {
           // if current selection became disabled after refresh, fix it
@@ -115,9 +115,8 @@ export class AddViewPackages implements OnInit {
   }
 
 
-  selectItem(id: number): void {
-    this.selectedModuleId.set(id);
-
+  selectItem(id: number | string): void {
+    this.selectedModuleId.set(Number(id));
   }
 
   upsertModuleSelection(updated: SelectedPkgModule): void {

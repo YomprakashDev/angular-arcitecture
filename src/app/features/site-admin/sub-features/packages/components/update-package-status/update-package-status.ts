@@ -4,7 +4,7 @@ import { AppIcons } from '../../../../../../../assets/icons/icons';
 import { SelectedChild, SelectedPkgModule, SelectedPkgSub, SubModule } from '../../models/package.model';
 import { CommonModule } from '@angular/common';
 import { Button } from "../../../../../../shared/components/ui/button/button";
-type ChildMap = Map<number, Set<number>>; // subModuleId -> set(childId)
+type ChildMap = Map<number, Set<number>>;
 
 @Component({
   standalone: true,
@@ -27,10 +27,10 @@ export class UpdatePackageStatus {
   // Parent event
   selectionChange = output<SelectedPkgModule>();
 
-  toggle(id: number, checked: boolean) {
+toggle(id: number, checked: boolean) {
     const set = new Set(this.selected());
-    if (checked) set.add(id);
-    else set.delete(id);
+    if (checked) set.add(Number(id));
+     else set.delete(Number(id));
     this.selected.set(set);
     this.emitSelection();
   }
