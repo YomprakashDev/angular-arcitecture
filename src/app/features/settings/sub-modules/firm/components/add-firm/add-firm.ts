@@ -91,11 +91,9 @@ export class AddFirm {
       orgID: 1,
       timeZone: v.timeZone || 'UTC +05:30',
       formateDate: new Date().toISOString(),
-      logo: null,
+      logo: '',
       createdBy: 1,
-      createdDate: new Date().toISOString(),
-      modifiedBy: 1,
-      modifiedDate: new Date().toISOString()
+      modifiedBy: 1
     });
   }
 }
