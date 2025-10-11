@@ -81,10 +81,12 @@ export class OrganizationPage {
 
 
   viewOrganizationDetails = signal<OrganizationData | null>(null);
+
   isViewOrganizationModalOpen = signal(false);
   isInactiveOrganizationModalOpen = signal(false);
 
   viewOrganization(org: OrganizationData) {
+    console.log(org);
     this.viewOrganizationDetails.set(org);
     this.isViewOrganizationModalOpen.set(true);
   }
@@ -128,6 +130,7 @@ export class OrganizationPage {
   setActiveTab(tabId: string) {
     this.activeTab.set(tabId === 'inactive' ? 'inactive' : 'active');
   }
+
   addOrganization() {
     this.isAddOrganizationModalOpen.set(true);
   }
@@ -137,49 +140,49 @@ export class OrganizationPage {
   }
 
 
-  // exportToExcel() {
-  //   // 1. Get your data (from signal)
-  //   const orgs = this.organizations();
+  exportToExcel() {
+    // 1. Get your data (from signal)
+    const orgs = this.organizations();
 
-  //   if (!orgs || orgs.length === 0) {
-  //     console.warn('No data to export');
-  //     return;
-  //   }
+    if (!orgs || orgs.data.length === 0) {
+      console.warn('No data to export');
+      return;
+    }
 
-  //   // 2. Map data into flat rows (because Excel sheets don’t support nested objects directly)
-  //   const exportData = orgs.map((org, index) => ({
-  //     '#': index + 1,
-  //     'Organization Name': org.orgDetails?.organizationName ?? '',
-  //     'Industry': org.orgDetails?.industryName ?? '',
-  //     'Website': org.orgDetails?.organizationalURL ?? '',
-  //     'GST Number': org.orgDetails?.gstNumber ?? '',
-  //     'Address': org.orgDetails?.address ?? '',
-  //     'Zip Code': org.orgDetails?.zipCode ?? '',
-  //     'State': org.orgDetails?.stateName ?? '',
-  //     'Country': org.orgDetails?.countryName ?? '',
-  //     'Currency': org.orgDetails?.currencyCode ?? '',
-  //     'Time Zone': org.orgDetails?.timeZone ?? '',
-  //     'Contact Person': org.contactDetails?.contactPersonName ?? '',
-  //     'Phone': org.contactDetails?.contactNumber ?? '',
-  //     'Email': org.contactDetails?.emailID ?? '',
-  //     'Package': org.packageInfo?.packageName ?? '',
-  //     'Users': org.packageInfo?.userCount ?? '',
-  //     'Deal Amount': org.packageInfo?.dealAmount ?? '',
-  //     'GST': org.packageInfo?.gst ?? '',
-  //     'Start Date': org.packageInfo?.startDate ?? '',
-  //     'Valid Upto': org.packageInfo?.validUpto ?? ''
-  //   }));
+    // 2. Map data into flat rows (because Excel sheets don’t support nested objects directly)
+    const exportData = orgs.data.map((org:OrganizationItem,$index) => ({
+      '#': $index+1,
+      'Organization Name': org.orgDetails?.organizationName ?? '',
+      'Industry': org.orgDetails?.industryName ?? '',
+      'Website': org.orgDetails?.organizationalURL ?? '',
+      'GST Number': org.orgDetails?.gstNumber ?? '',
+      'Address': org.orgDetails?.address ?? '',
+      'Zip Code': org.orgDetails?.zipCode ?? '',
+      'State': org.orgDetails?.stateName ?? '',
+      'Country': org.orgDetails?.countryName ?? '',
+      'Currency': org.orgDetails?.currencyCode ?? '',
+      'Time Zone': org.orgDetails?.timeZone ?? '',
+      'Contact Person': org.contactDetails?.contactPersonName ?? '',
+      'Phone': org.contactDetails?.contactNumber ?? '',
+      'Email': org.contactDetails?.emailID ?? '',
+      'Package': org.packageInfo?.packageName ?? '',
+      'Users': org.packageInfo?.userCount ?? '',
+      'Deal Amount': org.packageInfo?.dealAmount ?? '',
+      'GST': org.packageInfo?.gst ?? '',
+      'Start Date': org.packageInfo?.startDate ?? '',
+      'Valid Upto': org.packageInfo?.validUpto ?? ''
+    }));
 
-  //   // 3. Convert to worksheet
-  //   const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(exportData);
+    // 3. Convert to worksheet
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(exportData);
 
-  //   // 4. Create workbook and append worksheet
-  //   const wb: XLSX.WorkBook = XLSX.utils.book_new();
-  //   XLSX.utils.book_append_sheet(wb, ws, 'Organizations');
+    // 4. Create workbook and append worksheet
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Organizations');
 
-  //   // 5. Save as Excel file
-  //   XLSX.writeFile(wb, 'organizations.xlsx');
-  // }
+    // 5. Save as Excel file
+    XLSX.writeFile(wb, 'organizations.xlsx');
+  }
 
 
 

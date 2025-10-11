@@ -9,9 +9,10 @@ import { environment } from '../../../../../../environments/environment';
 })
 export class PackageService {
   http = inject(HttpClient);
+  
   private apiUrl = environment.apiUrl
   getPackages(): Observable<PackagesResponse> {
-    return this.http.get<PackagesResponse>(`${this.apiUrl}/Packages`);
+    return this.http.get<PackagesResponse>(`${this.apiUrl}/Packages/GetPackages`);
   }
 
   addNewPackage(payload: PackageRequest): Observable<PackageRequest> {

@@ -114,15 +114,15 @@
             <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                 <div>
                     <div class="text-xs text-gray-400">Team Size</div>
-                    <div class="text-sm font-semibold text-gray-800">{{ contact.teamSize }}</div>
+                    <div class="text-sm font-semibold text-gray-800">{{ 100 }}plus</div>
                 </div>
 
                 <div class="min-w-0">
                     <div class="text-xs text-gray-400">Website URL</div>
                     <div class="text-sm text-gray-800">
-                        <a href="{{ contact.website }}"
+                        <a href="{{  organizationDetails()?.orgDetails?.organizationalURL  }}"
                             class="inline-block min-w-0 text-blue-600 break-words truncate hover:underline"
-                            target="_blank" rel="noopener">{{ contact.website }}</a>
+                            target="_blank" rel="noopener">{{  organizationDetails()?.orgDetails?.organizationalURL }}</a>
                     </div>
                 </div>
             </div>
@@ -167,7 +167,7 @@
             <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-3">
                 <div class="min-w-0">
                     <div class="text-xs text-gray-400">Total Deal Value</div>
-                    <div class="text-sm font-semibold text-gray-800">{{ package.totalValue }}</div>
+                    <div class="text-sm font-semibold text-gray-800">{{ 1000 }}</div>
                 </div>
 
                 <div>

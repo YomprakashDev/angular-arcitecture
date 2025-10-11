@@ -3,7 +3,7 @@ import { Button } from "../../../../shared/components/ui/button/button";
 import { LucideAngularModule } from "lucide-angular";
 import { AppIcons } from '../../../../../assets/icons/icons';
 import { OrganziationProfile } from './services/organziation-profile.service';
-import { OrganizationData } from '../../../site-admin/sub-features/organization/models/organization.model';
+import { OrganizationData, OrganizationItem } from '../../../site-admin/sub-features/organization/models/organization.model';
 import { catchError, EMPTY, finalize } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -23,7 +23,7 @@ export class OrganizationProfile implements OnInit {
 
   isLoading = signal(true);
   error = signal<string | null>(null)
-  orgProfileData = signal<OrganizationData | null>(null);
+  orgProfileData = signal<OrganizationItem | null>(null);
 
 
   ngOnInit(): void {
