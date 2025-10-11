@@ -7,7 +7,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+//import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { catchError, EMPTY, finalize } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -15,6 +15,7 @@ import { MenuItemComponent } from '../../../../../shared/components/ui/menu-item
 import { ContractsPage } from '../components/contracts-page/contracts-page';
 import { SubModulesService } from '../services/sub-modules.service';
 import { Module as ModuleModel, Modules, SubModule } from '../models/sub-module.model';
+import { LoadingSpinner } from "../../../../../shared/components/ui/loading-spinner/loading-spinner";
 
 // UI projection for menu list items
 type ModuleMenuItem = Readonly<{ id: number; name: string; }>;
@@ -22,7 +23,8 @@ type ModuleMenuItem = Readonly<{ id: number; name: string; }>;
 @Component({
   selector: 'app-sub-module-page',
   standalone: true,
-  imports: [MenuItemComponent, ContractsPage, MatProgressSpinnerModule],
+  imports: [MenuItemComponent,
+    ContractsPage, LoadingSpinner],
   templateUrl: './sub-module-page.html',
   styleUrls: ['./sub-module-page.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,

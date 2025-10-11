@@ -21,10 +21,10 @@ export class OrganizationService {
     return this.http.post<SupportCredentialsDto>(`${this.apiUrl}/Organizations/AddNewOrganization`, organization)
   };
 
-  // statusUpdateOrganization(orgId: number, status: boolean): Observable<toggleBody> {
-  //   return this.http.patch<toggleBody>
-  // (`${this.apiUrl}/Organizations/ToggleStatusAsync/
-  // ${orgId}?status=${status}`)
-  // }
+  statusUpdateOrganization(orgId: number, status: boolean): Observable<toggleBody> {
+    return this.http.patch<toggleBody>
+      (`${this.apiUrl}/Organizations/ToggleStatusAsync/
+  ${orgId}?status=${status}`, {})
+  }
 
 }

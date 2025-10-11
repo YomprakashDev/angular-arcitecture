@@ -1,3 +1,14 @@
+
+@if(isLoading()){
+<app-loading-spinner [show]="true"></app-loading-spinner>
+} @if (error()) {
+<div class="mt-4 p-3 rounded border border-red-200 bg-red-50 text-red-800 text-sm">
+  {{ error() }}
+</div>
+}
+
+
+
 @if (!isLoading() && !error()) {
   <div class="flex w-full h-full gap-4 bg-transparent">
     <aside class="w-[238px] bg-white rounded-lg p-4 min-h-full">

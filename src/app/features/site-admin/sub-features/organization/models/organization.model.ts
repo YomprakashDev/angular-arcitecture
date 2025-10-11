@@ -13,6 +13,7 @@ export interface OrganizationItem {
 }
 
 export interface OrgDetails {
+  organizationId:number;
   organizationName: string;
   industryName: string;
   organizationalURL: string;
@@ -23,6 +24,7 @@ export interface OrgDetails {
   countryName: string;
   currencyCode: string;
   timeZone: string;
+  status:boolean;
 }
 export type ISODateTimeString = string;
 
@@ -104,6 +106,6 @@ export interface SupportCredentialsDto {
 export interface toggleBody {
 
   id: number;
-  status: boolean
+  status: boolean;
 
 }

@@ -1,17 +1,22 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { AppIcons } from '../../../../../assets/icons/icons';
+import { LucideAngularModule } from "lucide-angular";
 type Variant = 'success' | 'danger';
 
 @Component({
   selector: 'app-confirm-dialog',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LucideAngularModule],
   templateUrl: './confirm-dialog.html',
-  styleUrls: ['./confirm-dialog.css']
+  styleUrls: ['./confirm-dialog.css'],
+  changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class ConfirmDialog {
   /** Show / hide the dialog (use *ngIf in parent) */
   open = input<boolean>(false);
+
+  icons = AppIcons;
 
   /** Visual style */
   variant = input<Variant>();
@@ -53,19 +58,14 @@ export class ConfirmDialog {
   }
 
   onCancel() {
+
     this.cancel.emit();
     this.closed.emit();
   }
 
   onConfirm() {
     this.confirm.emit();
-    this.closed.emit();
+
   }
 
-  @HostListener('document:keydown.escape')
-  onEsc() {
-    if (!this.disableBackdropClose) this.onCancel();
-  }
-
-  stop(e: Event) { e.stopPropagation(); }
 }

@@ -8,7 +8,8 @@
       <div class="flex items-center space-x-2">
         <!-- Expand/Collapse icon for parent items with children -->
 
-        <button>
+        <button matTooltip="Edit"
+            matTooltipPosition="below"  mat-icon-button type="button" aria-label="Edit package">
           <lucide-angular [img]="icons.drag" class="text-gray-subtleAlt"></lucide-angular>
         </button>
         @if (editId() !== item.subModuleId){
@@ -40,12 +41,12 @@
         @if(editId() !== item.subModuleId){
         <button
           (click)="startEdit(item)"
-          class="text-gray-subtleAlt pr-4  hover:cursor-pointer hover:text-gray-600"
+          class="text-gray-subtleAlt pr-4 hover:cursor-pointer hover:text-gray-600"
         >
           <lucide-angular [img]="icons.edit"></lucide-angular>
         </button>
         } @if(editId() === item.subModuleId){
-          
+
         <button
           (click)="saveModule(item)"
           class="px-4 py-1 text-sm font-medium text-white bg-primary-blue rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 cursor-pointer focus:ring-indigo-500"

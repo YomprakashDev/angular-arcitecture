@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, effect, inject, OnInit, signal, ViewChild } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -23,6 +23,7 @@ import { ErrorBanner } from '../../../../../shared/components/ui/error-banner/er
 import { AppIcons } from '../../../../../../assets/icons/icons';
 import { OrganizationData, OrganizationItem } from '../models/organization.model';
 import { OrganizationService } from '../services/organization.service';
+import { ConfirmDialog } from "../../../../../shared/components/ui/confirm-dialog/confirm-dialog";
 
 @Component({
   selector: 'app-organization-page',
@@ -36,13 +37,14 @@ import { OrganizationService } from '../services/organization.service';
     OrganizationDetails,
     MatPaginatorModule,
     LoadingSpinner,
-    ErrorBanner
-],
+    ErrorBanner,
+    ConfirmDialog
+  ],
   templateUrl: './organization-page.html',
   styleUrls: ['./organization-page.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OrganizationPage {
+export class OrganizationPage implements OnInit {
   // tabs + UI flags
   readonly tabs = signal<Tab[]>([
     { id: 'active', label: 'Active' },
@@ -80,12 +82,12 @@ export class OrganizationPage {
   private readonly organizationService = inject(OrganizationService);
 
 
-  viewOrganizationDetails = signal<OrganizationData | null>(null);
+  viewOrganizationDetails = signal<OrganizationItem | null>(null);
 
   isViewOrganizationModalOpen = signal(false);
   isInactiveOrganizationModalOpen = signal(false);
 
-  viewOrganization(org: OrganizationData) {
+  viewOrganization(org: OrganizationItem) {
     console.log(org);
     this.viewOrganizationDetails.set(org);
     this.isViewOrganizationModalOpen.set(true);
@@ -95,11 +97,61 @@ export class OrganizationPage {
     this.isInactiveOrganizationModalOpen.set(false);
   }
 
-  inActiveOrganization(org: OrganizationData) {
+  isConfirmStatusOpen = signal(false);
+  nextStatus = signal<boolean | null>(null); 
+  currentOrgId = signal<number>(0)
+
+  inActiveOrganization(org: OrganizationItem) {
     this.isInactiveOrganizationModalOpen.set(true);
-    console.log(org)
+    this.currentOrgId.set(org.orgDetails.organizationId);
+     this.nextStatus.set(false);
+    console.log(org.orgDetails.organizationId)
   }
-  constructor() {
+
+  activateOrganization(org:OrganizationItem){
+    this.currentOrgId.set(org.orgDetails.organizationId);
+    this.nextStatus.set(true);
+    this.isConfirmStatusOpen.set(true);
+
+  }
+
+  private readonly filteredRows = computed<OrganizationItem[]>(() => {
+    const all = this.organizations()?.data ?? [];
+    const wantActive = this.activeTab() === 'active';
+
+    return all
+      .filter(o => o.orgDetails?.status === wantActive)
+    
+  });
+
+   // Push filtered data into MatTable
+  private _tableSync = effect(() => {
+    this.dataSource.data = this.filteredRows();
+    if (this.paginator) this.dataSource.paginator = this.paginator;
+  });
+
+  updateInactiveStatus() {
+   const id = this.currentOrgId();
+    const status = this.nextStatus();
+    if (id == null || status == null) return;
+    this.organizationService
+      .statusUpdateOrganization(id, status).subscribe({
+        next: (res) => {
+          console.log(res);
+          this.isInactiveOrganizationModalOpen.set(false);
+           this.isConfirmStatusOpen.set(false);
+          this.loadOrganizations()
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      })
+
+  }
+
+  destroyRef = inject(DestroyRef);
+
+  ngOnInit():void{
     this.loadOrganizations();
   }
 
@@ -114,13 +166,13 @@ export class OrganizationPage {
           return EMPTY;
         }),
         finalize(() => this.isLoading.set(false)),
-        takeUntilDestroyed()
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((orgs) => {
 
         this.organizations.set(orgs);
         this.dataSource.data = orgs.data;
-      
+
       });
   }
 
@@ -137,8 +189,13 @@ export class OrganizationPage {
 
   closeModal() {
     this.isAddOrganizationModalOpen.set(false);
+     this.isConfirmStatusOpen.set(false);
+    this.currentOrgId.set(0);
   }
 
+  closeInactiveModel() {
+    this.isInactiveOrganizationModalOpen.set(false);
+  }
 
   exportToExcel() {
     // 1. Get your data (from signal)
@@ -150,8 +207,8 @@ export class OrganizationPage {
     }
 
     // 2. Map data into flat rows (because Excel sheets don’t support nested objects directly)
-    const exportData = orgs.data.map((org:OrganizationItem,$index) => ({
-      '#': $index+1,
+    const exportData = orgs.data.map((org: OrganizationItem, $index) => ({
+      '#': $index + 1,
       'Organization Name': org.orgDetails?.organizationName ?? '',
       'Industry': org.orgDetails?.industryName ?? '',
       'Website': org.orgDetails?.organizationalURL ?? '',
