@@ -6,10 +6,12 @@
       class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50"
     >
       <div class="flex items-center space-x-2">
-        <!-- Expand/Collapse icon for parent items with children -->
+ 
 
-        <button matTooltip="Edit"
-            matTooltipPosition="below"  mat-icon-button type="button" aria-label="Edit package">
+        <button 
+         aria-label="Reorder module"
+        matTooltip="Drag to reorder"
+         matTooltipPosition="above" mat-icon-button>
           <lucide-angular [img]="icons.drag" class="text-gray-subtleAlt"></lucide-angular>
         </button>
         @if (editId() !== item.subModuleId){
@@ -40,6 +42,7 @@
       <div class="flex items-center gap-4">
         @if(editId() !== item.subModuleId){
         <button
+        matTooltip="Edit" matTooltipPosition="below" mat-icon-button
           (click)="startEdit(item)"
           class="text-gray-subtleAlt pr-4 hover:cursor-pointer hover:text-gray-600"
         >

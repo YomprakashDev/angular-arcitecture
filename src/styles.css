@@ -88,7 +88,7 @@ body {
   }
 
   .tab {
-    @apply px-4 py-2 rounded-lg text-[16px] font-[Mulish] border transition-colors;
+    @apply px-4 py-2 hover:cursor-pointer rounded-lg text-[16px] font-[Mulish] border transition-colors;
   }
 
   /* Active state */

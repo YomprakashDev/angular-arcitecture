@@ -8,11 +8,18 @@ import { FormsModule } from '@angular/forms';
 import { AppIcons } from '../../../../../../../assets/icons/icons';
 import { ToggleSwitch } from "../../../../../../shared/components/ui/toggle-switch/toggle-switch";
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   standalone: true,
   selector: 'app-contracts-page',
-  imports: [CommonModule, LucideAngularModule, FormsModule, ToggleSwitch,MatTooltipModule],
+  imports: [CommonModule,
+     LucideAngularModule,
+      FormsModule,
+      MatIconModule,
+      MatButtonModule, 
+      ToggleSwitch,MatTooltipModule],
   templateUrl: './contracts-page.html',
   styleUrls: ['./contracts-page.css'],
 })
