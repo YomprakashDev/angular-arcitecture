@@ -18,7 +18,8 @@
     <div class="flex items-center justify-center">
       <div class="flex items-center justify-between w-full">
         <app-tabs
-          [tabs]="tabs()"
+          [tabs]="tabsWithCounts()"
+         
           (tabChanged)="setActiveTab($event.id)"
           [defaultActiveTab]="'active'"
           [activeTabInput]="activeTab()"

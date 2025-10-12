@@ -98,22 +98,44 @@ export class OrganizationPage implements OnInit {
   }
 
   isConfirmStatusOpen = signal(false);
-  nextStatus = signal<boolean | null>(null); 
+  nextStatus = signal<boolean | null>(null);
   currentOrgId = signal<number>(0)
 
   inActiveOrganization(org: OrganizationItem) {
     this.isInactiveOrganizationModalOpen.set(true);
     this.currentOrgId.set(org.orgDetails.organizationId);
-     this.nextStatus.set(false);
+    this.nextStatus.set(false);
     console.log(org.orgDetails.organizationId)
   }
 
-  activateOrganization(org:OrganizationItem){
+  activateOrganization(org: OrganizationItem) {
     this.currentOrgId.set(org.orgDetails.organizationId);
     this.nextStatus.set(true);
     this.isConfirmStatusOpen.set(true);
 
   }
+
+
+  counts = computed(() => {
+    const all = this.organizations()?.data ?? [];
+    let active = 0, inactive = 0;
+
+    for (let org of all) {
+      if (org.orgDetails.status === true) {
+        active++
+      } else {
+        inactive++
+      }
+    }
+    return { active, inactive }
+  })
+
+  readonly tabsWithCounts = computed<Tab[]>(() => [
+     { id: 'active',   label: `Active (${this.counts().active})` },
+
+     { id: 'inactive',   label: `Inactive (${this.counts().inactive})` },
+
+  ])
 
   private readonly filteredRows = computed<OrganizationItem[]>(() => {
     const all = this.organizations()?.data ?? [];
@@ -121,17 +143,18 @@ export class OrganizationPage implements OnInit {
 
     return all
       .filter(o => o.orgDetails?.status === wantActive)
-    
+
   });
 
-   // Push filtered data into MatTable
+  // Push filtered data into MatTable
   private _tableSync = effect(() => {
     this.dataSource.data = this.filteredRows();
+
     if (this.paginator) this.dataSource.paginator = this.paginator;
   });
 
   updateInactiveStatus() {
-   const id = this.currentOrgId();
+    const id = this.currentOrgId();
     const status = this.nextStatus();
     if (id == null || status == null) return;
     this.organizationService
@@ -139,7 +162,7 @@ export class OrganizationPage implements OnInit {
         next: (res) => {
           console.log(res);
           this.isInactiveOrganizationModalOpen.set(false);
-           this.isConfirmStatusOpen.set(false);
+          this.isConfirmStatusOpen.set(false);
           this.loadOrganizations()
         },
         error: (err) => {
@@ -151,7 +174,7 @@ export class OrganizationPage implements OnInit {
 
   destroyRef = inject(DestroyRef);
 
-  ngOnInit():void{
+  ngOnInit(): void {
     this.loadOrganizations();
   }
 
@@ -189,7 +212,7 @@ export class OrganizationPage implements OnInit {
 
   closeModal() {
     this.isAddOrganizationModalOpen.set(false);
-     this.isConfirmStatusOpen.set(false);
+    this.isConfirmStatusOpen.set(false);
     this.currentOrgId.set(0);
   }
 

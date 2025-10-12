@@ -19,7 +19,9 @@ export class Tabs {
   activeTabInput = input<string | null>(null);
   // local state (for uncontrolled / instant visual response)
   private _activeLocal = signal<string | null>(null);
- constructor() {
+
+  
+  constructor() {
     // initialize with default (if provided)
     const def = this.defaultActiveTab();
     if (def != null) this._activeLocal.set(def);

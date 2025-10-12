@@ -1,16 +1,15 @@
-<div class="flex 
-w-full p-4 space-x-4 bg-white ">
+<div class="flex w-full p-4 space-x-4 bg-white">
   @for (tab of tabs(); track tab.id) {
   <button
     type="button"
     id="{{ tab.id }}"
     (click)="selectTab(tab.id)"
-    class="tab "
-    [class]=
-    "tab.id === activeTab() ? 
-    'tab-active' : 'tab-inactive'"
+    class="tab"
+    [class]="tab.id === activeTab() ? 'tab-active' : 'tab-inactive'"
   >
     {{ tab.label }}
+   
+
   </button>
   }
 </div>
