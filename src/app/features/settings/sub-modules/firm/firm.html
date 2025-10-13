@@ -1,6 +1,8 @@
 <div class="flex flex-col p-6 mx-auto gap-4">
-  <div>
-    <app-button [text]="'Add Firm'" (clicked)="isNewFirmAdding.set(true)"></app-button>
+  <div class="flex  justify-end">
+    <app-button [text]="'Add Firm'" (clicked)="isNewFirmAdding.set(true)">
+      <lucide-angular [img] ='icons.plus'></lucide-angular>
+    </app-button>
   </div>
   @for(company of firm(); track $index){
   <div class="bg-white border border-Gray86 rounded-lg font-[mulish] p-5 w-full">
