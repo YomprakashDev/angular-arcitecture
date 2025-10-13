@@ -23,7 +23,6 @@ export class PackageService {
     return this.http.post<PackageRequest>(`${this.apiUrl}/Packages/AddNewPackage`, payload)
   }
 
-
  updatePackageStatus(packageId: number, status: boolean) {
   return this.http.patch<PackageRow>(
     `${this.apiUrl}/packages/${packageId}/status`,

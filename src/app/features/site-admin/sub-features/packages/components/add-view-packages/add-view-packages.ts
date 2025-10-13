@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, computed, effect, inject, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, computed, effect, inject, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LucideAngularModule } from 'lucide-angular';
 
@@ -10,13 +10,12 @@ import { SubModulesService } from '../../../sub-modules/services/sub-modules.ser
 import { Modules, SubModule } from '../../../sub-modules/models/sub-module.model';
 
 import { UpdatePackageStatus } from '../update-package-status/update-package-status';
-import { PackageItem, PackageRequest, PackagesResponse, SelectedPkgModule } from '../../models/package.model';
+import { PackageItem, PackageRequest, SelectedPkgModule } from '../../models/package.model';
 
 import { catchError, EMPTY, finalize } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PackageService } from '../../services/package.service';
 
-// UI projection for menu list items
 type ModuleMenuItem = Readonly<{ id: number; name: string; }>;
 
 @Component({
@@ -76,13 +75,11 @@ export class AddViewPackages {
   });
 
 
-  // Final payload (UI → API DTO)
+  // Final payload
   readonly payload = computed<PackageRequest>(() => {
 
     const id = this.editPkgId();
-
     const packageId = id !== null && id > 0 ? id : 0;
-
 
     return {
       packageId: packageId,
@@ -103,10 +100,10 @@ export class AddViewPackages {
       this.selectedModuleId.set(null);
       this.moduleSelections.set([]);
 
-      const id = this.viewPkgId();
+      const id = this.viewPkgId() || this.editPkgId();
 
       if (id != null) {
-        // VIEW MODE: fetch one package by id
+
         this.pkgService.viewPackages(id)
           .pipe(
             takeUntilDestroyed(this.destroyRef),
@@ -123,7 +120,6 @@ export class AddViewPackages {
 
             // Prefill read-only fields
             this.packageName.set(pkg.packageName ?? '');
-            // backend returns boolean packageStatus; convert to 1/0
             this.pkgStatus.set(pkg.packageStatus ? 1 : 0);
 
             // Bind modules as-is from backend
@@ -138,9 +134,6 @@ export class AddViewPackages {
 
   }
 
-  // ngOnInit(): void {
-  //   this.loadSubModules();
-  // }
 
   private loadSubModules(): void {
     this.subModuleService.getSubModules()
@@ -165,7 +158,6 @@ export class AddViewPackages {
         }
       });
   }
-
 
   selectItem(id: number | string): void {
     this.selectedModuleId.set(Number(id));

@@ -19,7 +19,6 @@ import { Card } from "./../../../../../shared/components/ui/card/card";
 import { LoadingSpinner } from "../../../../../shared/components/ui/loading-spinner/loading-spinner";
 import { ToggleSwitch } from "../../../../../shared/components/ui/toggle-switch/toggle-switch";
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Modules } from '../../sub-modules/models/sub-module.model';
 
 
 
@@ -128,31 +127,17 @@ export class PackagesPage implements OnInit {
 
     this.currentSelectedPkgId.set(pkg.packageID);
     this.isAddView.set(true);
-    // this.onViewGetPackages()
+
   }
 
-   onEditPackage(pkg: PackageItem): void {
+  onEditPackage(pkg: PackageItem): void {
 
     this.editPkgId.set(pkg.packageID);
     this.isAddView.set(true);
-    // this.onViewGetPackages()
+
   }
 
-  // onViewPackageDetails = signal<PackagesResponse>([]);
 
-
-  // onViewGetPackages(){
-  //   const id = this.currentSelectedPkgId();
-  //   // this.packageService.viewPackages(id).subscribe({
-  //   //   next:(res) => {
-  //   //     this.onViewPackageDetails.set(res);
-  //   //     console.log(res);
-  //   //   },
-  //   //   error:(e) => {
-  //   //     console.log(e)
-  //   //   }
-  //   // })
-  // }
 
   onToggelChange(row: PackageRow) {
     const next = !row.status;
@@ -172,8 +157,10 @@ export class PackagesPage implements OnInit {
   }
 
   closeAddView() {
-    this.isAddView.set(false);
+
     this.currentSelectedPkgId.set(null);
+    this.isAddView.set(false);
+    this.loadPackages();
   }
 
   onEdit(row: PackageRow): void {

@@ -18,11 +18,11 @@ export class UpdatePackageStatus {
   subModules = input.required<SubModule[]>();
 
   moduleId = input.required<number>();
-  viewOnly = input(false); // 👈 NEW
+  viewOnly = input(false); 
   editMode = input(false);
-  // keep the checked ids locally (simple set)
+
   selected = signal<Set<number>>(new Set());
-  // NEW: child selections grouped by subModule
+
   childSelected = signal<ChildMap>(new Map());
 
   // Parent event
