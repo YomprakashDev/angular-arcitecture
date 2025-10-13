@@ -51,7 +51,7 @@ export interface SelectedPkgModule {
 export interface SelectedPkgSub {
   subModuleId: number;
   status: number;
-  // selectedChildren?: SelectedChild[];
+  selectedChildren?: SelectedChild[];
 }
 
 export interface PackageRow {

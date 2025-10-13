@@ -71,7 +71,7 @@ private emitSelection() {
       return {
         subModuleId: sid,                                   // CHANGED
         status: subChecked ? 1 : 0,
-        // selectedChildren: children, // add if your API needs it
+        selectedChildren: children,
       } as SelectedPkgSub;
     })
     .filter(Boolean) as SelectedPkgSub[];
