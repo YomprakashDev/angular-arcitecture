@@ -64,14 +64,14 @@ private emitSelection() {
       const sid = Number(sm.subModuleId);                  // CHANGED
       const subChecked = subSet.has(sid);                  // CHANGED
       const children = Array.from(childMap.get(sid) ?? []) // CHANGED
-        .map<SelectedChild>(cid => ({ childId: cid, status: 1 }));
+        .map<SelectedChild>(cid => ({ childID: cid, status: 1 }));
 
       if (!subChecked && children.length === 0) return null;
 
       return {
-        subModuleId: sid,                                   // CHANGED
+        submmoduleIeid: sid,                                   // CHANGED
         status: subChecked ? 1 : 0,
-        selectedChildren: children,
+        selectedPkgChild: children,
       } as SelectedPkgSub;
     })
     .filter(Boolean) as SelectedPkgSub[];

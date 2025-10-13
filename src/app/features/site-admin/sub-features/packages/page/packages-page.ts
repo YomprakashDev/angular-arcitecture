@@ -84,8 +84,10 @@ export class PackagesPage implements OnInit {
     return dto.map(pkg => ({
       packageID: pkg.packageID,
       packageName: pkg.packageName,
-      modules: (pkg.modules ?? []).map(m => m.moduleName),
-      status: (pkg.modules ?? []).some(m => m.moduleStatus),
+      modules: 
+      (pkg.modules ?? []).map(m => m.moduleName),
+      status: 
+      (pkg.modules ?? []).some(m => m.moduleStatus),
     }));
   }
 

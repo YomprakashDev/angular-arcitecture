@@ -36,9 +36,10 @@ export interface PackageRequest {
   status: number;
   selectedPkgModule: SelectedPkgModule[];
 }
+
 //  child structure
 export interface SelectedChild {
-  childId: number | null;
+  childID: number | null;
   status: number; 
 }
 
@@ -49,9 +50,9 @@ export interface SelectedPkgModule {
 }
 
 export interface SelectedPkgSub {
-  subModuleId: number;
+  submmoduleIeid: number;
   status: number;
-  selectedChildren?: SelectedChild[];
+  selectedPkgChild?: SelectedChild[];
 }
 
 export interface PackageRow {
