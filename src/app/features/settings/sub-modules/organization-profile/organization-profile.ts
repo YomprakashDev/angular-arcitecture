@@ -10,7 +10,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   standalone: true,
   selector: 'app-organization-profile',
-  imports: [LucideAngularModule, Button],
+  imports: [LucideAngularModule],
   templateUrl: './organization-profile.html',
   styleUrls: ['./organization-profile.css'],
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -3,7 +3,7 @@ import { Tabs } from '../../../shared/components/tabs/tabs';
 import { CounterParty } from '../sub-modules/counter-party/page/counter-party';
 import { ContractTypes } from '../sub-modules/contract-types/page/contract-types';
 import { Tags } from '../sub-modules/tags/tags';
-import { Metadata } from '../sub-modules/metadata/metadata';
+import { Metadata } from '../sub-modules/metadata/page/metadata';
 import { Workflow } from '../sub-modules/workflow/page/workflow';
 
 

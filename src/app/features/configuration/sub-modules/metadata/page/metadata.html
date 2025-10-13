@@ -1,13 +1,13 @@
 <div class="flex bg-white w-full h-full">
 
  <div class="flex-1 p-6">
-<div class="p-6">
+<div >
   <!-- Title -->
   <h1 class="text-[22px] font-semibold text-[#1D1D21] mb-4">Meta Data</h1>
 
   <!-- Card + Material table -->
   <div class="overflow-hidden rounded-xl border border-[#F0F0F0] bg-white">
-    <table mat-table [dataSource]="rows" class="w-full mat-elevation-z0 text-sm">
+    <table mat-table [dataSource]="dataSource" class="w-full mat-elevation-z0 text-sm">
 
       <!-- Contract Type -->
       <ng-container matColumnDef="contractType">
@@ -15,7 +15,8 @@
           Contract Type
         </th>
         <td mat-cell *matCellDef="let r" class="px-4 py-3">
-          <a class="text-[#4376F0] hover:underline" href="javascript:void(0)">{{ r.contractType }}</a>
+          <a class="text-[#4376F0] hover:underline" href="javascript:void(0)">
+            {{ r.contractTypeName }}</a>
         </td>
       </ng-container>
 
@@ -25,7 +26,7 @@
           Number of Contracts
         </th>
         <td mat-cell *matCellDef="let r" class="px-4 py-3 text-[#1D1D21]">
-          {{ r.contracts }}
+          {{ r.noOfContracts }}
         </td>
       </ng-container>
 
