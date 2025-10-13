@@ -1,17 +1,15 @@
-
-  <!-- Header -->
-  <div class="flex items-center justify-between">
-    <div class="flex items-center gap-4">
-      
-      <h2 class="text-xl font-semibold">Organization Details</h2>
-    </div>
-
+<!-- Header -->
+<div class="flex items-center justify-between">
+  <div class="flex items-center gap-4">
+    <h2 class="text-xl font-semibold">Organization Details</h2>
+  </div>
+  <!-- 
      <app-button [variant]="'primary'" [text]="'Edit'">
         <lucide-angular [img]="icons.edit"></lucide-angular>
-      </app-button>
-  </div>
+      </app-button> -->
+</div>
 <div class="p-6 space-y-6">
-  <!-- Organization Info (fixed: GST at end, URL gets more space) -->
+  <!-- Organization Info  -->
   <div class="flex items-center gap-6 p-6 bg-white rounded-lg shadow-sm">
     <img
       src="assets/images/common/org-logo.png"
@@ -20,7 +18,7 @@
     />
 
     <div class="flex-1 min-w-0 text-sm">
-      <!-- top row: 5 columns (URL gets 2 cols, GST stays at the end) -->
+      <!-- top row: 5 columns  -->
       <div class="grid grid-cols-1 sm:grid-cols-5 gap-x-8 gap-y-3">
         <div class="min-w-0 sm:col-span-1">
           <div class="text-xs text-gray-400">Organization Name</div>
@@ -36,7 +34,7 @@
           </div>
         </div>
 
-        <!-- URL gets 2 columns to give it breathing room -->
+        <!-- URL gets 2 -->
         <div class="min-w-0 sm:col-span-2">
           <div class="text-xs text-gray-400">Organizational URL</div>
           <div class="text-sm font-semibold text-gray-800">
@@ -105,7 +103,7 @@
     </div>
   </div>
 
-  <!-- Contact + Package Info (Tailwind - aligned like your screenshot) -->
+  <!-- Contact + Package Info  -->
   <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
     <!-- Contact -->
     <div class="p-6 text-sm bg-white border border-gray-100 rounded-lg shadow-sm">
@@ -155,7 +153,7 @@
         </h3>
       </div>
 
-      <!-- top row: 4 columns (package, users, deal amount, GST-right) -->
+      <!-- top row: 4 columns  -->
       <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
         <div class="min-w-0">
           <div class="text-xs text-gray-400">Package</div>
@@ -173,19 +171,17 @@
 
         <div class="min-w-0">
           <div class="text-xs text-gray-400">Puc</div>
- <div class="text-sm font-semibold text-gray-800">{{ orgProfileData()?.packageInfo?.puc }}</div> 
+          <div class="text-sm font-semibold text-gray-800">
+            {{ orgProfileData()?.packageInfo?.puc }}
+          </div>
         </div>
-          <div class="min-w-0">
-         <div class="text-xs text-gray-400">Valid Upto</div>
-        <div class="text-sm font-semibold text-gray-800">
-          {{ orgProfileData()?.packageInfo?.validUpto }}
+        <div class="min-w-0">
+          <div class="text-xs text-gray-400">Valid Upto</div>
+          <div class="text-sm font-semibold text-gray-800">
+            {{ orgProfileData()?.packageInfo?.validUpto }}
+          </div>
         </div>
       </div>
-      </div>
-      </div>
-
-    
+    </div>
   </div>
 </div>
-
-  
