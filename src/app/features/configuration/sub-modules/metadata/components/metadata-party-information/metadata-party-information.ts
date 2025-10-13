@@ -4,7 +4,7 @@ import { Button } from '../../../../../../shared/components/ui/button/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'; // For the switch
-import { ContractType, MetadataSection, MetadataSectionList } from '../../models/metadata.model';
+import { ContractType, MetadataField, MetadataFieldResponse, MetadataSection, MetadataSectionList } from '../../models/metadata.model';
 import { MetadataService } from '../../services/metadata.service';
 
 @Component({
@@ -23,7 +23,7 @@ export class MetadataPartyInformation implements OnInit {
   ]);
 
   // Define the columns in the desired display order
-  displayedColumns: string[] = ['action', 'status', 'handle', 'fieldName', 'type', 'prompt'];
+  displayedColumns: string[] = ['action', 'status', 'fieldName', 'type', 'prompt'];
 
 
   // Static Data matching the image
@@ -38,7 +38,7 @@ export class MetadataPartyInformation implements OnInit {
 
   metadataService = inject(MetadataService);
 
-// Default active section tab (first one when sections arrive)
+  // Default active section tab (first one when sections arrive)
   defaultSectionTab = computed<string>(() => this.metadataSections()[0]?.sectionName ?? '');
 
   contractType = input<ContractType | null>(null);
@@ -46,6 +46,7 @@ export class MetadataPartyInformation implements OnInit {
   currentActiveTab = signal('party-information');
 
   metadataSections = signal<MetadataSectionList>([]);
+metadataSectionsData = signal<MetadataField[]>([]);
 
   toTabs(sections: MetadataSection[]): Tab[] {
     return sections.map(s => ({ id: String(s.sectionId), label: s.sectionName, data: s }));
@@ -64,10 +65,22 @@ export class MetadataPartyInformation implements OnInit {
 
   ngOnInit(): void {
     console.log(this.contractType())
-    this.loadSection()
+    this.loadSection();
+    this.loadSectionData();
 
   }
 
+
+  loadSectionData(): void {
+    const contractTypeId = this.contractType()?.contractTypeId;
+
+    const orgId = 3001;
+    this.metadataService.getSectionData(contractTypeId!, orgId).subscribe({
+      next: (res) => {
+        this.metadataSectionsData.set(res.data);
+      }
+    })
+  }
 
   defaultTab = this.currentActiveTab() ?? this.metadataSections()[0]?.sectionId ?? '';
 

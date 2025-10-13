@@ -20,7 +20,7 @@
 </app-tabs>
 
 <div class="mat-elevation-z1 bg-white rounded-lg overflow-hidden">
-  <mat-table [dataSource]="fieldsData" class="w-full">
+  <mat-table [dataSource]="metadataSectionsData()" class="w-full">
     <ng-container matColumnDef="action">
       <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
       <mat-cell *matCellDef="let element">
@@ -38,13 +38,7 @@
       </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="handle">
-      <mat-header-cell *matHeaderCellDef class="w-2"></mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        <mat-icon class="text-gray-400 cursor-move">drag_indicator</mat-icon>
-      </mat-cell>
-    </ng-container>
-
+    
     <ng-container matColumnDef="fieldName">
       <mat-header-cell *matHeaderCellDef> Field Name </mat-header-cell>
       <mat-cell *matCellDef="let element" class="font-medium text-gray-800">
@@ -54,7 +48,7 @@
 
     <ng-container matColumnDef="type">
       <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{ element.type }} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{ element.contractType }} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="prompt">

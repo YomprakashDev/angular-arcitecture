@@ -12,3 +12,24 @@ export interface MetadataSection {
 }
 
 export type MetadataSectionList = MetadataSection[];
+
+export interface MetadataFieldResponse {
+  currentPage: number | null;
+  pageSize: number;
+  totalPages: number;
+  totalRecords: number;
+  data: MetadataField[];
+}
+
+export interface MetadataField {
+  fieldId: number;
+  fieldName: string;
+  fieldStatus: boolean;
+  sectionId: number;
+  sectionName: string;
+  contractTypeId: number;
+  contractType: string;
+  fieldType: string;
+  prompt: string;
+  displayOrder: number;
+}
