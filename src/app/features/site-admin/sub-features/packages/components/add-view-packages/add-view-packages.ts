@@ -77,15 +77,22 @@ export class AddViewPackages {
 
 
   // Final payload (UI → API DTO)
-  readonly payload = computed<PackageRequest>(() => ({
+  readonly payload = computed<PackageRequest>(() => {
 
-    packageId: 0,
-    packageName: this.packageName(),
-    packageCode: this.packageCode(),
-    createdby: this.createdBy(),
-    status: this.pkgStatus(),
-    selectedPkgModule: this.moduleSelections()
-  }));
+    const id = this.editPkgId();
+
+    const packageId = id !== null && id > 0 ? id : 0;
+
+
+    return {
+      packageId: packageId,
+      packageName: this.packageName(),
+      packageCode: this.packageCode(),
+      createdby: this.createdBy(),
+      status: this.pkgStatus(),
+      selectedPkgModule: this.moduleSelections()
+    }
+  });
 
   constructor() {
 
@@ -176,7 +183,7 @@ export class AddViewPackages {
   }
 
   save(): void {
-    if (this.isViewMode()) return; // nothing to save in view mode
+    if (this.isViewMode()) return;
     const request = this.payload();
     this.pkgService.addNewPackage(request)
       .pipe(takeUntilDestroyed(this.destroyRef))

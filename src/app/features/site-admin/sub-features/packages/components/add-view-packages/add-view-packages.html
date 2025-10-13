@@ -25,6 +25,7 @@
         <input
           id="packageName"
           type="text"
+          [disabled]="isViewMode()"
           placeholder="Silver"
           [ngModel]="packageName()"
           (ngModelChange)="packageName.set($event)"

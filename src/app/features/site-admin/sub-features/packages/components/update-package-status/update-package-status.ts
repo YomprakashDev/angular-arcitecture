@@ -37,22 +37,26 @@ export class UpdatePackageStatus {
   }
 
   constructor() {
-  effect(() => {
-    const sms = this.subModules();
-    const sel = new Set<number>();
-    const cmap = new Map<number, Set<number>>();
-    sms.forEach(sm => {
-      const sid = Number(sm.subModuleId);
-      if (sm.subModuleStatus) sel.add(sid);
-      const kids = (sm.children ?? [])
-        .filter(c => c.subChildStatus)
-        .map(c => Number(c.childID));
-      if (kids.length) cmap.set(sid, new Set(kids));
+    effect(() => {
+
+      if (!this.editMode()) {
+        return
+      }
+      const sms = this.subModules();
+      const sel = new Set<number>();
+      const cmap = new Map<number, Set<number>>();
+      sms.forEach(sm => {
+        const sid = Number(sm.subModuleId);
+        if (sm.subModuleStatus) sel.add(sid);
+        const kids = (sm.children ?? [])
+          .filter(c => c.subChildStatus)
+          .map(c => Number(c.childID));
+        if (kids.length) cmap.set(sid, new Set(kids));
+      });
+      this.selected.set(sel);
+      this.childSelected.set(cmap);
     });
-    this.selected.set(sel);
-    this.childSelected.set(cmap);
-  });
-}
+  }
 
   isChildChecked(subId: number | string, childId: number | string) {
     const sid = Number(subId);
