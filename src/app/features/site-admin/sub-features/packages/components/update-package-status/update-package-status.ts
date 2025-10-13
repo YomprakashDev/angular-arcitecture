@@ -1,4 +1,4 @@
-import { Component, input, output, signal } from '@angular/core';
+import { Component, effect, input, output, signal } from '@angular/core';
 import { LucideAngularModule } from "lucide-angular";
 import { AppIcons } from '../../../../../../../assets/icons/icons';
 import { SelectedChild, SelectedPkgModule, SelectedPkgSub, SubModule } from '../../models/package.model';
@@ -18,7 +18,8 @@ export class UpdatePackageStatus {
   subModules = input.required<SubModule[]>();
 
   moduleId = input.required<number>();
-
+  viewOnly = input(false); // 👈 NEW
+  editMode = input(false);
   // keep the checked ids locally (simple set)
   selected = signal<Set<number>>(new Set());
   // NEW: child selections grouped by subModule
@@ -34,6 +35,24 @@ export class UpdatePackageStatus {
     this.selected.set(set);
     this.emitSelection();
   }
+
+  constructor() {
+  effect(() => {
+    const sms = this.subModules();
+    const sel = new Set<number>();
+    const cmap = new Map<number, Set<number>>();
+    sms.forEach(sm => {
+      const sid = Number(sm.subModuleId);
+      if (sm.subModuleStatus) sel.add(sid);
+      const kids = (sm.children ?? [])
+        .filter(c => c.subChildStatus)
+        .map(c => Number(c.childID));
+      if (kids.length) cmap.set(sid, new Set(kids));
+    });
+    this.selected.set(sel);
+    this.childSelected.set(cmap);
+  });
+}
 
   isChildChecked(subId: number | string, childId: number | string) {
     const sid = Number(subId);

@@ -5,9 +5,10 @@
       <div class="flex items-center gap-2 mb-4">
         <!-- Back Button -->
         <button
+          (click)="onBack()"
           type="button"
           aria-label="Go back"
-          class="flex items-center justify-center w-7 h-7 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="flex hover:cursor-pointer items-center justify-center w-7 h-7 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <lucide-angular [img]="icons.back"></lucide-angular>
         </button>
@@ -53,13 +54,16 @@
         @if (selectedModuleId() !== null) {
         <app-update-package-status
           [moduleId]="selectedModuleId()!"
+          [viewOnly]="isViewMode()"
+          [editMode]="isEditMode()"
           [subModules]="selectedSubModules()"
-          (selectionChange)="upsertModuleSelection($event)"
+          (selectionChange)="isViewMode() ? null : upsertModuleSelection($event)"
         ></app-update-package-status>
-        + }
+        }
       </div>
-      <!-- Save -->
+      @if (!isViewMode()) {
       <app-button [text]="'Save'" [variant]="'primary'" (clicked)="save()"></app-button>
+      }
     </div>
   </div>
 </div>

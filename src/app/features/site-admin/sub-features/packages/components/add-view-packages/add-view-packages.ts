@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, computed, effect, inject, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LucideAngularModule } from 'lucide-angular';
 
@@ -10,9 +10,9 @@ import { SubModulesService } from '../../../sub-modules/services/sub-modules.ser
 import { Modules, SubModule } from '../../../sub-modules/models/sub-module.model';
 
 import { UpdatePackageStatus } from '../update-package-status/update-package-status';
-import { PackageRequest, SelectedPkgModule } from '../../models/package.model';
+import { PackageItem, PackageRequest, PackagesResponse, SelectedPkgModule } from '../../models/package.model';
 
-import { catchError, EMPTY } from 'rxjs';
+import { catchError, EMPTY, finalize } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PackageService } from '../../services/package.service';
 
@@ -27,7 +27,7 @@ type ModuleMenuItem = Readonly<{ id: number; name: string; }>;
   styleUrls: ['./add-view-packages.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AddViewPackages implements OnInit {
+export class AddViewPackages {
 
   // Services
   private readonly subModuleService = inject(SubModulesService);
@@ -36,6 +36,9 @@ export class AddViewPackages implements OnInit {
   // Icons
   readonly icons = AppIcons;
 
+  viewPkgId = input<number | null>(null);
+  editPkgId = input<number | null>(null);
+  close = output<void>();
   // API data
   readonly modules = signal<Modules>([]);
 
@@ -44,7 +47,13 @@ export class AddViewPackages implements OnInit {
   readonly packageCode = signal<string>('Sil');
   readonly createdBy = signal<number>(1);
   readonly pkgStatus = signal<number>(1);
+  // UI state
+  readonly isLoading = signal(false);
+  readonly error = signal<string | null>(null);
 
+  // Mode derived from presence of id
+  readonly isViewMode = computed(() => this.viewPkgId() != null);
+  readonly isEditMode = computed(() => this.editPkgId() !== null);
   readonly selectedModuleId = signal<number | null>(null);
 
   // Module selection state
@@ -78,11 +87,53 @@ export class AddViewPackages implements OnInit {
     selectedPkgModule: this.moduleSelections()
   }));
 
+  constructor() {
 
+    effect(() => {
+      this.error.set(null);
+      this.isLoading.set(true);
+      this.modules.set([]);
+      this.selectedModuleId.set(null);
+      this.moduleSelections.set([]);
 
-  ngOnInit(): void {
-    this.loadSubModules();
+      const id = this.viewPkgId();
+
+      if (id != null) {
+        // VIEW MODE: fetch one package by id
+        this.pkgService.viewPackages(id)
+          .pipe(
+            takeUntilDestroyed(this.destroyRef),
+            catchError(err => {
+              console.error('[AddViewPackages] viewPackages error', err);
+              this.error.set('Failed to load package.');
+              return EMPTY;
+            }),
+            finalize(() => this.isLoading.set(false))
+          )
+          .subscribe((res) => {
+            const pkg: PackageItem | undefined = Array.isArray(res) ? res[0] : (res as any);
+            if (!pkg) { this.error.set('Package not found.'); return; }
+
+            // Prefill read-only fields
+            this.packageName.set(pkg.packageName ?? '');
+            // backend returns boolean packageStatus; convert to 1/0
+            this.pkgStatus.set(pkg.packageStatus ? 1 : 0);
+
+            // Bind modules as-is from backend
+            this.modules.set(pkg.modules ?? []);
+            const first = pkg.modules?.find(m => m.moduleStatus) ?? pkg.modules?.[0];
+            this.selectedModuleId.set(first?.moduleID ?? null);
+          });
+      } else {
+        this.loadSubModules()
+      }
+    })
+
   }
+
+  // ngOnInit(): void {
+  //   this.loadSubModules();
+  // }
 
   private loadSubModules(): void {
     this.subModuleService.getSubModules()
@@ -120,13 +171,18 @@ export class AddViewPackages implements OnInit {
     this.moduleSelections.set(arr);
   }
 
-  save(): void {
+  onBack() {
+    this.close.emit();
+  }
 
+  save(): void {
+    if (this.isViewMode()) return; // nothing to save in view mode
     const request = this.payload();
     this.pkgService.addNewPackage(request)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (res) => {
+          this.close.emit();
           console.log('[AddViewPackages] saved', res);
 
         },

@@ -12,13 +12,14 @@ import { LucideAngularModule } from 'lucide-angular';
 import { AppIcons } from './../../../../../../assets/icons/icons';
 
 import { PackageService } from './../services/package.service';
-import { PackageRow, PackagesResponse } from './../models/package.model';
+import { PackageItem, PackageRow, PackagesResponse } from './../models/package.model';
 
 import { AddViewPackages } from "./../components/add-view-packages/add-view-packages";
 import { Card } from "./../../../../../shared/components/ui/card/card";
 import { LoadingSpinner } from "../../../../../shared/components/ui/loading-spinner/loading-spinner";
 import { ToggleSwitch } from "../../../../../shared/components/ui/toggle-switch/toggle-switch";
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Modules } from '../../sub-modules/models/sub-module.model';
 
 
 
@@ -76,6 +77,7 @@ export class PackagesPage implements OnInit {
 
 
 
+
   ngOnInit(): void {
     this.loadPackages();
   }
@@ -84,10 +86,10 @@ export class PackagesPage implements OnInit {
     return dto.map(pkg => ({
       packageID: pkg.packageID,
       packageName: pkg.packageName,
-      modules: 
-      (pkg.modules ?? []).map(m => m.moduleName),
-      status: 
-      (pkg.modules ?? []).some(m => m.moduleStatus),
+      modules:
+        (pkg.modules ?? []).map(m => m.moduleName),
+      status:
+        (pkg.modules ?? []).some(m => m.moduleStatus),
     }));
   }
 
@@ -120,6 +122,38 @@ export class PackagesPage implements OnInit {
     this.isAddView.set(false);
   }
 
+  readonly currentSelectedPkgId = signal<number | null>(null);
+  readonly editPkgId = signal<number | null>(null);
+  onViewPackage(pkg: PackageItem): void {
+
+    this.currentSelectedPkgId.set(pkg.packageID);
+    this.isAddView.set(true);
+    // this.onViewGetPackages()
+  }
+
+   onEditPackage(pkg: PackageItem): void {
+
+    this.editPkgId.set(pkg.packageID);
+    this.isAddView.set(true);
+    // this.onViewGetPackages()
+  }
+
+  // onViewPackageDetails = signal<PackagesResponse>([]);
+
+
+  // onViewGetPackages(){
+  //   const id = this.currentSelectedPkgId();
+  //   // this.packageService.viewPackages(id).subscribe({
+  //   //   next:(res) => {
+  //   //     this.onViewPackageDetails.set(res);
+  //   //     console.log(res);
+  //   //   },
+  //   //   error:(e) => {
+  //   //     console.log(e)
+  //   //   }
+  //   // })
+  // }
+
   onToggelChange(row: PackageRow) {
     const next = !row.status;
     const prev = row.status;
@@ -137,8 +171,9 @@ export class PackagesPage implements OnInit {
     })
   }
 
-  onView(row: PackageRow): void {
-    console.log('view', row.packageID);
+  closeAddView() {
+    this.isAddView.set(false);
+    this.currentSelectedPkgId.set(null);
   }
 
   onEdit(row: PackageRow): void {

@@ -15,6 +15,10 @@ export class PackageService {
     return this.http.get<PackagesResponse>(`${this.apiUrl}/Packages/GetPackages`);
   }
 
+   viewPackages(pkgId:number): Observable<PackagesResponse> {
+    return this.http.get<PackagesResponse>(`${this.apiUrl}/Packages/GetPackages?id=${pkgId}`,{});
+  }
+
   addNewPackage(payload: PackageRequest): Observable<PackageRequest> {
     return this.http.post<PackageRequest>(`${this.apiUrl}/Packages/AddNewPackage`, payload)
   }
