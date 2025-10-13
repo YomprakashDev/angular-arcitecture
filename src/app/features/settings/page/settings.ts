@@ -1,20 +1,16 @@
-import { Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { Tabs } from '../../../shared/components/tabs/tabs';
-import { Teams } from '../sub-modules/teams/page/teams';
-import { Users } from '../sub-modules/users/page/users';
-import { AccessControl } from '../sub-modules/access-control/page/access-control';
-import { Firm } from '../sub-modules/firm/firm';
-import { OrganizationProfile } from '../sub-modules/organization-profile/organization-profile';
-import { Integration } from '../sub-modules/integration/page/integration';
-import { Security } from '../sub-modules/security/page/security';
+import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { filter, map, startWith } from 'rxjs';
 
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [Tabs, Teams, Users, AccessControl, Firm, OrganizationProfile, Integration, Security],
+  imports: [Tabs, RouterOutlet],
   templateUrl: './settings.html',
-  styleUrls: ['./settings.css']
+  styleUrls: ['./settings.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Settings {
   readonly tabs = signal([
@@ -26,11 +22,29 @@ export class Settings {
     { id: 'integration', label: 'Integration' },
     { id: 'security', label: 'Security' }
   ]);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
+
+  constructor() {
+    this.router.events.pipe(
+      filter(e => e instanceof NavigationEnd),
+      startWith(null),
+      map(() => {
+
+        let child = this.route.firstChild;
+        while (child?.firstChild) child = child.firstChild;
+        return ((child?.routeConfig?.path ?? 'teams'));
+      })
+    ).subscribe(tab => this.currentTab.set(tab));
+  }
+
 
   readonly currentTab = signal<string | null>('teams');
 
-  setActiveTab(tabId:string){
-    this.currentTab.set(tabId);
+  setActiveTab(tabId: string) {
+    this.router.navigate([tabId],
+      { relativeTo: this.route });
   }
 
 }

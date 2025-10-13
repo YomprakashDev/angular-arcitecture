@@ -29,7 +29,7 @@ export class Tabs {
     // SYNC: parent-driven active tab → component state
     // (runs in constructor = valid injection context)
     effect(() => {
-      const controlled = this.activeTabInput();   // null means "uncontrolled"
+      const controlled = this.activeTabInput(); 
       if (controlled != null) {
         this.activeTab.set(controlled);
       } else {
