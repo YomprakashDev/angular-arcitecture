@@ -131,9 +131,9 @@ export class OrganizationPage implements OnInit {
   })
 
   readonly tabsWithCounts = computed<Tab[]>(() => [
-     { id: 'active',   label: `Active (${this.counts().active})` },
+    { id: 'active', label: `Active (${this.counts().active})` },
 
-     { id: 'inactive',   label: `Inactive (${this.counts().inactive})` },
+    { id: 'inactive', label: `Inactive (${this.counts().inactive})` },
 
   ])
 
@@ -218,6 +218,12 @@ export class OrganizationPage implements OnInit {
 
   closeInactiveModel() {
     this.isInactiveOrganizationModalOpen.set(false);
+  }
+
+  closeViewOrgModel() {
+    this.isViewOrganizationModalOpen.set(false);
+    this.viewOrganizationDetails.set(null);
+
   }
 
   exportToExcel() {

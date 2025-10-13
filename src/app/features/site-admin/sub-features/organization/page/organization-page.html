@@ -5,7 +5,7 @@
 
 } @if (error()) {
 <app-error-banner [message]="error()"></app-error-banner>
-} @if(!isLoading() && !error() ) {
+} @if(!isLoading() && !error() && !isViewOrganizationModalOpen()) {
 <div class="flex w-full h-full bg-white rounded-lg">
   <div class="flex-1 p-6">
     <div class="flex items-center w-full justify-between">
@@ -19,7 +19,6 @@
       <div class="flex items-center justify-between w-full">
         <app-tabs
           [tabs]="tabsWithCounts()"
-         
           (tabChanged)="setActiveTab($event.id)"
           [defaultActiveTab]="'active'"
           [activeTabInput]="activeTab()"
@@ -65,38 +64,55 @@
                   class="text-gray-subtleAlt text-xs"
                 ></lucide-angular>
               </button>
-              <button mat-icon-button
+              <button
+                mat-icon-button
                 matTooltip="Edit"
-                matTooltipPosition="below" aria-label="Edit module">
+                matTooltipPosition="below"
+                aria-label="Edit module"
+              >
                 <lucide-angular
                   [img]="icons.edit"
                   class="text-gray-subtleAlt text-xs"
                 ></lucide-angular>
               </button>
-              <button mat-icon-button
+              <button
+                mat-icon-button
                 matTooltip="Repository"
-                matTooltipPosition="below" aria-label="module">
+                matTooltipPosition="below"
+                aria-label="module"
+              >
                 <lucide-angular
                   [img]="icons.file"
                   class="text-gray-subtleAlt text-xs"
                 ></lucide-angular>
               </button>
-              <button mat-icon-button
+              <button
+                mat-icon-button
                 matTooltip="Settings"
-                matTooltipPosition="below" aria-label="">
+                matTooltipPosition="below"
+                aria-label=""
+              >
                 <lucide-angular
                   [img]="icons.settings"
                   class="text-gray-subtleAlt text-xs"
                 ></lucide-angular>
               </button>
-              <button mat-icon-button
+              <button
+                mat-icon-button
                 matTooltip="Creditials"
-                matTooltipPosition="below" mat-icon-button aria-label="View module">
+                matTooltipPosition="below"
+                mat-icon-button
+                aria-label="View module"
+              >
                 <img src="assets/icons/svgs/cloud-access.svg" class="text-gray-subtleAlt text-xs" />
               </button>
-              <button mat-icon-button
+              <button
+                mat-icon-button
                 matTooltip="Remove"
-                matTooltipPosition="below" mat-icon-button aria-label=" module">
+                matTooltipPosition="below"
+                mat-icon-button
+                aria-label=" module"
+              >
                 <lucide-angular
                   [img]="icons.logout"
                   class="text-gray-subtleAlt text-xs"
@@ -170,6 +186,7 @@
 </div>
 } @if(isViewOrganizationModalOpen()){
 <app-organization-details
+  (closeView)="closeViewOrgModel()"
   [organizationDetails]="viewOrganizationDetails()"
 ></app-organization-details>
 }
