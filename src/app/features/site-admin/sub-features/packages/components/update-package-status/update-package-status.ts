@@ -27,58 +27,64 @@ export class UpdatePackageStatus {
   // Parent event
   selectionChange = output<SelectedPkgModule>();
 
-toggle(id: number, checked: boolean) {
+  toggle(id: number | string, checked: boolean) {
+    const nid = Number(id);                                  // CHANGED
     const set = new Set(this.selected());
-    if (checked) set.add(Number(id));
-     else set.delete(Number(id));
+    if (checked) set.add(nid); else set.delete(nid);         // CHANGED
     this.selected.set(set);
     this.emitSelection();
   }
 
-  //  // ----- CHILD HELPERS (NEW) -----
-  // isChildChecked(subId: number, childId: number) {
-  //   return this.childSelected().get(subId)?.has(childId) ?? false;
-  // }
-
-  //  toggleChild(subId: number, childId: number, checked: boolean) {
-  //   const map = new Map(this.childSelected());
-  //   const set = new Set(map.get(subId) ?? []);
-  //   if (checked) set.add(childId); else set.delete(childId);
-  //   if (set.size) map.set(subId, set); else map.delete(subId);
-  //   this.childSelected.set(map);
-  //   this.emitSelection();
-  // }
-
-
-  private emitSelection() {
-    const subSet = this.selected();
-    const childMap = this.childSelected();
-
-    const selectedPkgSub: SelectedPkgSub[] = this.subModules()
-      .map(sm => {
-        const subChecked = subSet.has(sm.subModuleId);
-        const children = Array.from(childMap.get(sm.subModuleId) ?? [])
-          .map<SelectedChild>(cid => ({ childId: cid, status: 1 }));
-
-        // If nothing selected (neither submodule nor children), skip it
-        if (!subChecked && children.length === 0) return null;
-
-        return {
-          subModuleId: sm.subModuleId,
-          status: subChecked ? 1 : 0
-          // selectedChildren: children
-        } as SelectedPkgSub;
-      })
-      .filter(Boolean) as SelectedPkgSub[];
-
-    const payload: SelectedPkgModule = {
-      moduleID: this.moduleId(),
-      status: 1,
-      selectedPkgSub
-    };
-
-    this.selectionChange.emit(payload);
+  isChildChecked(subId: number | string, childId: number | string) {
+    const sid = Number(subId);                               // CHANGED
+    const cid = Number(childId);                             // CHANGED
+    return this.childSelected().get(sid)?.has(cid) ?? false; // CHANGED
   }
+
+  toggleChild(subId: number | string, childId: number | string, checked: boolean) {
+    const sid = Number(subId);                               // CHANGED
+    const cid = Number(childId);                             // CHANGED
+
+    const map = new Map(this.childSelected());
+    const set = new Set(map.get(sid) ?? []);
+    if (checked) set.add(cid); else set.delete(cid);
+    if (set.size) map.set(sid, set); else map.delete(sid);
+    this.childSelected.set(map);
+
+    this.emitSelection();
+  }
+
+
+private emitSelection() {
+  const subSet = this.selected();
+  const childMap = this.childSelected();
+
+  const selectedPkgSub: SelectedPkgSub[] = this.subModules()
+    .map(sm => {
+      const sid = Number(sm.subModuleId);                  // CHANGED
+      const subChecked = subSet.has(sid);                  // CHANGED
+      const children = Array.from(childMap.get(sid) ?? []) // CHANGED
+        .map<SelectedChild>(cid => ({ childId: cid, status: 1 }));
+
+      if (!subChecked && children.length === 0) return null;
+
+      return {
+        subModuleId: sid,                                   // CHANGED
+        status: subChecked ? 1 : 0,
+        // selectedChildren: children, // add if your API needs it
+      } as SelectedPkgSub;
+    })
+    .filter(Boolean) as SelectedPkgSub[];
+
+  const payload: SelectedPkgModule = {
+    moduleID: Number(this.moduleId()),                      // CHANGED (be safe)
+    status: 1,
+    selectedPkgSub
+  };
+
+  this.selectionChange.emit(payload);
+}
+
 
 
 }
