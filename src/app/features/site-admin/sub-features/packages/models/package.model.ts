@@ -18,7 +18,7 @@ export interface ModuleItem {
   moduleStatus: boolean;
   subModules: SubModule[];
 }
-// Package level (root object)
+// Package level 
 export interface PackageItem {
   packageID: number;
   packageName: string;
@@ -27,7 +27,6 @@ export interface PackageItem {
 }
 export type PackagesResponse = PackageItem[];
 
-// models/package-request.model.ts
 export interface PackageRequest {
   packageId: number;
   packageName: string;

@@ -58,7 +58,7 @@ export class AddViewPackages implements OnInit {
     }))
   );
 
-  // Compute submodules for the selected module reactively
+
   readonly selectedSubModules = computed<SubModule[]>(() => {
     const id = this.selectedModuleId();
     if (id == null) return [];
@@ -69,21 +69,15 @@ export class AddViewPackages implements OnInit {
 
   // Final payload (UI → API DTO)
   readonly payload = computed<PackageRequest>(() => ({
-    // For "add" flows, avoid hard-coding 1. Use 0/undefined per API contract.
+
     packageId: 0,
     packageName: this.packageName(),
     packageCode: this.packageCode(),
-    createdby: this.createdBy(), // keep casing only if your API requires 'createdby'
+    createdby: this.createdBy(),
     status: this.pkgStatus(),
     selectedPkgModule: this.moduleSelections()
   }));
 
-  // // Save button enablement
-  // readonly canSave = computed<boolean>(() => {
-  //   const name = this.packageName().trim();
-  //   const code = this.packageCode().trim();
-  //   return !!name && !!code && this.moduleSelections().length > 0;
-  // });
 
 
   ngOnInit(): void {
@@ -107,7 +101,7 @@ export class AddViewPackages implements OnInit {
         if (this.selectedModuleId() == null) {
           this.selectedModuleId.set(enabled[0]?.moduleID ?? null);
         } else {
-          // if current selection became disabled after refresh, fix it
+
           const stillEnabled = enabled.some(m => m.moduleID === this.selectedModuleId());
           if (!stillEnabled) this.selectedModuleId.set(enabled[0]?.moduleID ?? null);
         }
@@ -134,7 +128,7 @@ export class AddViewPackages implements OnInit {
       .subscribe({
         next: (res) => {
           console.log('[AddViewPackages] saved', res);
-          // TODO: emit close/success if parent should react
+
         },
         error: (err) => {
           console.error('[AddViewPackages] save error', err);

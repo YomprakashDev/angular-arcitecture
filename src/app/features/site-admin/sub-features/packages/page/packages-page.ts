@@ -49,7 +49,7 @@ export class PackagesPage implements OnInit {
   // Columns
   readonly displayedColumns = ['actions', 'status', 'packageName', 'modules'] as const;
 
-  // Raw API cache (if this is actually an array, consider renaming PackagesResponse -> PackageDto[])
+  // Raw API cache 
   readonly packages = signal<PackagesResponse>([]);
 
   // UI state
