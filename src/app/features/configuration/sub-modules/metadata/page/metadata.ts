@@ -17,7 +17,7 @@ type MetaRow = {
   imports: [CommonModule, MatTableModule, MetadataPartyInformation],
   templateUrl: './metadata.html',
   styleUrls: ['./metadata.css'],
-  changeDetection:ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Metadata implements OnInit {
   displayedColumns = ['contractType', 'contracts', 'lastUpdated'];
@@ -28,8 +28,14 @@ export class Metadata implements OnInit {
     { contractType: 'Employment Agreement', contracts: '02', lastUpdated: '05 Aug 2025 at 11:00 am' },
     { contractType: 'Others', contracts: '23', lastUpdated: '03 Aug 2025 at 12:00 am' },
   ];
+  readonly selected = signal<ContractType | null>(null);
 
-    /** Page UI state. */
+  openPartyInfo(row: ContractType) {
+    console.log(row.contractTypeId);
+    this.selected.set(row);
+  }
+
+  /** Page UI state. */
   readonly isLoading = signal(true);
   readonly error = signal<string | null>(null);
 
@@ -38,35 +44,40 @@ export class Metadata implements OnInit {
   readonly dataSource = new MatTableDataSource<ContractType>([]);
   private readonly destroyRef = inject(DestroyRef);
 
+
+  closeBack(): void {
+    this.selected.set(null)
+  }
+
   /** Initial data load. */
-    ngOnInit(): void {
-      this.loadModules();
-    }
-  
-    /**
-     * Fetch modules and populate the table.
-     */
-    loadModules(): void {
-  
-      this.isLoading.set(true);
-      this.error.set(null);
-      this.metadataService
-        .getMetadata(3001)
-        .pipe(
-          finalize(() => this.isLoading.set(false)),
-          catchError((err) => {
-            console.error('[ModulePage] load error:', err);
-            this.error.set('Failed to load modules. Please try again.');
-            this.dataSource.data = [];
-            return EMPTY;
-          }),
-          takeUntilDestroyed(this.destroyRef),
-        )
-        .subscribe((res) => {
-          this.dataSource.data = res ?? [];
-  
-        }
-        );
-    }
+  ngOnInit(): void {
+    this.loadModules();
+  }
+
+  /**
+   * Fetch modules and populate the table.
+   */
+  loadModules(): void {
+
+    this.isLoading.set(true);
+    this.error.set(null);
+    this.metadataService
+      .getMetadata(3001)
+      .pipe(
+        finalize(() => this.isLoading.set(false)),
+        catchError((err) => {
+          console.error('[ModulePage] load error:', err);
+          this.error.set('Failed to load modules. Please try again.');
+          this.dataSource.data = [];
+          return EMPTY;
+        }),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe((res) => {
+        this.dataSource.data = res ?? [];
+
+      }
+      );
+  }
 
 }

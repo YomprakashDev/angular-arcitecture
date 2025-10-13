@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../../../environments/environment';
 import { Observable } from 'rxjs';
-import { ContractType } from '../models/metadata.model';
+import { ContractType, MetadataSectionList } from '../models/metadata.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,4 +16,9 @@ export class MetadataService {
   getMetadata(orgId: number): Observable<ContractType[]> {
     return this.http.get<ContractType[]>(`${this.apiUrl}/MetaData/orgId/${orgId}/contractTypes`);
   }
+
+  getSections(contractTypeID: number, orgId: number): Observable<MetadataSectionList> {
+    return this.http.get<MetadataSectionList>(`${this.apiUrl}/MetaData/contractType/${contractTypeID}/orgId/${orgId}/getSections`);
+  }
+
 }
