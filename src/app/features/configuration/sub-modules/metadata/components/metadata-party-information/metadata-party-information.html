@@ -1,70 +1,118 @@
-<div class="w-full flex items-center justify-between">
-  <div class="flex items-center gap-2">
-    <button
-      (click)="onBack()"
-      class="flex hover:cursor-pointer items-center text-gray-600 hover:text-gray-700"
-    >
-      <mat-icon class="mr-1 text-lg">arrow_back</mat-icon>
-    </button>
-    <h1 class="text-2xl font-semibold">{{ contractType()?.contractTypeName }}</h1>
+<div>
+  <div class="w-full flex items-center bg-white p-4 justify-between">
+    <div class="flex items-center gap-2">
+      <button
+        (click)="onBack()"
+        class="flex hover:cursor-pointer items-center text-gray-600 hover:text-gray-700"
+      >
+        <mat-icon class="mr-1 text-lg">arrow_back</mat-icon>
+      </button>
+      <h1 class="text-2xl font-semibold">{{ contractType()?.contractTypeName }}</h1>
+    </div>
+
+    <app-button (clicked)="onClickAddSection()" [text]="'Add New Section'"> </app-button>
   </div>
 
-  <app-button [text]="'Add New Metadata'"> </app-button>
+  <app-tabs
+    [tabs]="toTabs(metadataSections())"
+    [defaultActiveTab]="defaultSectionTab()"
+    [activeTabInput]="defaultSectionTab()"
+  >
+  </app-tabs>
+
+  <div class="mat-elevation-z1 bg-white rounded-lg overflow-hidden">
+    <mat-table [dataSource]="metadataSectionsData()" class="w-full">
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <div class="flex space-x-2 text-gray-500">
+            <button
+              mat-icon-button
+              class="edit-icon"
+              aria-label="Edit module"
+              matTooltip="Edit"
+              matTooltipPosition="below"
+            >
+              <lucide-angular
+                [img]="icons.edit"
+                class="edit-icon text-gray-subtleAlt"
+                aria-hidden="true"
+              ></lucide-angular>
+            </button>
+            <button
+              mat-icon-button
+              class="edit-icon"
+              aria-label="Delete module"
+              matTooltip="Delete"
+              matTooltipPosition="below"
+            >
+              <lucide-angular
+                [img]="icons.delete"
+                class="edit-icon text-gray-subtleAlt"
+                aria-hidden="true"
+              ></lucide-angular>
+            </button>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <app-toggle-switch [isChecked]="element.status"> </app-toggle-switch>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="fieldName">
+        <mat-header-cell *matHeaderCellDef> Field Name </mat-header-cell>
+        <mat-cell *matCellDef="let element" class="font-medium text-gray-800">
+          {{ element.fieldName }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.contractType }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="prompt">
+        <mat-header-cell *matHeaderCellDef> Prompt </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.prompt }} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+
+    <div class="p-4 border-t border-gray-200">
+      <button class="flex items-center text-blue-600 font-semibold hover:text-blue-700">
+        <mat-icon class="mr-1 text-lg">add</mat-icon>
+        New Field
+      </button>
+    </div>
+  </div>
 </div>
 
-<app-tabs
-  [tabs]="toTabs(metadataSections())"
-  [defaultActiveTab]="defaultSectionTab()"
-  [activeTabInput]="defaultSectionTab()"
+@if(isAddingNewSection()){
+<app-modal
+  (closed)="onCloseModel()"
+  [modelContainerClass]="'max-w-md'"
+  [isOpen]="isAddingNewSection()"
+  (save)="onAddnewSection()"
 >
-</app-tabs>
-
-<div class="mat-elevation-z1 bg-white rounded-lg overflow-hidden">
-  <mat-table [dataSource]="metadataSectionsData()" class="w-full">
-    <ng-container matColumnDef="action">
-      <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        <div class="flex space-x-2 text-gray-500">
-          <mat-icon class="cursor-pointer text-base hover:text-blue-600">edit</mat-icon>
-          <mat-icon class="cursor-pointer text-base hover:text-red-600">delete</mat-icon>
-        </div>
-      </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="status">
-      <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        <mat-slide-toggle [checked]="element.status" disabled></mat-slide-toggle>
-      </mat-cell>
-    </ng-container>
-
-    
-    <ng-container matColumnDef="fieldName">
-      <mat-header-cell *matHeaderCellDef> Field Name </mat-header-cell>
-      <mat-cell *matCellDef="let element" class="font-medium text-gray-800">
-        {{ element.fieldName }}
-      </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="type">
-      <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{ element.contractType }} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="prompt">
-      <mat-header-cell *matHeaderCellDef> Prompt </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{ element.prompt }} </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-  </mat-table>
-
-  <div class="p-4 border-t border-gray-200">
-    <button class="flex items-center text-blue-600 font-semibold hover:text-blue-700">
-      <mat-icon class="mr-1 text-lg">add</mat-icon>
-      New Field
-    </button>
+  <div class="bg-surface-raised rounded-md p-2">
+    <div>
+      <label class="form-label">Full Name</label>
+      <input
+        [ngModel]="sectionName()"
+        (ngModelChange)="sectionName.set($event)"
+        name="fullname"
+        type="text"
+        placeholder="Enter here"
+        class="form-input"
+      />
+    </div>
   </div>
-</div>
+</app-modal>
+}

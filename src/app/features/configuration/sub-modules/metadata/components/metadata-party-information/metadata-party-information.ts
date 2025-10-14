@@ -6,10 +6,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'; // For the switch
 import { ContractType, MetadataField, MetadataFieldResponse, MetadataSection, MetadataSectionList } from '../../models/metadata.model';
 import { MetadataService } from '../../services/metadata.service';
+import { LucideAngularModule } from "lucide-angular";
+import { AppIcons } from '../../../../../../../assets/icons/icons';
+import { ToggleSwitch } from "../../../../../../shared/components/ui/toggle-switch/toggle-switch";
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { Modal } from "../../../../../../shared/components/ui/modal/modal";
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-metadata-party-information',
-  imports: [Tabs, Button, MatTableModule, MatIconModule, MatSlideToggleModule],
+  imports: [Tabs, MatTooltipModule, FormsModule, Button, MatTableModule, MatIconModule, MatSlideToggleModule, LucideAngularModule, ToggleSwitch, Modal],
   templateUrl: './metadata-party-information.html',
   styleUrl: './metadata-party-information.css'
 })
@@ -25,6 +31,7 @@ export class MetadataPartyInformation implements OnInit {
   // Define the columns in the desired display order
   displayedColumns: string[] = ['action', 'status', 'fieldName', 'type', 'prompt'];
 
+  icons = AppIcons;
 
   // Static Data matching the image
   fieldsData = [
@@ -38,6 +45,32 @@ export class MetadataPartyInformation implements OnInit {
 
   metadataService = inject(MetadataService);
 
+  sectionName = signal('');
+  isAddingNewSection = signal(false);
+  onClickAddSection() {
+    this.isAddingNewSection.set
+      (true);
+  }
+
+  onCloseModel() {
+    this.isAddingNewSection.set
+      (false);
+  }
+  onAddnewSection() {
+    const contractTypeId = this.contractType()?.contractTypeId;
+    const orgId = 3001;
+    const payload = {
+      sectionNam: this.sectionName(),
+      createdBy: 0
+    }
+    // this.metadataService.addNewSection(contractTypeId!, orgId,payload).subscribe({
+    //   next: (res) => {
+    //     console.log(res);
+    //   }
+    // })
+  }
+
+
   // Default active section tab (first one when sections arrive)
   defaultSectionTab = computed<string>(() => this.metadataSections()[0]?.sectionName ?? '');
 
@@ -46,7 +79,7 @@ export class MetadataPartyInformation implements OnInit {
   currentActiveTab = signal('party-information');
 
   metadataSections = signal<MetadataSectionList>([]);
-metadataSectionsData = signal<MetadataField[]>([]);
+  metadataSectionsData = signal<MetadataField[]>([]);
 
   toTabs(sections: MetadataSection[]): Tab[] {
     return sections.map(s => ({ id: String(s.sectionId), label: s.sectionName, data: s }));

@@ -9,6 +9,7 @@ export interface ContractType {
 export interface MetadataSection {
   sectionId: number;
   sectionName: string;
+  createdBy?:number;
 }
 
 export type MetadataSectionList = MetadataSection[];

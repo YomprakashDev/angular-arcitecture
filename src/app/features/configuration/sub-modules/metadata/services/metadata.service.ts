@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../../../environments/environment';
 import { Observable } from 'rxjs';
-import { ContractType, MetadataFieldResponse, MetadataSectionList } from '../models/metadata.model';
+import { ContractType, MetadataFieldResponse, MetadataSection, MetadataSectionList } from '../models/metadata.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,5 +24,9 @@ export class MetadataService {
   getSectionData(contractTypeID: number, orgId: number): Observable<MetadataFieldResponse> {
     return this.http.get<MetadataFieldResponse>(`${this.apiUrl}/MetaData/contractType/${contractTypeID}/orgId/${orgId}/fields`);
   }
+
+  // addNewSection(contractTypeID: number, orgId: number,payload:any): Observable<MetadataSection> {
+  //   return this.http.get<MetadataSection>(`${this.apiUrl}/api/MetaData/contractType/${contractTypeID}/orgId/${orgId}/newSection`);
+  // }
 
 }
